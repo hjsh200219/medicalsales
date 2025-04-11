@@ -4,6 +4,7 @@ import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import Layout from '@/components/Layout';
 import { Suspense } from 'react';
+import Link from 'next/link';
 
 function SignInContent() {
   const searchParams = useSearchParams();
@@ -11,10 +12,9 @@ function SignInContent() {
   const error = searchParams.get('error');
 
   return (
-    <div className="container mx-auto px-4 py-8 flex flex-col items-center">
-      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold text-center mb-8">로그인</h1>
-        
+    <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-screen">
+      <div className="w-full max-w-md p-8 bg-gray-800 rounded-lg shadow-md">        
+        <h1 className="text-2xl font-bold text-center mb-4">Login</h1>
         {error && (
           <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6">
             {error === 'Signin' && '로그인 중 오류가 발생했습니다.'}
@@ -27,7 +27,7 @@ function SignInContent() {
         <div className="space-y-4">
           <button 
             onClick={() => signIn('google', { callbackUrl })}
-            className="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="w-full flex items-center justify-center px-4 py-4 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -37,6 +37,17 @@ function SignInContent() {
             </svg>
             Google로 로그인
           </button>
+        </div>
+        <div className="mt-4">
+          <p className="text-sm text-gray-400">
+            이름과 이메일 이외 어떠한 정보도 저장되지 않습니다.
+          </p>
+          <p className="text-sm text-gray-400">
+            로그인과 동시에 회원가입이 됩니다.
+          </p>
+          <p className="text-sm text-gray-400">
+            회원 탈퇴는 <Link href="/mypage" className="text-blue-500 hover:text-blue-600">My Page</Link>에서 가능합니다.
+          </p>
         </div>
       </div>
     </div>

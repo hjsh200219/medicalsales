@@ -58,9 +58,9 @@ export default function Navigation() {
       return (
         <button 
           onClick={() => signIn()}
-          className="px-4 py-2 bg-white text-blue-600 font-medium rounded-md border border-blue-100 hover:bg-blue-50 transition-colors"
+          className="px-4 py-1 bg-blue-700 text-white font-medium rounded-md  hover:bg-blue-800 transition-colors"
         >
-          로그인
+          Login
         </button>
       );
     }
@@ -86,37 +86,36 @@ export default function Navigation() {
               </div>
             )}
           </div>
-          <span className="text-white">{session.user.name}</span>
         </button>
         
         {isUserMenuOpen && (
-          <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 md:right-0 md:top-full">
-            <div className="px-4 py-2 border-b">
-              <p className="text-sm font-medium">{session.user.name}</p>
-              <p className="text-xs text-gray-500 truncate">{session.user.email}</p>
+          <div className="absolute right-0 mt-2 w-48 bg-blue-300 rounded-md shadow-lg py-1 z-10 md:right-0 md:top-full">
+            <div className="px-4 py-2 border-b border-gray-700">
+              <p className="text-sm text-gray-700 font-medium">{session.user.name}</p>
+              <p className="text-xs text-gray-700 truncate">{session.user.email}</p>
             </div>
             <Link 
               href="/mypage"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-500"
               onClick={() => setIsUserMenuOpen(false)}
             >
-              마이페이지
+              My Page
             </Link>
             <Link 
               href="/settings"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-500"
               onClick={() => setIsUserMenuOpen(false)}
             >
-              설정
+              Settings
             </Link>
             <button
               onClick={() => {
                 setIsUserMenuOpen(false);
                 signOut({ callbackUrl: '/medical-institutions' });
               }}
-              className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+              className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-blue-500"
             >
-              로그아웃
+              Logout
             </button>
           </div>
         )}
@@ -141,7 +140,7 @@ export default function Navigation() {
             onClick={() => signIn()}
             className="px-4 py-2 bg-white text-blue-600 font-medium rounded-md border border-blue-100 hover:bg-blue-50 transition-colors"
           >
-            로그인
+            Login
           </button>
         </div>
       );
@@ -157,7 +156,7 @@ export default function Navigation() {
               className="flex items-center p-3 rounded-lg text-white hover:bg-blue-600"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              마이페이지
+              My Page
             </Link>
           </li>
           <li className="mb-1">
@@ -166,7 +165,7 @@ export default function Navigation() {
               className="flex items-center p-3 rounded-lg text-white hover:bg-blue-600"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              설정
+              Settings
             </Link>
           </li>
           <li>
@@ -177,7 +176,7 @@ export default function Navigation() {
               }}
               className="w-full flex items-center p-3 rounded-lg text-white hover:bg-blue-600 text-left"
             >
-              로그아웃
+              Logout
             </button>
           </li>
         </ul>
@@ -220,7 +219,7 @@ export default function Navigation() {
                 <Link 
                   key={item.path} 
                   href={item.path}
-                  className={`flex items-center px-6 py-4 font-medium transition-colors ${
+                  className={`flex items-center px-4 py-2 font-medium transition-colors ${
                     isActive 
                       ? 'text-white border-b-2 border-white font-bold' 
                       : 'text-white/80 hover:text-white hover:bg-blue-600'

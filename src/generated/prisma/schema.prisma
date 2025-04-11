@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 사용자 정보 테이블
+model user_info {
+  id         String   @id @default(cuid())
+  email      String   @unique
+  name       String?
+  image      String?
+  company    String?
+  address    String?
+  last_login DateTime @default(now())
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  @@map("user_info")
+}
+
+// 고객 정보 테이블
+model customer_info {
+  id              String   @id @default(cuid())
+  customer_name   String
+  email           String?
+  phone           String?
+  mobile          String?
+  address         String?
+  lat             Float?
+  lng             Float?
+  comment         String?
+  company         String?
+  position        String?
+  tier            String?
+  created_at      DateTime @default(now())
+  modified_at     DateTime @default(now()) @updatedAt
+  address_company String?
+  lat_company     Float?
+  lng_company     Float?
+  created_by      String? // 고객 등록한 사용자 ID
+
+  @@map("customer_info")
+}

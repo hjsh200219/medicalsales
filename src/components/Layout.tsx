@@ -7,14 +7,14 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-gray-50 pb-16 md:pb-0">
+    <div className="min-h-screen bg-gray-900 pb-16 md:pb-0">
       {/* 헤더 */}
       <header className="bg-blue-500 text-white shadow-lg">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div className="container mx-auto px-2 py-2 flex justify-between items-center">
           <Link href="/medical-institutions" className="text-2xl font-bold hover:text-white/90 transition-colors">
             Medical Sales
           </Link>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
             <Navigation />
           </div>
         </div>
