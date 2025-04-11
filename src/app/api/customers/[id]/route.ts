@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 // GET: 고객 상세 정보 조회
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
     // 세션 확인 (로그인 필요)
@@ -16,7 +16,7 @@ export async function GET(
       return NextResponse.json({ error: '인증이 필요합니다' }, { status: 401 });
     }
 
-    const { id } = params;
+    const { id } = context.params;
 
     // 고객 정보 조회
     const customer = await prisma.customer_info.findUnique({
@@ -37,7 +37,7 @@ export async function GET(
 // PATCH: 고객 정보 수정
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
     // 세션 확인 (로그인 필요)
@@ -46,7 +46,7 @@ export async function PATCH(
       return NextResponse.json({ error: '인증이 필요합니다' }, { status: 401 });
     }
 
-    const { id } = params;
+    const { id } = context.params;
     const body = await request.json();
     const { 
       customer_name, email, phone, mobile, address, lat, lng, 
@@ -98,7 +98,7 @@ export async function PATCH(
 // DELETE: 고객 삭제
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
     // 세션 확인 (로그인 필요)
@@ -107,7 +107,7 @@ export async function DELETE(
       return NextResponse.json({ error: '인증이 필요합니다' }, { status: 401 });
     }
 
-    const { id } = params;
+    const { id } = context.params;
 
     // 고객 존재 여부 확인
     const existingCustomer = await prisma.customer_info.findUnique({
