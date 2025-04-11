@@ -14,7 +14,9 @@ export default function Layout({ children }: LayoutProps) {
           <Link href="/medical-institutions" className="text-2xl font-bold hover:text-white/90 transition-colors">
             Medical Sales
           </Link>
-          <Navigation />
+          <div className="flex items-center space-x-4">
+            <Navigation />
+          </div>
         </div>
       </header>
 

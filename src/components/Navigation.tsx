@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import Image from 'next/image';
 
 const menuItems = [
   {
@@ -17,19 +19,13 @@ const menuItems = [
     name: '고객 관리',
     path: '/customer-management'
   },
-  {
-    name: '마이페이지',
-    path: '/mypage'
-  },
-  {
-    name: '설정',
-    path: '/settings'
-  },
 ];
 
 export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { data: session, status } = useSession();
   
   // 모바일 메뉴가 열려있을 때 스크롤 방지
   useEffect(() => {
@@ -43,6 +39,174 @@ export default function Navigation() {
       document.body.style.overflow = 'auto';
     };
   }, [isMobileMenuOpen]);
+
+  const toggleUserMenu = () => {
+    setIsUserMenuOpen(!isUserMenuOpen);
+  };
+
+  // 사용자 메뉴 컴포넌트 (데스크톱용)
+  const renderUserMenu = () => {
+    if (status === 'loading') {
+      return (
+        <div className="flex items-center">
+          <div className="w-8 h-8 rounded-full bg-blue-300 animate-pulse"></div>
+        </div>
+      );
+    }
+
+    if (!session) {
+      return (
+        <button 
+          onClick={() => signIn()}
+          className="px-4 py-2 bg-white text-blue-600 font-medium rounded-md border border-blue-100 hover:bg-blue-50 transition-colors"
+        >
+          로그인
+        </button>
+      );
+    }
+
+    return (
+      <div className="relative">
+        <button
+          onClick={toggleUserMenu}
+          className="flex items-center space-x-2 focus:outline-none"
+        >
+          <div className="w-8 h-8 rounded-full bg-blue-300 overflow-hidden">
+            {session.user.image ? (
+              <Image
+                src={session.user.image}
+                alt={session.user.name || '사용자'}
+                width={32}
+                height={32}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-blue-600 font-bold">
+                {session.user.name?.charAt(0) || '?'}
+              </div>
+            )}
+          </div>
+          <span className="text-white">{session.user.name}</span>
+        </button>
+        
+        {isUserMenuOpen && (
+          <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 md:right-0 md:top-full">
+            <div className="px-4 py-2 border-b">
+              <p className="text-sm font-medium">{session.user.name}</p>
+              <p className="text-xs text-gray-500 truncate">{session.user.email}</p>
+            </div>
+            <Link 
+              href="/mypage"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={() => setIsUserMenuOpen(false)}
+            >
+              마이페이지
+            </Link>
+            <Link 
+              href="/settings"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={() => setIsUserMenuOpen(false)}
+            >
+              설정
+            </Link>
+            <button
+              onClick={() => {
+                setIsUserMenuOpen(false);
+                signOut({ callbackUrl: '/medical-institutions' });
+              }}
+              className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+            >
+              로그아웃
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // 모바일용 사용자 메뉴 렌더링
+  const renderMobileUserMenu = () => {
+    if (status === 'loading') {
+      return (
+        <div className="flex justify-center mt-6 pt-4 border-t border-blue-400">
+          <div className="w-8 h-8 rounded-full bg-blue-300 animate-pulse"></div>
+        </div>
+      );
+    }
+
+    if (!session) {
+      return (
+        <div className="flex justify-center mt-6 pt-4 border-t border-blue-400">
+          <button 
+            onClick={() => signIn()}
+            className="px-4 py-2 bg-white text-blue-600 font-medium rounded-md border border-blue-100 hover:bg-blue-50 transition-colors"
+          >
+            로그인
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <div className="mt-6 pt-4 border-t border-blue-400">        
+        {/* 사용자 메뉴 항목 */}
+        <ul className="mt-3">
+          <li className="mb-1">
+            <Link 
+              href="/mypage"
+              className="flex items-center p-3 rounded-lg text-white hover:bg-blue-600"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              마이페이지
+            </Link>
+          </li>
+          <li className="mb-1">
+            <Link 
+              href="/settings"
+              className="flex items-center p-3 rounded-lg text-white hover:bg-blue-600"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              설정
+            </Link>
+          </li>
+          <li>
+            <button
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                signOut({ callbackUrl: '/medical-institutions' });
+              }}
+              className="w-full flex items-center p-3 rounded-lg text-white hover:bg-blue-600 text-left"
+            >
+              로그아웃
+            </button>
+          </li>
+        </ul>
+
+        {/* 사용자 프로필 정보 */}
+        <div className="px-4 py-3 flex items-center space-x-3">
+          <div className="w-10 h-10 rounded-full bg-blue-300 overflow-hidden">
+            {session.user.image ? (
+              <Image
+                src={session.user.image}
+                alt={session.user.name || '사용자'}
+                width={40}
+                height={40}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-blue-600 font-bold">
+                {session.user.name?.charAt(0) || '?'}
+              </div>
+            )}
+          </div>
+          <div className="flex-1">
+            <p className="text-white font-medium">{session.user.name}</p>
+            <p className="text-white/80 text-xs truncate">{session.user.email}</p>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -80,6 +244,11 @@ export default function Navigation() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
+      
+      {/* 사용자 메뉴 - 데스크톱에서만 표시 */}
+      <div className="hidden md:block">
+        {renderUserMenu()}
+      </div>
       
       {/* 모바일 사이드 메뉴 */}
       {isMobileMenuOpen && (
@@ -120,12 +289,13 @@ export default function Navigation() {
                   );
                 })}
               </ul>
+              
+              {/* 사용자 메뉴 추가 - 모바일용 */}
+              {renderMobileUserMenu()}
             </nav>
           </div>
         </div>
       )}
-      
-      
     </>
   );
 } 
