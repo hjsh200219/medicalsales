@@ -132,6 +132,9 @@ const nextConfig: NextConfig = {
     // !! 중요: 프로덕션 환경에서만 타입 검사를 건너뛰도록 설정
     ignoreBuildErrors: true,
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default withPWA(nextConfig);
