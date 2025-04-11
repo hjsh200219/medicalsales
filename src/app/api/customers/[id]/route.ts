@@ -4,11 +4,14 @@ import { PrismaClient } from '@/generated/prisma';
 
 const prisma = new PrismaClient();
 
+interface RouteParams {
+  params: {
+    id: string;
+  };
+}
+
 // GET: 고객 상세 정보 조회
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
     // 세션 확인 (로그인 필요)
     const session = await getServerSession();
@@ -35,10 +38,7 @@ export async function GET(
 }
 
 // PATCH: 고객 정보 수정
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(request: NextRequest, { params }: RouteParams) {
   try {
     // 세션 확인 (로그인 필요)
     const session = await getServerSession();
@@ -96,10 +96,7 @@ export async function PATCH(
 }
 
 // DELETE: 고객 삭제
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, { params }: RouteParams) {
   try {
     // 세션 확인 (로그인 필요)
     const session = await getServerSession();
