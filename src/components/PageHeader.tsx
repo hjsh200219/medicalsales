@@ -10,7 +10,6 @@ interface PageHeaderProps {
 
 export default function PageHeader({ 
   title, 
-  subtitle, 
   action,
   backButton,
   onBack
@@ -37,9 +36,6 @@ export default function PageHeader({
           </div>
         )}
       </div>
-      {subtitle && (
-        <p className="text-gray-400 text-sm">{subtitle}</p>
-      )}
     </div>
   );
 } 

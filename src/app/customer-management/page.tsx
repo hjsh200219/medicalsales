@@ -141,25 +141,12 @@ export default function CustomerManagement() {
     setCurrentPage(page);
   };
   
-  // 사용자 정의 날짜 포맷 함수
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('ko-KR', { 
-      year: 'numeric', 
-      month: '2-digit', 
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit'
-    }).format(date);
-  };
-  
   return (
     <Layout>
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <PageHeader 
             title="고객 관리"
-            subtitle="고객 정보를 관리하고 기록할 수 있습니다"
           />
           <button
             onClick={toggleAddForm}
@@ -201,7 +188,6 @@ export default function CustomerManagement() {
               handlePageChange={handlePageChange}
               openEditForm={openEditForm}
               deleteCustomer={deleteCustomer}
-              formatDate={formatDate}
             />
           </>
         )}

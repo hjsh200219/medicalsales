@@ -161,7 +161,6 @@ export default function MyPage() {
       <div className="container mx-auto px-4 py-4">
         <PageHeader 
           title="마이페이지" 
-          subtitle="회원 정보를 수정하고 탈퇴할 수 있습니다"
         />
         
         {userInfo && (
