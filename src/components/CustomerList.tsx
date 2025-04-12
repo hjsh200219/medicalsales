@@ -68,7 +68,7 @@ export default function CustomerList({
               customers.map((customer) => (
                 <React.Fragment key={customer.id}>
                   <tr 
-                    className="hover:bg-gray-700 cursor-pointer md:cursor-default"
+                    className={`hover:bg-blue-800 cursor-pointer md:cursor-default ${expandedRowId === customer.id ? 'bg-blue-900' : ''}`}
                     onClick={() => toggleRowExpand(customer.id)}
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -146,7 +146,7 @@ export default function CustomerList({
                   </tr>
                   {/* 모바일에서 확장된 행 */}
                   {expandedRowId === customer.id && (
-                    <tr className="md:hidden bg-gray-700">
+                    <tr className="md:hidden bg-blue-900">
                       <td colSpan={5} className="px-6 py-4">
                         <div className="grid grid-cols-2 gap-3">
                           <div>
