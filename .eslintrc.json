@@ -1,0 +1,7 @@
+{
+  "extends": ["next/core-web-vitals", "next/typescript"],
+  "ignorePatterns": ["src/generated/**/*", "**/prisma/**/*", "node_modules/**/*"],
+  "rules": {
+    "react-hooks/exhaustive-deps": "warn"
+  }
+} 

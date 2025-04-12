@@ -1,4 +1,5 @@
 import React from 'react';
+import { tierColors } from '@/types/tierColors';
 
 // 고객 검색 필터 컴포넌트
 type CustomerFilterFormProps = {
@@ -17,7 +18,6 @@ export default function CustomerFilterForm({
   tierFilter,
   setTierFilter,
   handleSearch,
-  resetFilters,
 }: CustomerFilterFormProps) {
   const handleTierFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setTierFilter(e.target.value);
@@ -32,10 +32,12 @@ export default function CustomerFilterForm({
           className="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
         >
           <option value="">등급 전체</option>
-          <option value="VIP">VIP</option>
-          <option value="감사고객">감사고객</option>
-          <option value="법인고객">법인고객</option>
-          <option value="신규고객">신규고객</option>
+          {Object.keys(tierColors)
+            .filter(key => key !== 'default')
+            .map(tier => (
+              <option key={tier} value={tier}>{tier}</option>
+            ))
+          }
         </select>
         
         <div className="relative flex-1 min-w-[200px]">
@@ -62,28 +64,6 @@ export default function CustomerFilterForm({
             </svg>
           </div>
         </div>
-        
-        {(search || tierFilter) && (
-          <button
-            type="button"
-            onClick={resetFilters}
-            className="px-3 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-500"
-          >
-            초기화
-          </button>
-        )}
-        
-        {tierFilter && (
-          <div className="px-3 py-1 bg-blue-500 text-white rounded-full text-sm flex items-center">
-            등급: {tierFilter}
-            <button
-              onClick={() => setTierFilter('')}
-              className="ml-2 text-white hover:text-gray-200 focus:outline-none"
-            >
-              ✕
-            </button>
-          </div>
-        )}
       </form>
     </div>
   );

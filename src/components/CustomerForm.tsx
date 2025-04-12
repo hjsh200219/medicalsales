@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import AddressCoordinateConverter from './AddressCoordinateConverter';
 import { Customer } from '@/types/customer';
+import { tierColors } from '@/types/tierColors';
 
 // Customer 인터페이스에서 폼에 필요한 필드만 추출
 export type CustomerFormData = Omit<Customer, 'id' | 'created_at' | 'updated_at'>;
@@ -144,10 +145,12 @@ export default function CustomerForm({
                 className="w-full px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
               >
                 <option value="">선택하세요</option>
-                <option value="VIP">VIP</option>
-                <option value="감사고객">감사고객</option>
-                <option value="법인고객">법인고객</option>
-                <option value="신규고객">신규고객</option>
+                {Object.keys(tierColors)
+                  .filter(key => key !== 'default')
+                  .map(tier => (
+                    <option key={tier} value={tier}>{tier}</option>
+                  ))
+                }
               </select>
             </div>
             

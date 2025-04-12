@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Layout from '@/components/Layout';
@@ -9,6 +9,7 @@ import CustomerFilterForm from '@/components/CustomerFilterForm';
 import CustomerList from '@/components/CustomerList';
 import CustomerAddForm from '@/components/CustomerAddForm';
 import CustomerEditForm from '@/components/CustomerEditForm';
+import CustomerMap from '@/components/CustomerMap';
 import { Customer } from '@/types/customer';
 
 export default function CustomerManagement() {
@@ -22,6 +23,7 @@ export default function CustomerManagement() {
   const [search, setSearch] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [tierFilter, setTierFilter] = useState('');
+  const [activeTab, setActiveTab] = useState<'list' | 'map'>('list');
   
   // 페이지네이션 상태
   const [currentPage, setCurrentPage] = useState(1);
@@ -39,7 +41,7 @@ export default function CustomerManagement() {
   }, [session, status, router]);
   
   // 고객 목록 가져오기
-  const fetchCustomers = async (page = 1, searchQuery = '', tier = '') => {
+  const fetchCustomers = useCallback(async (page = 1, searchQuery = '', tier = '') => {
     if (!session) return;
     
     try {
@@ -77,30 +79,58 @@ export default function CustomerManagement() {
       setIsLoading(false);
       setIsSearching(false);
     }
-  };
+  }, [session, pageSize]);
+  
+  // 지도 보기에서는 모든 고객 데이터가 필요하므로 별도의 함수로 가져오기
+  const fetchAllCustomers = useCallback(async () => {
+    if (!session) return;
+    
+    try {
+      setIsLoading(true);
+      setError(null);
+      
+      const response = await fetch(`/api/customers?pageSize=1000`); // 충분히 큰 숫자로 설정
+      
+      if (!response.ok) {
+        throw new Error('고객 데이터를 가져오는데 실패했습니다');
+      }
+      
+      const data = await response.json();
+      setCustomers(data.customers);
+    } catch (err) {
+      console.error('Error fetching all customers:', err);
+      setError(err instanceof Error ? err.message : '고객 데이터를 가져오는데 실패했습니다');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [session]);
   
   // 초기 데이터 로드
   useEffect(() => {
     if (session) {
-      fetchCustomers(currentPage, search, tierFilter);
+      if (activeTab === 'list') {
+        fetchCustomers(currentPage, search, tierFilter);
+      } else if (activeTab === 'map') {
+        fetchAllCustomers();
+      }
     }
-  }, [session, currentPage, tierFilter]);
+  }, [session, currentPage, tierFilter, activeTab, fetchCustomers, fetchAllCustomers]);
   
   // 검색 처리
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     setIsSearching(true);
     setCurrentPage(1);
     fetchCustomers(1, search, tierFilter);
-  };
+  }, [fetchCustomers, search, tierFilter]);
   
   // 필터 초기화
-  const resetFilters = () => {
+  const resetFilters = useCallback(() => {
     setSearch('');
     setTierFilter('');
     setCurrentPage(1);
     fetchCustomers(1, '', '');
-  };
+  }, [fetchCustomers]);
   
   // 새로운 고객 추가 폼 보이기/숨기기 토글
   const toggleAddForm = () => {
@@ -115,7 +145,7 @@ export default function CustomerManagement() {
   };
   
   // 고객 정보 삭제
-  const deleteCustomer = async (id: string) => {
+  const deleteCustomer = useCallback(async (id: string) => {
     if (!confirm('정말 이 고객을 삭제하시겠습니까?')) return;
     
     try {
@@ -128,17 +158,26 @@ export default function CustomerManagement() {
       }
       
       // 성공적으로 삭제됐으면 목록 갱신
-      fetchCustomers(currentPage, search, tierFilter);
+      if (activeTab === 'list') {
+        fetchCustomers(currentPage, search, tierFilter);
+      } else {
+        fetchAllCustomers();
+      }
     } catch (err) {
       console.error('Error deleting customer:', err);
       alert(err instanceof Error ? err.message : '고객 삭제에 실패했습니다');
     }
-  };
+  }, [activeTab, currentPage, fetchAllCustomers, fetchCustomers, search, tierFilter]);
   
   // 페이지 변경 핸들러
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
+  };
+  
+  // 탭 변경 핸들러
+  const handleTabChange = (tab: 'list' | 'map') => {
+    setActiveTab(tab);
   };
   
   return (
@@ -148,12 +187,25 @@ export default function CustomerManagement() {
           <PageHeader 
             title="고객 관리"
           />
-          <button
-            onClick={toggleAddForm}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          >
-            {showAddForm ? '돌아가기' : '고객등록'}
-          </button>
+          {!showAddForm && !editingCustomer && (
+            <button
+              onClick={toggleAddForm}
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              고객등록
+            </button>
+          )}
+          {(showAddForm || editingCustomer) && (
+            <button
+              onClick={() => {
+                setShowAddForm(false);
+                setEditingCustomer(null);
+              }}
+              className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            >
+              돌아가기
+            </button>
+          )}
         </div>
         
         {/* 에러 메시지 */}
@@ -163,32 +215,65 @@ export default function CustomerManagement() {
           </div>
         )}
         
-        {/* 고객 목록 테이블 */}
+        {/* 고객 목록 테이블 또는 지도 */}
         {!showAddForm && !editingCustomer && (
           <>
-            {/* 검색 필터 컴포넌트 */}
-            <CustomerFilterForm
-              search={search}
-              setSearch={setSearch}
-              tierFilter={tierFilter}
-              setTierFilter={setTierFilter}
-              handleSearch={handleSearch}
-              resetFilters={resetFilters}
-              isSearching={isSearching}
-            />
+            {/* 탭 메뉴 */}
+            <div className="flex border-b border-gray-700 mb-4">
+              <button
+                className={`px-4 py-2 mr-2 ${
+                  activeTab === 'list'
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                } rounded-t-md font-medium`}
+                onClick={() => handleTabChange('list')}
+              >
+                고객 목록
+              </button>
+              <button
+                className={`px-4 py-2 ${
+                  activeTab === 'map'
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                } rounded-t-md font-medium`}
+                onClick={() => handleTabChange('map')}
+              >
+                고객 지도
+              </button>
+            </div>
             
-            {/* 고객 목록 컴포넌트 */}
-            <CustomerList
-              customers={customers}
-              isLoading={isLoading}
-              currentPage={currentPage}
-              totalPages={totalPages}
-              totalCustomers={totalCustomers}
-              pageSize={pageSize}
-              handlePageChange={handlePageChange}
-              openEditForm={openEditForm}
-              deleteCustomer={deleteCustomer}
-            />
+            {/* 검색 필터 컴포넌트 (목록 탭에서만 표시) */}
+            {activeTab === 'list' && (
+              <CustomerFilterForm
+                search={search}
+                setSearch={setSearch}
+                tierFilter={tierFilter}
+                setTierFilter={setTierFilter}
+                handleSearch={handleSearch}
+                resetFilters={resetFilters}
+                isSearching={isSearching}
+              />
+            )}
+            
+            {/* 선택된 탭에 따라 고객 목록 또는 지도 표시 */}
+            {activeTab === 'list' ? (
+              <CustomerList
+                customers={customers}
+                isLoading={isLoading}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalCustomers={totalCustomers}
+                pageSize={pageSize}
+                handlePageChange={handlePageChange}
+                openEditForm={openEditForm}
+                deleteCustomer={deleteCustomer}
+              />
+            ) : (
+              <CustomerMap 
+                customers={customers} 
+                apiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY || ''} 
+              />
+            )}
           </>
         )}
         
@@ -198,7 +283,11 @@ export default function CustomerManagement() {
             onCancel={toggleAddForm} 
             onSuccess={() => {
               setShowAddForm(false);
-              fetchCustomers(currentPage, search, tierFilter);
+              if (activeTab === 'list') {
+                fetchCustomers(currentPage, search, tierFilter);
+              } else {
+                fetchAllCustomers();
+              }
             }} 
           />
         )}
@@ -210,7 +299,11 @@ export default function CustomerManagement() {
             onCancel={() => setEditingCustomer(null)} 
             onSuccess={() => {
               setEditingCustomer(null);
-              fetchCustomers(currentPage, search, tierFilter);
+              if (activeTab === 'list') {
+                fetchCustomers(currentPage, search, tierFilter);
+              } else {
+                fetchAllCustomers();
+              }
             }} 
           />
         )}

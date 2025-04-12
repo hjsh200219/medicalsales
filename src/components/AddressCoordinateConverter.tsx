@@ -38,7 +38,7 @@ export default function AddressCoordinateConverter({
     return () => {
       // 컴포넌트가 unmount될 때 스크립트를 제거하지 않음 (다른 컴포넌트에서 재사용)
     };
-  }, []);
+  }, [KAKAO_API_KEY]);
 
   // 주소를 위경도로 변환하는 함수
   const convertAddressToCoords = async () => {

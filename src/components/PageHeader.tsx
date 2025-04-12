@@ -28,7 +28,7 @@ export default function PageHeader({
               </svg>
             </button>
           )}
-          <h1 className="text-2xl font-bold text-white">{title}</h1>
+          <h1 className="text-2xl font-bold text-white ml-2">{title}</h1>
         </div>
         {action && (
           <div>
