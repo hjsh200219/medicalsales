@@ -22,8 +22,6 @@ export default function CustomerForm({
   onCancel,
   onSubmit,
   isSubmitting,
-  error,
-  title,
   submitButtonText
 }: CustomerFormProps) {
   // Customer 인터페이스의 옵셔널 필드를 고려하여 초기값 설정
@@ -67,15 +65,8 @@ export default function CustomerForm({
   };
 
   return (
-    <div className="bg-gray-800 rounded-lg shadow-md p-4">
-      <h2 className="text-xl font-bold text-white mb-4">{title}</h2>
-      
-      {error && (
-        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4">
-          {error}
-        </div>
-      )}
-      
+    <div className="bg-gray-800 rounded-lg shadow-md p-4">      
+
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* 기본 정보 섹션 */}
         <div className="border-b border-gray-700 pb-4">

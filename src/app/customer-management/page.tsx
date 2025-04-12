@@ -188,12 +188,15 @@ export default function CustomerManagement() {
             title="고객 관리"
           />
           {!showAddForm && !editingCustomer && (
-            <button
-              onClick={toggleAddForm}
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            >
-              고객등록
-            </button>
+            <div className="flex space-x-2">
+              <button
+                onClick={toggleAddForm}
+                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                고객등록
+              </button>
+              
+            </div>
           )}
           {(showAddForm || editingCustomer) && (
             <button
@@ -208,6 +211,7 @@ export default function CustomerManagement() {
           )}
         </div>
         
+
         {/* 에러 메시지 */}
         {error && (
           <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6">
