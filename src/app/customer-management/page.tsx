@@ -25,6 +25,7 @@ export default function CustomerManagement() {
   const [isSearching, setIsSearching] = useState(false);
   const [tierFilter, setTierFilter] = useState('');
   const [activeTab, setActiveTab] = useState<'list' | 'map'>('list');
+  const [registrationMode, setRegistrationMode] = useState<'individual' | 'excel'>('individual');
   
   // 페이지네이션 상태
   const [currentPage, setCurrentPage] = useState(1);
@@ -137,12 +138,18 @@ export default function CustomerManagement() {
   const toggleAddForm = () => {
     setShowAddForm(!showAddForm);
     setEditingCustomer(null);
+    setRegistrationMode('individual'); // 기본값으로 개별 등록 모드 설정
   };
   
   // 고객 수정 폼 열기
   const openEditForm = (customer: Customer) => {
     setEditingCustomer(customer);
     setShowAddForm(false);
+  };
+  
+  // 등록 모드 변경 핸들러
+  const handleRegistrationModeChange = (mode: 'individual' | 'excel') => {
+    setRegistrationMode(mode);
   };
   
   // 고객 정보 삭제
@@ -185,30 +192,69 @@ export default function CustomerManagement() {
     <Layout>
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center mb-4">
-          <PageHeader 
-            title="고객 관리"
-          />
-          {!showAddForm && !editingCustomer && (
-            <div className="flex space-x-2">
+          <div className="flex items-center gap-2">
+            <PageHeader 
+              title="고객 관리"
+            />
+            
+            {/* 돌아가기 버튼 (고객 등록/수정 중일 때만 표시) */}
+            {(showAddForm || editingCustomer) && (
+              <button
+                onClick={() => {
+                  setShowAddForm(false);
+                  setEditingCustomer(null);
+                }}
+                className="px-2 py-0 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+              >
+                &lt;
+              </button>
+            )}
+            
+            {/* 고객 등록 버튼 */}
+            {!showAddForm && !editingCustomer && (
               <button
                 onClick={toggleAddForm}
-                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="px-2 py-0 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               >
-                고객등록
+                +
               </button>
-              
+            )}
+          </div>
+          
+          {/* 보기 모드 전환 버튼 (고객 등록/수정 중이 아닐 때만 표시) */}
+          {!showAddForm && !editingCustomer && (
+            <div className="flex bg-gray-700 p-1 rounded-md">
+              <button
+                className={`py-1 px-4 rounded-md ${activeTab === 'list' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-600'}`}
+                onClick={() => handleTabChange('list')}
+              >
+                목록
+              </button>
+              <button
+                className={`py-1 px-4 rounded-md ${activeTab === 'map' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-600'}`}
+                onClick={() => handleTabChange('map')}
+              >
+                지도
+              </button>
             </div>
           )}
-          {(showAddForm || editingCustomer) && (
-            <button
-              onClick={() => {
-                setShowAddForm(false);
-                setEditingCustomer(null);
-              }}
-              className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-            >
-              돌아가기
-            </button>
+          
+          {/* 등록 모드 전환 버튼 (고객 등록 중일 때만 표시) */}
+          {showAddForm && (
+            <div className="flex bg-gray-700 p-1 rounded-md">
+              <button
+                className={`py-1 px-4 rounded-md ${registrationMode === 'individual' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-600'}`}
+                onClick={() => handleRegistrationModeChange('individual')}
+              >
+                개별
+              </button>
+              <button
+                className={`py-1 px-4 rounded-md ${registrationMode === 'excel' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-600'}`}
+                onClick={() => handleRegistrationModeChange('excel')}
+              >
+                엑셀
+              </button>
+            </div>
           )}
         </div>
         
@@ -223,29 +269,7 @@ export default function CustomerManagement() {
         {/* 고객 목록 테이블 또는 지도 */}
         {!showAddForm && !editingCustomer && (
           <>
-            {/* 탭 메뉴 */}
-            <div className="flex border-b border-gray-700 mb-4">
-              <button
-                className={`px-4 py-2 mr-2 ${
-                  activeTab === 'list'
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                } rounded-t-md font-medium`}
-                onClick={() => handleTabChange('list')}
-              >
-                고객 목록
-              </button>
-              <button
-                className={`px-4 py-2 ${
-                  activeTab === 'map'
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                } rounded-t-md font-medium`}
-                onClick={() => handleTabChange('map')}
-              >
-                고객 지도
-              </button>
-            </div>
+            {/* 탭 메뉴 제거 */}
             
             {/* 검색 필터 컴포넌트 (목록 탭에서만 표시) */}
             {activeTab === 'list' && (
@@ -259,6 +283,8 @@ export default function CustomerManagement() {
                 isSearching={isSearching}
               />
             )}
+            
+            {/* 고객 등록 버튼 제거 */}
             
             {/* 선택된 탭에 따라 고객 목록 또는 지도 표시 */}
             {activeTab === 'list' ? (
@@ -311,7 +337,8 @@ export default function CustomerManagement() {
               } else {
                 fetchAllCustomers();
               }
-            }} 
+            }}
+            activeTab={registrationMode}
           />
         )}
         

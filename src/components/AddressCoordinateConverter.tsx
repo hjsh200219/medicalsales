@@ -93,7 +93,7 @@ export default function AddressCoordinateConverter({
           onClick={convertAddressToCoords}
           className="px-3 py-2 bg-blue-500 text-white rounded-r-md hover:bg-blue-600"
         >
-          위경도 변환
+          위경도
         </button>
       </div>
       {status && (
@@ -101,7 +101,7 @@ export default function AddressCoordinateConverter({
           {status}
           {status.includes('✓') && (
             <span className="ml-2 text-xs text-gray-400">
-              (위도: {existingLatitude}, 경도: {existingLongitude})
+              (위경도: {existingLatitude}, {existingLongitude})
             </span>
           )}
         </p>
@@ -110,7 +110,7 @@ export default function AddressCoordinateConverter({
         <p className="text-sm mt-1 text-green-400">
           ✓ 기존 위경도 정보 있음
           <span className="ml-2 text-xs text-gray-400">
-            (위도: {existingLatitude}, 경도: {existingLongitude})
+            (위경도: {existingLatitude}, {existingLongitude})
           </span>
         </p>
       )}

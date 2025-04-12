@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import * as XLSX from 'xlsx';
+import { useSession } from 'next-auth/react';
 
 interface CustomerExcelUploadProps {
   onSuccess?: (result: { success: number, failed: number }) => void;
@@ -13,6 +14,7 @@ const CustomerExcelUpload: React.FC<CustomerExcelUploadProps> = ({
   onError
 }) => {
   const [isUploading, setIsUploading] = useState(false);
+  const { data: session } = useSession();
   
   // 엑셀 샘플 다운로드
   const downloadSampleExcel = () => {
@@ -73,57 +75,109 @@ const CustomerExcelUpload: React.FC<CustomerExcelUploadProps> = ({
   // 엑셀 파일 처리
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (!files || !files[0]) return;
+    console.log('File upload triggered', files);
+    
+    if (!files || !files[0]) {
+      console.log('No files selected');
+      return;
+    }
+    
+    if (!session || !session.user) {
+      console.error('세션 정보가 없습니다. 로그인이 필요합니다.');
+      if (onError) onError('로그인 정보를 찾을 수 없습니다. 다시 로그인해주세요.');
+      return;
+    }
     
     try {
       setIsUploading(true);
+      console.log('Upload started');
       
       const file = files[0];
+      console.log('File selected:', file.name, file.size);
       
       // 파일 읽기
       const reader = new FileReader();
       reader.onload = async (event) => {
         try {
+          console.log('File read complete');
+          
           if (!event.target || !event.target.result) {
+            console.error('File read failed - no result');
             throw new Error('파일 읽기에 실패했습니다');
           }
           
           const data = new Uint8Array(event.target.result as ArrayBuffer);
+          console.log('File data loaded, parsing Excel...');
+          
           const workbook = XLSX.read(data, { type: 'array' });
+          console.log('Excel parsed, sheets:', workbook.SheetNames);
+          
+          if (workbook.SheetNames.length === 0) {
+            console.error('No sheets found in Excel file');
+            throw new Error('엑셀 파일에 시트가 없습니다');
+          }
           
           // 첫 번째 시트의 데이터 가져오기
           const firstSheetName = workbook.SheetNames[0];
           const worksheet = workbook.Sheets[firstSheetName];
           const jsonData = XLSX.utils.sheet_to_json(worksheet);
+          console.log('JSON data extracted, rows:', jsonData.length);
+          
+          if (jsonData.length === 0) {
+            console.warn('Excel file has no data rows');
+            if (onError) onError('엑셀 파일에 데이터가 없습니다');
+            setIsUploading(false);
+            return;
+          }
           
           // API 호출하여 데이터 저장
-          const response = await fetch('/api/customers/bulk-upload', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ customers: jsonData })
-          });
+          console.log('Sending data to API...');
           
-          if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || '업로드 중 오류가 발생했습니다');
-          }
-          
-          const result = await response.json();
-          
-          // 성공 콜백 호출
-          if (onSuccess) {
-            onSuccess({
-              success: result.success,
-              failed: result.failed
+          try {
+            // 등록자 정보를 포함하여 데이터 전송
+            const response = await fetch('/api/customers/bulk-upload', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ 
+                customers: jsonData,
+                registeredBy: {
+                  id: session.user.id || '',
+                  email: session.user.email || '',
+                  name: session.user.name || ''
+                }
+              })
             });
-          }
-          
-          // 파일 입력 필드 초기화
-          const fileInput = document.getElementById('excelUpload') as HTMLInputElement;
-          if (fileInput) {
-            fileInput.value = '';
+            
+            console.log('API response received:', response.status);
+            
+            if (!response.ok) {
+              const errorData = await response.json().catch(() => ({ message: '서버 응답을 처리할 수 없습니다' }));
+              throw new Error(errorData.message || '업로드 중 오류가 발생했습니다');
+            }
+            
+            const result = await response.json();
+            console.log('Upload success:', result);
+            
+            // 성공 콜백 호출
+            if (onSuccess) {
+              onSuccess({
+                success: result.success || 0,
+                failed: result.failed || 0
+              });
+            }
+            
+            // 파일 입력 필드 초기화
+            const fileInput = document.getElementById('excelUpload') as HTMLInputElement;
+            if (fileInput) {
+              fileInput.value = '';
+            }
+          } catch (apiErr) {
+            console.error('API error:', apiErr);
+            if (onError) {
+              onError(apiErr instanceof Error ? apiErr.message : 'API 요청 중 오류가 발생했습니다');
+            }
           }
         } catch (err) {
           console.error('Error processing file:', err);
@@ -135,13 +189,15 @@ const CustomerExcelUpload: React.FC<CustomerExcelUploadProps> = ({
         }
       };
       
-      reader.onerror = () => {
+      reader.onerror = (event) => {
+        console.error('FileReader error:', event);
         if (onError) {
           onError('파일 읽기 실패');
         }
         setIsUploading(false);
       };
       
+      console.log('Starting file read...');
       reader.readAsArrayBuffer(file);
     } catch (err) {
       console.error('Error handling file upload:', err);
@@ -156,6 +212,7 @@ const CustomerExcelUpload: React.FC<CustomerExcelUploadProps> = ({
     <div className="flex space-x-2">
       {/* 샘플 엑셀 다운로드 버튼 */}
       <button
+        type="button"
         onClick={downloadSampleExcel}
         className="px-2 py-1 bg-green-500 text-sm text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
       >
@@ -169,17 +226,17 @@ const CustomerExcelUpload: React.FC<CustomerExcelUploadProps> = ({
           id="excelUpload"
           accept=".xlsx, .xls"
           onChange={handleFileUpload}
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+          style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', border: 0 }}
           disabled={isUploading}
         />
-        <button
+        <label
+          htmlFor="excelUpload"
           className={`px-2 py-1 ${
-            isUploading ? 'bg-gray-400' : 'bg-yellow-500 hover:bg-yellow-600'
-          } text-white rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2`}
-          disabled={isUploading}
+            isUploading ? 'bg-gray-400 cursor-not-allowed' : 'bg-yellow-500 hover:bg-yellow-600 cursor-pointer'
+          } text-white rounded-md text-sm inline-block focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2`}
         >
           {isUploading ? '업로드 중...' : '엑셀 업로드'}
-        </button>
+        </label>
       </div>
     </div>
   );

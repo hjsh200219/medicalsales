@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { applyInfoWindowStyle } from './InfoWindowManager';
 
 export interface MapPosition {
   lat: number;
@@ -16,16 +17,6 @@ export interface MapMarker {
   onClick?: (marker: google.maps.Marker) => void;
 }
 
-// InfoWindow 스타일 옵션 인터페이스 추가
-export interface InfoWindowStyle {
-  backgroundColor?: string;
-  textColor?: string;
-  borderRadius?: string;
-  padding?: string;
-  borderColor?: string;
-  closeButtonColor?: string;
-}
-
 interface GoogleMapProps {
   apiKey?: string;
   markers?: MapMarker[];
@@ -36,7 +27,6 @@ interface GoogleMapProps {
   width?: string;
   className?: string;
   onMapInit?: (map: google.maps.Map) => void;
-  infoWindowStyle?: InfoWindowStyle; // InfoWindow 스타일 옵션 추가
   showDefaultMap?: boolean; // 기본 지도 표시 여부
   showCurrentLocationButton?: boolean; // 현재 위치 버튼 표시 여부
 }
@@ -55,6 +45,10 @@ const darkModeStyle = [
     featureType: "poi",
     elementType: "labels.text.fill",
     stylers: [{ color: "#d59563" }],
+  },
+  {
+    featureType: "poi",
+    stylers: [{ visibility: "off" }], // POI 마커를 완전히 숨김
   },
   {
     featureType: "poi.park",
@@ -123,6 +117,30 @@ const darkModeStyle = [
   },
 ];
 
+// 라이트 모드를 위한 스타일 추가 (POI 마커만 숨김)
+const lightModeStyle = [
+  {
+    featureType: "poi",
+    stylers: [{ visibility: "off" }], // POI 마커를 완전히 숨김
+  },
+  {
+    featureType: "poi.business",
+    stylers: [{ visibility: "off" }], // 비즈니스 POI 숨김
+  },
+  {
+    featureType: "poi.medical",
+    stylers: [{ visibility: "off" }], // 의료시설 POI 숨김
+  },
+  {
+    featureType: "poi.school",
+    stylers: [{ visibility: "off" }], // 학교 POI 숨김
+  },
+  {
+    featureType: "poi.government",
+    stylers: [{ visibility: "off" }], // 정부기관 POI 숨김
+  }
+];
+
 declare global {
   interface Window {
     initMap?: () => void;
@@ -143,110 +161,54 @@ declare global {
   }
 }
 
-// InfoWindow 스타일 적용 함수 추가
-const applyInfoWindowStyle = (infoWindow: google.maps.InfoWindow, style: InfoWindowStyle = {}) => {
-  const defaultStyle: InfoWindowStyle = {
-    backgroundColor: '#1f2937',
-    textColor: 'white',
-    borderRadius: '6px',
-    padding: '8px',
-    borderColor: '#1f2937',
-    closeButtonColor: '#374151'
-  };
-
-  const mergedStyle = { ...defaultStyle, ...style };
-
-  // InfoWindow가 DOM에 추가된 후 스타일 적용
-  infoWindow.addListener('domready', () => {
-    // InfoWindow의 부모 컨테이너 스타일 변경
-    const iwOuter = document.querySelector('.gm-style-iw-a') as HTMLElement;
-    if (iwOuter) {
-      // 기본 그림자 제거
-      iwOuter.style.boxShadow = 'none';
-    }
+// InfoWindow 스타일링 함수 추가 (브릿지 함수)
+const styleDefaultInfoWindows = () => {
+  // InfoWindow 요소 찾기
+  const allInfoWindows = document.querySelectorAll('.gm-style-iw-d');
+  
+  allInfoWindows.forEach((infoWindow) => {
+    // 모든 텍스트 요소를 검정색으로 설정
+    const allTextElements = infoWindow.querySelectorAll('span, div, h1, h2, h3, h4, h5, h6, p, a');
+    allTextElements.forEach((element) => {
+      (element as HTMLElement).style.color = 'black';
+    });
     
-    // InfoWindow 컨테이너
-    const iwBackground = document.querySelector('.gm-style-iw-t') as HTMLElement;
-    if (iwBackground) {
-      // 삼각형 꼬리 요소 찾기
-      const iwTail = document.querySelector('.gm-style-iw-tc') as HTMLElement;
+    // 타이틀 요소에 정확한 스타일 적용
+    const mainTitle = infoWindow.querySelector('.gm-style-iw-d > div > div') as HTMLElement;
+    if (mainTitle) {
+      mainTitle.style.color = '#374151';
       
-      // 배경색 변경 (삼각형 꼬리 제외)
-      const iwChildren = iwBackground.querySelectorAll('div');
-      for (let i = 0; i < iwChildren.length; i++) {
-        const child = iwChildren[i] as HTMLElement;
-        
-        // 삼각형 꼬리는 배경색 변경하지 않음
-        if (child.classList.contains('gm-style-iw-tc')) {
-          continue;
-        }
-        
-        child.style.backgroundColor = mergedStyle.backgroundColor!;
-        child.style.boxShadow = 'none';
-      }
-      
-      // 삼각형 꼬리 요소가 있으면 삼각형 모양 유지
-      if (iwTail) {
-        iwTail.style.backgroundColor = 'transparent';
+      // 타이틀 내부의 첫 번째 요소에 직접 스타일 적용
+      const titleText = mainTitle.querySelector('div:first-child, span:first-child') as HTMLElement;
+      if (titleText) {
+        titleText.style.color = '#374151';
       }
     }
     
-    // 닫기 버튼 스타일 변경
-    const closeButton = document.querySelector('.gm-ui-hover-effect') as HTMLElement;
-    if (closeButton) {
-      closeButton.style.backgroundColor = mergedStyle.closeButtonColor!;
-      closeButton.style.borderRadius = '4px';
-      closeButton.style.opacity = '1';
-      closeButton.style.right = '0';
-      closeButton.style.top = '0';
-      closeButton.style.margin = '5px';
-      closeButton.style.padding = '6px !important';
-      
-      // 부모 요소의 스타일 수정
-      const parent = closeButton.parentElement;
-      if (parent) {
-        parent.style.top = '0px';
-        parent.style.right = '0px';
-        parent.style.left = 'auto';
-      }
-      
-      // 버튼 내부의 이미지 크기 수정
-      const buttonImages = closeButton.querySelectorAll('img');
-      buttonImages.forEach((img: HTMLImageElement) => {
-        img.style.width = '14px';
-        img.style.height = '14px';
-      });
-    }
+    // 특정 구조를 가진 타이틀 요소 선택자 (구글 지도의 일반적인 POI 정보창)
+    const titleElements = infoWindow.querySelectorAll(
+      '.gm-style-iw-d > div:first-child > div:first-child > div, ' + 
+      '.gm-style-iw-d > div > div > div:first-child, ' +
+      '.gm-style-iw-d > div > div:first-child, ' +
+      '.gm-style-iw-d > div:first-child > span'
+    );
     
-    // InfoWindow 콘텐츠 컨테이너
-    const iwContent = document.querySelector('.gm-style-iw-d') as HTMLElement;
-    if (iwContent) {
-      iwContent.style.overflow = 'hidden';
-      iwContent.style.backgroundColor = mergedStyle.backgroundColor!;
-      
-      // 타이틀과 텍스트 색상을 검정색으로 강제 적용
-      const headings = iwContent.querySelectorAll('h1, h2, h3, h4, h5, h6');
-      headings.forEach((heading) => {
-        (heading as HTMLElement).style.color = 'black';
-      });
-      
-      const paragraphs = iwContent.querySelectorAll('p, span, div');
-      paragraphs.forEach((text) => {
-        if ((text as HTMLElement).style.color !== 'white') { // 흰색 텍스트(예: 티어 라벨)는 유지
-          (text as HTMLElement).style.color = 'black';
-        }
-      });
-    }
+    titleElements.forEach((title) => {
+      (title as HTMLElement).style.color = '#374151';
+    });
+  });
+  
+  // 추가적으로 기본 InfoWindow 컨테이너 스타일 조정
+  const iwContainers = document.querySelectorAll('.gm-style-iw');
+  iwContainers.forEach((container) => {
+    (container as HTMLElement).style.color = '#374151';
     
-    // InfoWindow 배경 색상 변경
-    const iwContainer = document.querySelector('.gm-style-iw') as HTMLElement;
-    if (iwContainer) {
-      iwContainer.style.backgroundColor = mergedStyle.backgroundColor!;
-      iwContainer.style.padding = '0';
+    // 첫 번째 자식 요소가 주로 타이틀을 포함함
+    const firstChild = container.querySelector('div:first-child') as HTMLElement;
+    if (firstChild) {
+      firstChild.style.color = 'black';
     }
   });
-
-  return infoWindow;
 };
 
 const GoogleMap: React.FC<GoogleMapProps> = ({
@@ -259,7 +221,6 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
   width = '100%',
   className = '',
   onMapInit,
-  infoWindowStyle = {},
   showDefaultMap = false,
   showCurrentLocationButton = false
 }) => {
@@ -398,7 +359,8 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
         center: defaultCenter,
         zoom: defaultZoom,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
-        styles: isDarkMode ? darkModeStyle : undefined,
+        // 다크모드일 때는 다크모드 스타일, 아닐 때는 라이트 모드 스타일 적용 (POI 최소화)
+        styles: isDarkMode ? darkModeStyle : lightModeStyle,
         mapTypeControl: false,
         streetViewControl: false,
         fullscreenControl: true,
@@ -433,56 +395,6 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
       setError('지도를 초기화하는 중 오류가 발생했습니다.');
       setIsLoading(false);
     }
-  };
-  
-  // 구글 지도 기본 InfoWindow 스타일링 함수
-  const styleDefaultInfoWindows = () => {
-    // InfoWindow 요소 찾기
-    const allInfoWindows = document.querySelectorAll('.gm-style-iw-d');
-    
-    allInfoWindows.forEach((infoWindow) => {
-      // 모든 텍스트 요소를 검정색으로 설정
-      const allTextElements = infoWindow.querySelectorAll('span, div, h1, h2, h3, h4, h5, h6, p, a');
-      allTextElements.forEach((element) => {
-        (element as HTMLElement).style.color = 'black';
-      });
-      
-      // 1. 타이틀(헤더) 요소에 정확한 스타일 적용
-      const mainTitle = infoWindow.querySelector('.gm-style-iw-d > div > div') as HTMLElement;
-      if (mainTitle) {
-        mainTitle.style.color = '#374151';
-        
-        // 타이틀 내부의 첫 번째 요소(주로 장소 이름)에 직접 스타일 적용
-        const titleText = mainTitle.querySelector('div:first-child, span:first-child') as HTMLElement;
-        if (titleText) {
-          titleText.style.color = '#374151';
-        }
-      }
-      
-      // 2. 특정 구조를 가진 타이틀 요소 선택자 (구글 지도의 일반적인 POI 정보창)
-      const titleElements = infoWindow.querySelectorAll(
-        '.gm-style-iw-d > div:first-child > div:first-child > div, ' + 
-        '.gm-style-iw-d > div > div > div:first-child, ' +
-        '.gm-style-iw-d > div > div:first-child, ' +
-        '.gm-style-iw-d > div:first-child > span'
-      );
-      
-      titleElements.forEach((title) => {
-        (title as HTMLElement).style.color = '#374151';
-      });
-    });
-    
-    // 3. 추가적으로 기본 InfoWindow 컨테이너 스타일 조정
-    const iwContainers = document.querySelectorAll('.gm-style-iw');
-    iwContainers.forEach((container) => {
-      (container as HTMLElement).style.color = '#374151';
-      
-      // 첫 번째 자식 요소가 주로 타이틀을 포함함
-      const firstChild = container.querySelector('div:first-child') as HTMLElement;
-      if (firstChild) {
-        firstChild.style.color = 'black';
-      }
-    });
   };
   
   // 지도 이동이나 줌 변경 시에도 InfoWindow 스타일 적용
@@ -537,109 +449,11 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
       // 클릭 이벤트 핸들러 추가
       if (markerData.onClick) {
         marker.addListener('click', () => {
-          // 마커 클릭 핸들러 호출 전 infoWindow 스타일링 기능 제공
-          const originalOnClick = markerData.onClick!;
+          // 마커 클릭 핸들러 호출
+          markerData.onClick!(marker);
           
-          // 클릭 핸들러 호출 
-          originalOnClick(marker);
-          
-          // InfoWindow 찾아서 스타일 적용
-          setTimeout(() => {
-            const infoWindows = document.querySelectorAll('.gm-style-iw-a');
-            if (infoWindows.length > 0) {
-              // 가장 최근에 열린 InfoWindow에 스타일 적용
-              // 직접적인 접근은 어렵기 때문에 DOM 요소에 스타일을 적용
-              const backgroundColor = infoWindowStyle?.backgroundColor || '#1f2937';
-              const closeButtonColor = infoWindowStyle?.closeButtonColor || '#374151';
-              
-              // InfoWindow 부모 컨테이너
-              const iwOuter = document.querySelector('.gm-style-iw-a') as HTMLElement;
-              if (iwOuter) {
-                iwOuter.style.boxShadow = 'none';
-              }
-              
-              // InfoWindow 컨테이너
-              const iwBackground = document.querySelector('.gm-style-iw-t') as HTMLElement;
-              if (iwBackground) {
-                // 삼각형 꼬리 요소 찾기
-                const iwTail = document.querySelector('.gm-style-iw-tc') as HTMLElement;
-                
-                // 배경색 변경 (삼각형 꼬리 제외)
-                const iwChildren = iwBackground.querySelectorAll('div');
-                for (let i = 0; i < iwChildren.length; i++) {
-                  const child = iwChildren[i] as HTMLElement;
-                  
-                  // 삼각형 꼬리는 배경색 변경하지 않음
-                  if (child.classList.contains('gm-style-iw-tc')) {
-                    continue;
-                  }
-                  
-                  child.style.backgroundColor = backgroundColor;
-                  child.style.boxShadow = 'none';
-                }
-                
-                // 삼각형 꼬리 요소가 있으면 삼각형 모양 유지
-                if (iwTail) {
-                  iwTail.style.backgroundColor = 'transparent';
-                }
-              }
-              
-              // 닫기 버튼
-              const closeButton = document.querySelector('.gm-ui-hover-effect') as HTMLElement;
-              if (closeButton) {
-                closeButton.style.backgroundColor = closeButtonColor;
-                closeButton.style.borderRadius = '4px';
-                closeButton.style.opacity = '1';
-                closeButton.style.right = '0';
-                closeButton.style.top = '0';
-                closeButton.style.margin = '5px';
-                closeButton.style.padding = '6px !important';
-                
-                const parent = closeButton.parentElement;
-                if (parent) {
-                  parent.style.top = '0px';
-                  parent.style.right = '0px';
-                  parent.style.left = 'auto';
-                }
-                
-                const buttonImages = closeButton.querySelectorAll('img');
-                buttonImages.forEach((img: HTMLImageElement) => {
-                  img.style.width = '14px';
-                  img.style.height = '14px';
-                });
-              }
-              
-              // 콘텐츠 컨테이너
-              const iwContent = document.querySelector('.gm-style-iw-d') as HTMLElement;
-              if (iwContent) {
-                iwContent.style.overflow = 'hidden';
-                iwContent.style.backgroundColor = backgroundColor;
-                
-                // 타이틀과 텍스트 색상을 검정색으로 강제 적용
-                const headings = iwContent.querySelectorAll('h1, h2, h3, h4, h5, h6');
-                headings.forEach((heading) => {
-                  (heading as HTMLElement).style.color = 'black';
-                });
-                
-                const paragraphs = iwContent.querySelectorAll('p, span, div');
-                paragraphs.forEach((text) => {
-                  if ((text as HTMLElement).style.color !== 'white') { // 흰색 텍스트(예: 티어 라벨)는 유지
-                    (text as HTMLElement).style.color = 'black';
-                  }
-                });
-              }
-              
-              // InfoWindow 자체
-              const iwContainer = document.querySelector('.gm-style-iw') as HTMLElement;
-              if (iwContainer) {
-                iwContainer.style.backgroundColor = backgroundColor;
-                iwContainer.style.padding = '0';
-              }
-            }
-            
-            // 모든 InfoWindow에 스타일 적용 (기본 InfoWindow 포함)
-            styleDefaultInfoWindows();
-          }, 10);
+          // 짧은 지연 후 InfoWindow 스타일링 적용
+          setTimeout(styleDefaultInfoWindows, 10);
         });
       }
       
@@ -666,9 +480,9 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
     setCurrentMarkers(newMarkers);
   }, [googleMap, markers, showDefaultMap, defaultCenter, defaultZoom]);
   
-  // 전역 스타일링 함수 노출 (window 객체 타입 확장)
+  // 전역 스타일링 함수 노출
   interface ExtendedWindow extends Window {
-    applyInfoWindowStyle: (infoWindow: google.maps.InfoWindow, style: InfoWindowStyle) => google.maps.InfoWindow;
+    applyInfoWindowStyle: typeof applyInfoWindowStyle;
   }
   
   // 안전하게 window에 함수 추가

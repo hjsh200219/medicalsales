@@ -15,21 +15,37 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { customers } = await request.json();
+    const body = await request.json();
+    console.log('요청 본문:', JSON.stringify(body));
+    
+    const { customers, registeredBy } = body;
 
     if (!Array.isArray(customers) || customers.length === 0) {
       return NextResponse.json({ message: '유효한 고객 데이터가 없습니다.' }, { status: 400 });
     }
+    
+    console.log(`총 ${customers.length}명의 고객 데이터 처리 시작`);
+
+    // 등록자 정보 확인
+    const userId = registeredBy?.id || session.user.id || session.user.email;
+    console.log('등록자 정보:', userId);
 
     // 결과 추적용 변수
     let successCount = 0;
     let failedCount = 0;
+    const errors = [];
 
     // 각 고객 데이터 처리
-    for (const customerData of customers) {
+    for (let i = 0; i < customers.length; i++) {
+      const customerData = customers[i];
+      
       try {
+        console.log(`고객 데이터 #${i+1} 처리 중:`, JSON.stringify(customerData));
+        
         // 필수 필드 확인
-        if (!customerData.customer_name || !customerData.company || !customerData.address) {
+        if (!customerData.customer_name) {
+          console.log(`고객 #${i+1}: 고객명 누락`);
+          errors.push(`고객 #${i+1}: 고객명은 필수 항목입니다`);
           failedCount++;
           continue;
         }
@@ -117,15 +133,17 @@ export async function POST(request: NextRequest) {
           // 지오코딩에 실패해도 계속 진행 (위경도 없이 저장)
         }
 
+        console.log(`고객 #${i+1} 데이터베이스에 저장 시도`);
+        
         // 고객 데이터 저장
-        await prisma.customer_info.create({
+        const newCustomer = await prisma.customer_info.create({
           data: {
             customer_name: customerData.customer_name,
-            company: customerData.company,
+            company: customerData.company || '',
             phone: customerData.phone || null,
             mobile: customerData.mobile || null,
             email: customerData.email || null,
-            address: customerData.address,
+            address: customerData.address || '',
             address_company: customerData.address_company || null, 
             lat: lat,
             lng: lng,
@@ -134,21 +152,26 @@ export async function POST(request: NextRequest) {
             tier: customerData.tier || 'C',
             position: customerData.position || null,
             comment: customerData.comment || null,
-            created_by: session.user.id, // 현재 로그인한 사용자 ID
+            created_by: userId,
           },
         });
-
+        
+        console.log(`고객 #${i+1} 저장 성공:`, newCustomer.id);
         successCount++;
       } catch (customerError) {
-        console.error('Error processing customer:', customerError);
+        console.error(`고객 #${i+1} 처리 중 오류:`, customerError);
+        errors.push(`고객 #${i+1}: ${customerError instanceof Error ? customerError.message : '데이터 처리 오류'}`);
         failedCount++;
       }
     }
 
+    console.log(`고객 데이터 처리 완료: 성공=${successCount}, 실패=${failedCount}`);
+    
     // 결과 반환
     return NextResponse.json({
       success: successCount,
       failed: failedCount,
+      errors: errors.length > 0 ? errors : undefined,
       message: `${successCount}명의 고객이 성공적으로 등록되었습니다.`
     });
   } catch (error) {
@@ -156,7 +179,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ 
       success: 0,
       failed: 0,
-      message: '고객 등록 중 오류가 발생했습니다.' 
+      message: '고객 등록 중 오류가 발생했습니다.',
+      error: error instanceof Error ? error.message : '알 수 없는 오류'
     }, { status: 500 });
   }
 } 
