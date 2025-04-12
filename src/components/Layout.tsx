@@ -1,5 +1,6 @@
 import Navigation from '@/components/Navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,7 +13,14 @@ export default function Layout({ children }: LayoutProps) {
       <header className="bg-blue-500 text-white shadow-lg">
         <div className="container mx-auto px-2 py-2 flex justify-between items-center">
           <Link href="/medical-institutions" className="text-2xl font-bold hover:text-white/90 transition-colors">
-            Medical Sales
+            <Image
+              src="/images/ms_logo.png" 
+              alt="Medical Sales" 
+              width={180}
+              height={25}
+              className="h-6 w-auto ml-1"
+              priority
+            />
           </Link>
           <div className="flex items-center space-x-2">
             <Navigation />

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import * as XLSX from 'xlsx';
 import { useSession } from 'next-auth/react';
+import { LoadingSpinner, LoadingSpinnerStyles } from '@/components/LoadingSpinner';
 
 interface CustomerExcelUploadProps {
   onSuccess?: (result: { success: number, failed: number }) => void;
@@ -209,35 +210,48 @@ const CustomerExcelUpload: React.FC<CustomerExcelUploadProps> = ({
   };
   
   return (
-    <div className="flex space-x-2">
-      {/* 샘플 엑셀 다운로드 버튼 */}
-      <button
-        type="button"
-        onClick={downloadSampleExcel}
-        className="px-2 py-1 bg-green-500 text-sm text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-      >
-        샘플 엑셀
-      </button>
-      
-      {/* 엑셀 업로드 버튼 */}
-      <div className="relative">
-        <input
-          type="file"
-          id="excelUpload"
-          accept=".xlsx, .xls"
-          onChange={handleFileUpload}
-          style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', border: 0 }}
-          disabled={isUploading}
-        />
-        <label
-          htmlFor="excelUpload"
-          className={`px-2 py-1 ${
-            isUploading ? 'bg-gray-400 cursor-not-allowed' : 'bg-yellow-500 hover:bg-yellow-600 cursor-pointer'
-          } text-white rounded-md text-sm inline-block focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2`}
+    <div className="flex flex-col space-y-4">
+      <LoadingSpinnerStyles />
+      <div className="flex space-x-2">
+        {/* 샘플 엑셀 다운로드 버튼 */}
+        <button
+          type="button"
+          onClick={downloadSampleExcel}
+          className="px-2 py-1 bg-green-500 text-sm text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
         >
-          {isUploading ? '업로드 중...' : '엑셀 업로드'}
-        </label>
+          샘플 엑셀
+        </button>
+        
+        {/* 엑셀 업로드 버튼 */}
+        <div className="relative">
+          <input
+            type="file"
+            id="excelUpload"
+            accept=".xlsx, .xls"
+            onChange={handleFileUpload}
+            style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', border: 0 }}
+            disabled={isUploading}
+          />
+          <label
+            htmlFor="excelUpload"
+            className={`px-2 py-1 ${
+              isUploading ? 'bg-gray-400 cursor-not-allowed' : 'bg-yellow-500 hover:bg-yellow-600 cursor-pointer'
+            } text-white rounded-md text-sm inline-block focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2`}
+          >
+            {isUploading ? '업로드 중...' : '엑셀 업로드'}
+          </label>
+        </div>
       </div>
+      
+      {/* 로딩 스피너 */}
+      {isUploading && (
+        <div className="mt-4 flex justify-center">
+          <LoadingSpinner 
+            size="md" 
+            message="고객 데이터 처리 중입니다. 데이터 양에 따라 수 분이 소요될 수 있습니다." 
+          />
+        </div>
+      )}
     </div>
   );
 };
