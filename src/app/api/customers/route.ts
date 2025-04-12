@@ -13,6 +13,12 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: '인증이 필요합니다' }, { status: 401 });
     }
 
+    // 사용자 식별자 확인
+    const userId = session.user.id || session.user.email;
+    if (!userId) {
+      return NextResponse.json({ error: '유효한 사용자 식별자가 없습니다' }, { status: 401 });
+    }
+
     // 쿼리 파라미터
     const searchParams = request.nextUrl.searchParams;
     const search = searchParams.get('search') || '';
@@ -25,7 +31,11 @@ export async function GET(request: NextRequest) {
     const whereCondition: {
       OR?: { [key: string]: { contains: string } }[];
       tier?: string;
-    } = {};
+      created_by: string;
+    } = {
+      // 현재 로그인한 사용자가 등록한 고객만 조회
+      created_by: userId
+    };
     
     // 검색어가 있는 경우 검색 조건 추가
     if (search) {

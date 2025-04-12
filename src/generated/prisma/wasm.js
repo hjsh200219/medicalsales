@@ -150,6 +150,18 @@ exports.Prisma.Customer_infoScalarFieldEnum = {
   created_by: 'created_by'
 };
 
+exports.Prisma.InstitutionsScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  open_date: 'open_date',
+  phone: 'phone',
+  address: 'address',
+  type: 'type',
+  lat: 'lat',
+  lng: 'lng',
+  created_at: 'created_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -168,7 +180,8 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ModelName = {
   user_info: 'user_info',
-  customer_info: 'customer_info'
+  customer_info: 'customer_info',
+  institutions: 'institutions'
 };
 
 /**

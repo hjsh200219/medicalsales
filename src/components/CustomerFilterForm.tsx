@@ -1,5 +1,6 @@
 import React from 'react';
 import { tierColors } from '@/types/tierColors';
+import { SearchInput } from './SearchInput';
 
 // 고객 검색 필터 컴포넌트
 type CustomerFilterFormProps = {
@@ -24,8 +25,8 @@ export default function CustomerFilterForm({
   };
 
   return (
-    <div className=" mb-4">
-      <form onSubmit={handleSearch} className="flex flex-wrap items-center gap-2">
+    <div className="mb-4">
+      <div className="flex flex-wrap items-center gap-2">
         <select
           value={tierFilter}
           onChange={handleTierFilterChange}
@@ -40,31 +41,15 @@ export default function CustomerFilterForm({
           }
         </select>
         
-        <div className="relative flex-1 min-w-[200px]">
-          <input 
-            type="text"
+        <div className="flex-1 min-w-[200px]">
+          <SearchInput
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={setSearch}
+            onSearch={handleSearch}
             placeholder="고객 검색"
-            className="w-full px-3 py-2 pr-10 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
-          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="w-5 h-5 text-gray-400"
-            >
-              <circle cx="11" cy="11" r="8" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-          </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 } 

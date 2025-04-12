@@ -23,6 +23,11 @@ export type user_info = $Result.DefaultSelection<Prisma.$user_infoPayload>
  * 
  */
 export type customer_info = $Result.DefaultSelection<Prisma.$customer_infoPayload>
+/**
+ * Model institutions
+ * 
+ */
+export type institutions = $Result.DefaultSelection<Prisma.$institutionsPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -168,6 +173,16 @@ export class PrismaClient<
     * ```
     */
   get customer_info(): Prisma.customer_infoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.institutions`: Exposes CRUD operations for the **institutions** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Institutions
+    * const institutions = await prisma.institutions.findMany()
+    * ```
+    */
+  get institutions(): Prisma.institutionsDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -609,7 +624,8 @@ export namespace Prisma {
 
   export const ModelName: {
     user_info: 'user_info',
-    customer_info: 'customer_info'
+    customer_info: 'customer_info',
+    institutions: 'institutions'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -628,7 +644,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user_info" | "customer_info"
+      modelProps: "user_info" | "customer_info" | "institutions"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -780,6 +796,80 @@ export namespace Prisma {
           }
         }
       }
+      institutions: {
+        payload: Prisma.$institutionsPayload<ExtArgs>
+        fields: Prisma.institutionsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.institutionsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institutionsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.institutionsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institutionsPayload>
+          }
+          findFirst: {
+            args: Prisma.institutionsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institutionsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.institutionsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institutionsPayload>
+          }
+          findMany: {
+            args: Prisma.institutionsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institutionsPayload>[]
+          }
+          create: {
+            args: Prisma.institutionsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institutionsPayload>
+          }
+          createMany: {
+            args: Prisma.institutionsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.institutionsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institutionsPayload>[]
+          }
+          delete: {
+            args: Prisma.institutionsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institutionsPayload>
+          }
+          update: {
+            args: Prisma.institutionsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institutionsPayload>
+          }
+          deleteMany: {
+            args: Prisma.institutionsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.institutionsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.institutionsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institutionsPayload>[]
+          }
+          upsert: {
+            args: Prisma.institutionsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institutionsPayload>
+          }
+          aggregate: {
+            args: Prisma.InstitutionsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateInstitutions>
+          }
+          groupBy: {
+            args: Prisma.institutionsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<InstitutionsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.institutionsCountArgs<ExtArgs>
+            result: $Utils.Optional<InstitutionsCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -866,6 +956,7 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     user_info?: user_infoOmit
     customer_info?: customer_infoOmit
+    institutions?: institutionsOmit
   }
 
   /* Types for Logging */
@@ -1124,9 +1215,9 @@ export namespace Prisma {
     image: string | null
     company: string | null
     address: string | null
-    last_login: Date
-    created_at: Date
-    updated_at: Date
+    last_login: Date | null
+    created_at: Date | null
+    updated_at: Date | null
     _count: User_infoCountAggregateOutputType | null
     _min: User_infoMinAggregateOutputType | null
     _max: User_infoMaxAggregateOutputType | null
@@ -1206,9 +1297,9 @@ export namespace Prisma {
       image: string | null
       company: string | null
       address: string | null
-      last_login: Date
-      created_at: Date
-      updated_at: Date
+      last_login: Date | null
+      created_at: Date | null
+      updated_at: Date | null
     }, ExtArgs["result"]["user_info"]>
     composites: {}
   }
@@ -2275,8 +2366,8 @@ export namespace Prisma {
     company: string | null
     position: string | null
     tier: string | null
-    created_at: Date
-    modified_at: Date
+    created_at: Date | null
+    modified_at: Date | null
     address_company: string | null
     lat_company: number | null
     lng_company: number | null
@@ -2404,8 +2495,8 @@ export namespace Prisma {
       company: string | null
       position: string | null
       tier: string | null
-      created_at: Date
-      modified_at: Date
+      created_at: Date | null
+      modified_at: Date | null
       address_company: string | null
       lat_company: number | null
       lng_company: number | null
@@ -3218,6 +3309,1095 @@ export namespace Prisma {
 
 
   /**
+   * Model institutions
+   */
+
+  export type AggregateInstitutions = {
+    _count: InstitutionsCountAggregateOutputType | null
+    _avg: InstitutionsAvgAggregateOutputType | null
+    _sum: InstitutionsSumAggregateOutputType | null
+    _min: InstitutionsMinAggregateOutputType | null
+    _max: InstitutionsMaxAggregateOutputType | null
+  }
+
+  export type InstitutionsAvgAggregateOutputType = {
+    id: number | null
+    lat: Decimal | null
+    lng: Decimal | null
+  }
+
+  export type InstitutionsSumAggregateOutputType = {
+    id: number | null
+    lat: Decimal | null
+    lng: Decimal | null
+  }
+
+  export type InstitutionsMinAggregateOutputType = {
+    id: number | null
+    name: string | null
+    open_date: string | null
+    phone: string | null
+    address: string | null
+    type: string | null
+    lat: Decimal | null
+    lng: Decimal | null
+    created_at: Date | null
+  }
+
+  export type InstitutionsMaxAggregateOutputType = {
+    id: number | null
+    name: string | null
+    open_date: string | null
+    phone: string | null
+    address: string | null
+    type: string | null
+    lat: Decimal | null
+    lng: Decimal | null
+    created_at: Date | null
+  }
+
+  export type InstitutionsCountAggregateOutputType = {
+    id: number
+    name: number
+    open_date: number
+    phone: number
+    address: number
+    type: number
+    lat: number
+    lng: number
+    created_at: number
+    _all: number
+  }
+
+
+  export type InstitutionsAvgAggregateInputType = {
+    id?: true
+    lat?: true
+    lng?: true
+  }
+
+  export type InstitutionsSumAggregateInputType = {
+    id?: true
+    lat?: true
+    lng?: true
+  }
+
+  export type InstitutionsMinAggregateInputType = {
+    id?: true
+    name?: true
+    open_date?: true
+    phone?: true
+    address?: true
+    type?: true
+    lat?: true
+    lng?: true
+    created_at?: true
+  }
+
+  export type InstitutionsMaxAggregateInputType = {
+    id?: true
+    name?: true
+    open_date?: true
+    phone?: true
+    address?: true
+    type?: true
+    lat?: true
+    lng?: true
+    created_at?: true
+  }
+
+  export type InstitutionsCountAggregateInputType = {
+    id?: true
+    name?: true
+    open_date?: true
+    phone?: true
+    address?: true
+    type?: true
+    lat?: true
+    lng?: true
+    created_at?: true
+    _all?: true
+  }
+
+  export type InstitutionsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which institutions to aggregate.
+     */
+    where?: institutionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of institutions to fetch.
+     */
+    orderBy?: institutionsOrderByWithRelationInput | institutionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: institutionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` institutions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` institutions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned institutions
+    **/
+    _count?: true | InstitutionsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: InstitutionsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: InstitutionsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: InstitutionsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: InstitutionsMaxAggregateInputType
+  }
+
+  export type GetInstitutionsAggregateType<T extends InstitutionsAggregateArgs> = {
+        [P in keyof T & keyof AggregateInstitutions]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateInstitutions[P]>
+      : GetScalarType<T[P], AggregateInstitutions[P]>
+  }
+
+
+
+
+  export type institutionsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: institutionsWhereInput
+    orderBy?: institutionsOrderByWithAggregationInput | institutionsOrderByWithAggregationInput[]
+    by: InstitutionsScalarFieldEnum[] | InstitutionsScalarFieldEnum
+    having?: institutionsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: InstitutionsCountAggregateInputType | true
+    _avg?: InstitutionsAvgAggregateInputType
+    _sum?: InstitutionsSumAggregateInputType
+    _min?: InstitutionsMinAggregateInputType
+    _max?: InstitutionsMaxAggregateInputType
+  }
+
+  export type InstitutionsGroupByOutputType = {
+    id: number
+    name: string
+    open_date: string | null
+    phone: string | null
+    address: string | null
+    type: string | null
+    lat: Decimal | null
+    lng: Decimal | null
+    created_at: Date | null
+    _count: InstitutionsCountAggregateOutputType | null
+    _avg: InstitutionsAvgAggregateOutputType | null
+    _sum: InstitutionsSumAggregateOutputType | null
+    _min: InstitutionsMinAggregateOutputType | null
+    _max: InstitutionsMaxAggregateOutputType | null
+  }
+
+  type GetInstitutionsGroupByPayload<T extends institutionsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<InstitutionsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof InstitutionsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], InstitutionsGroupByOutputType[P]>
+            : GetScalarType<T[P], InstitutionsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type institutionsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    open_date?: boolean
+    phone?: boolean
+    address?: boolean
+    type?: boolean
+    lat?: boolean
+    lng?: boolean
+    created_at?: boolean
+  }, ExtArgs["result"]["institutions"]>
+
+  export type institutionsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    open_date?: boolean
+    phone?: boolean
+    address?: boolean
+    type?: boolean
+    lat?: boolean
+    lng?: boolean
+    created_at?: boolean
+  }, ExtArgs["result"]["institutions"]>
+
+  export type institutionsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    open_date?: boolean
+    phone?: boolean
+    address?: boolean
+    type?: boolean
+    lat?: boolean
+    lng?: boolean
+    created_at?: boolean
+  }, ExtArgs["result"]["institutions"]>
+
+  export type institutionsSelectScalar = {
+    id?: boolean
+    name?: boolean
+    open_date?: boolean
+    phone?: boolean
+    address?: boolean
+    type?: boolean
+    lat?: boolean
+    lng?: boolean
+    created_at?: boolean
+  }
+
+  export type institutionsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "open_date" | "phone" | "address" | "type" | "lat" | "lng" | "created_at", ExtArgs["result"]["institutions"]>
+
+  export type $institutionsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "institutions"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      name: string
+      open_date: string | null
+      phone: string | null
+      address: string | null
+      type: string | null
+      lat: Prisma.Decimal | null
+      lng: Prisma.Decimal | null
+      created_at: Date | null
+    }, ExtArgs["result"]["institutions"]>
+    composites: {}
+  }
+
+  type institutionsGetPayload<S extends boolean | null | undefined | institutionsDefaultArgs> = $Result.GetResult<Prisma.$institutionsPayload, S>
+
+  type institutionsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<institutionsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: InstitutionsCountAggregateInputType | true
+    }
+
+  export interface institutionsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['institutions'], meta: { name: 'institutions' } }
+    /**
+     * Find zero or one Institutions that matches the filter.
+     * @param {institutionsFindUniqueArgs} args - Arguments to find a Institutions
+     * @example
+     * // Get one Institutions
+     * const institutions = await prisma.institutions.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends institutionsFindUniqueArgs>(args: SelectSubset<T, institutionsFindUniqueArgs<ExtArgs>>): Prisma__institutionsClient<$Result.GetResult<Prisma.$institutionsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Institutions that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {institutionsFindUniqueOrThrowArgs} args - Arguments to find a Institutions
+     * @example
+     * // Get one Institutions
+     * const institutions = await prisma.institutions.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends institutionsFindUniqueOrThrowArgs>(args: SelectSubset<T, institutionsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__institutionsClient<$Result.GetResult<Prisma.$institutionsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Institutions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {institutionsFindFirstArgs} args - Arguments to find a Institutions
+     * @example
+     * // Get one Institutions
+     * const institutions = await prisma.institutions.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends institutionsFindFirstArgs>(args?: SelectSubset<T, institutionsFindFirstArgs<ExtArgs>>): Prisma__institutionsClient<$Result.GetResult<Prisma.$institutionsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Institutions that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {institutionsFindFirstOrThrowArgs} args - Arguments to find a Institutions
+     * @example
+     * // Get one Institutions
+     * const institutions = await prisma.institutions.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends institutionsFindFirstOrThrowArgs>(args?: SelectSubset<T, institutionsFindFirstOrThrowArgs<ExtArgs>>): Prisma__institutionsClient<$Result.GetResult<Prisma.$institutionsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Institutions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {institutionsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Institutions
+     * const institutions = await prisma.institutions.findMany()
+     * 
+     * // Get first 10 Institutions
+     * const institutions = await prisma.institutions.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const institutionsWithIdOnly = await prisma.institutions.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends institutionsFindManyArgs>(args?: SelectSubset<T, institutionsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$institutionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Institutions.
+     * @param {institutionsCreateArgs} args - Arguments to create a Institutions.
+     * @example
+     * // Create one Institutions
+     * const Institutions = await prisma.institutions.create({
+     *   data: {
+     *     // ... data to create a Institutions
+     *   }
+     * })
+     * 
+     */
+    create<T extends institutionsCreateArgs>(args: SelectSubset<T, institutionsCreateArgs<ExtArgs>>): Prisma__institutionsClient<$Result.GetResult<Prisma.$institutionsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Institutions.
+     * @param {institutionsCreateManyArgs} args - Arguments to create many Institutions.
+     * @example
+     * // Create many Institutions
+     * const institutions = await prisma.institutions.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends institutionsCreateManyArgs>(args?: SelectSubset<T, institutionsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Institutions and returns the data saved in the database.
+     * @param {institutionsCreateManyAndReturnArgs} args - Arguments to create many Institutions.
+     * @example
+     * // Create many Institutions
+     * const institutions = await prisma.institutions.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Institutions and only return the `id`
+     * const institutionsWithIdOnly = await prisma.institutions.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends institutionsCreateManyAndReturnArgs>(args?: SelectSubset<T, institutionsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$institutionsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Institutions.
+     * @param {institutionsDeleteArgs} args - Arguments to delete one Institutions.
+     * @example
+     * // Delete one Institutions
+     * const Institutions = await prisma.institutions.delete({
+     *   where: {
+     *     // ... filter to delete one Institutions
+     *   }
+     * })
+     * 
+     */
+    delete<T extends institutionsDeleteArgs>(args: SelectSubset<T, institutionsDeleteArgs<ExtArgs>>): Prisma__institutionsClient<$Result.GetResult<Prisma.$institutionsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Institutions.
+     * @param {institutionsUpdateArgs} args - Arguments to update one Institutions.
+     * @example
+     * // Update one Institutions
+     * const institutions = await prisma.institutions.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends institutionsUpdateArgs>(args: SelectSubset<T, institutionsUpdateArgs<ExtArgs>>): Prisma__institutionsClient<$Result.GetResult<Prisma.$institutionsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Institutions.
+     * @param {institutionsDeleteManyArgs} args - Arguments to filter Institutions to delete.
+     * @example
+     * // Delete a few Institutions
+     * const { count } = await prisma.institutions.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends institutionsDeleteManyArgs>(args?: SelectSubset<T, institutionsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Institutions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {institutionsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Institutions
+     * const institutions = await prisma.institutions.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends institutionsUpdateManyArgs>(args: SelectSubset<T, institutionsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Institutions and returns the data updated in the database.
+     * @param {institutionsUpdateManyAndReturnArgs} args - Arguments to update many Institutions.
+     * @example
+     * // Update many Institutions
+     * const institutions = await prisma.institutions.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Institutions and only return the `id`
+     * const institutionsWithIdOnly = await prisma.institutions.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends institutionsUpdateManyAndReturnArgs>(args: SelectSubset<T, institutionsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$institutionsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Institutions.
+     * @param {institutionsUpsertArgs} args - Arguments to update or create a Institutions.
+     * @example
+     * // Update or create a Institutions
+     * const institutions = await prisma.institutions.upsert({
+     *   create: {
+     *     // ... data to create a Institutions
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Institutions we want to update
+     *   }
+     * })
+     */
+    upsert<T extends institutionsUpsertArgs>(args: SelectSubset<T, institutionsUpsertArgs<ExtArgs>>): Prisma__institutionsClient<$Result.GetResult<Prisma.$institutionsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Institutions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {institutionsCountArgs} args - Arguments to filter Institutions to count.
+     * @example
+     * // Count the number of Institutions
+     * const count = await prisma.institutions.count({
+     *   where: {
+     *     // ... the filter for the Institutions we want to count
+     *   }
+     * })
+    **/
+    count<T extends institutionsCountArgs>(
+      args?: Subset<T, institutionsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], InstitutionsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Institutions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InstitutionsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends InstitutionsAggregateArgs>(args: Subset<T, InstitutionsAggregateArgs>): Prisma.PrismaPromise<GetInstitutionsAggregateType<T>>
+
+    /**
+     * Group by Institutions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {institutionsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends institutionsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: institutionsGroupByArgs['orderBy'] }
+        : { orderBy?: institutionsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, institutionsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInstitutionsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the institutions model
+   */
+  readonly fields: institutionsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for institutions.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__institutionsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the institutions model
+   */
+  interface institutionsFieldRefs {
+    readonly id: FieldRef<"institutions", 'Int'>
+    readonly name: FieldRef<"institutions", 'String'>
+    readonly open_date: FieldRef<"institutions", 'String'>
+    readonly phone: FieldRef<"institutions", 'String'>
+    readonly address: FieldRef<"institutions", 'String'>
+    readonly type: FieldRef<"institutions", 'String'>
+    readonly lat: FieldRef<"institutions", 'Decimal'>
+    readonly lng: FieldRef<"institutions", 'Decimal'>
+    readonly created_at: FieldRef<"institutions", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * institutions findUnique
+   */
+  export type institutionsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institutions
+     */
+    select?: institutionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institutions
+     */
+    omit?: institutionsOmit<ExtArgs> | null
+    /**
+     * Filter, which institutions to fetch.
+     */
+    where: institutionsWhereUniqueInput
+  }
+
+  /**
+   * institutions findUniqueOrThrow
+   */
+  export type institutionsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institutions
+     */
+    select?: institutionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institutions
+     */
+    omit?: institutionsOmit<ExtArgs> | null
+    /**
+     * Filter, which institutions to fetch.
+     */
+    where: institutionsWhereUniqueInput
+  }
+
+  /**
+   * institutions findFirst
+   */
+  export type institutionsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institutions
+     */
+    select?: institutionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institutions
+     */
+    omit?: institutionsOmit<ExtArgs> | null
+    /**
+     * Filter, which institutions to fetch.
+     */
+    where?: institutionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of institutions to fetch.
+     */
+    orderBy?: institutionsOrderByWithRelationInput | institutionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for institutions.
+     */
+    cursor?: institutionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` institutions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` institutions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of institutions.
+     */
+    distinct?: InstitutionsScalarFieldEnum | InstitutionsScalarFieldEnum[]
+  }
+
+  /**
+   * institutions findFirstOrThrow
+   */
+  export type institutionsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institutions
+     */
+    select?: institutionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institutions
+     */
+    omit?: institutionsOmit<ExtArgs> | null
+    /**
+     * Filter, which institutions to fetch.
+     */
+    where?: institutionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of institutions to fetch.
+     */
+    orderBy?: institutionsOrderByWithRelationInput | institutionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for institutions.
+     */
+    cursor?: institutionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` institutions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` institutions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of institutions.
+     */
+    distinct?: InstitutionsScalarFieldEnum | InstitutionsScalarFieldEnum[]
+  }
+
+  /**
+   * institutions findMany
+   */
+  export type institutionsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institutions
+     */
+    select?: institutionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institutions
+     */
+    omit?: institutionsOmit<ExtArgs> | null
+    /**
+     * Filter, which institutions to fetch.
+     */
+    where?: institutionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of institutions to fetch.
+     */
+    orderBy?: institutionsOrderByWithRelationInput | institutionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing institutions.
+     */
+    cursor?: institutionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` institutions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` institutions.
+     */
+    skip?: number
+    distinct?: InstitutionsScalarFieldEnum | InstitutionsScalarFieldEnum[]
+  }
+
+  /**
+   * institutions create
+   */
+  export type institutionsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institutions
+     */
+    select?: institutionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institutions
+     */
+    omit?: institutionsOmit<ExtArgs> | null
+    /**
+     * The data needed to create a institutions.
+     */
+    data: XOR<institutionsCreateInput, institutionsUncheckedCreateInput>
+  }
+
+  /**
+   * institutions createMany
+   */
+  export type institutionsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many institutions.
+     */
+    data: institutionsCreateManyInput | institutionsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * institutions createManyAndReturn
+   */
+  export type institutionsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institutions
+     */
+    select?: institutionsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the institutions
+     */
+    omit?: institutionsOmit<ExtArgs> | null
+    /**
+     * The data used to create many institutions.
+     */
+    data: institutionsCreateManyInput | institutionsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * institutions update
+   */
+  export type institutionsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institutions
+     */
+    select?: institutionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institutions
+     */
+    omit?: institutionsOmit<ExtArgs> | null
+    /**
+     * The data needed to update a institutions.
+     */
+    data: XOR<institutionsUpdateInput, institutionsUncheckedUpdateInput>
+    /**
+     * Choose, which institutions to update.
+     */
+    where: institutionsWhereUniqueInput
+  }
+
+  /**
+   * institutions updateMany
+   */
+  export type institutionsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update institutions.
+     */
+    data: XOR<institutionsUpdateManyMutationInput, institutionsUncheckedUpdateManyInput>
+    /**
+     * Filter which institutions to update
+     */
+    where?: institutionsWhereInput
+    /**
+     * Limit how many institutions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * institutions updateManyAndReturn
+   */
+  export type institutionsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institutions
+     */
+    select?: institutionsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the institutions
+     */
+    omit?: institutionsOmit<ExtArgs> | null
+    /**
+     * The data used to update institutions.
+     */
+    data: XOR<institutionsUpdateManyMutationInput, institutionsUncheckedUpdateManyInput>
+    /**
+     * Filter which institutions to update
+     */
+    where?: institutionsWhereInput
+    /**
+     * Limit how many institutions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * institutions upsert
+   */
+  export type institutionsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institutions
+     */
+    select?: institutionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institutions
+     */
+    omit?: institutionsOmit<ExtArgs> | null
+    /**
+     * The filter to search for the institutions to update in case it exists.
+     */
+    where: institutionsWhereUniqueInput
+    /**
+     * In case the institutions found by the `where` argument doesn't exist, create a new institutions with this data.
+     */
+    create: XOR<institutionsCreateInput, institutionsUncheckedCreateInput>
+    /**
+     * In case the institutions was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<institutionsUpdateInput, institutionsUncheckedUpdateInput>
+  }
+
+  /**
+   * institutions delete
+   */
+  export type institutionsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institutions
+     */
+    select?: institutionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institutions
+     */
+    omit?: institutionsOmit<ExtArgs> | null
+    /**
+     * Filter which institutions to delete.
+     */
+    where: institutionsWhereUniqueInput
+  }
+
+  /**
+   * institutions deleteMany
+   */
+  export type institutionsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which institutions to delete
+     */
+    where?: institutionsWhereInput
+    /**
+     * Limit how many institutions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * institutions without action
+   */
+  export type institutionsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institutions
+     */
+    select?: institutionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institutions
+     */
+    omit?: institutionsOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -3268,6 +4448,21 @@ export namespace Prisma {
   };
 
   export type Customer_infoScalarFieldEnum = (typeof Customer_infoScalarFieldEnum)[keyof typeof Customer_infoScalarFieldEnum]
+
+
+  export const InstitutionsScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    open_date: 'open_date',
+    phone: 'phone',
+    address: 'address',
+    type: 'type',
+    lat: 'lat',
+    lng: 'lng',
+    created_at: 'created_at'
+  };
+
+  export type InstitutionsScalarFieldEnum = (typeof InstitutionsScalarFieldEnum)[keyof typeof InstitutionsScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -3353,6 +4548,20 @@ export namespace Prisma {
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
+
+
+  /**
+   * Reference to a field of type 'Decimal'
+   */
+  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+  /**
+   * Reference to a field of type 'Decimal[]'
+   */
+  export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
   /**
    * Deep Input Types
    */
@@ -3368,9 +4577,9 @@ export namespace Prisma {
     image?: StringNullableFilter<"user_info"> | string | null
     company?: StringNullableFilter<"user_info"> | string | null
     address?: StringNullableFilter<"user_info"> | string | null
-    last_login?: DateTimeFilter<"user_info"> | Date | string
-    created_at?: DateTimeFilter<"user_info"> | Date | string
-    updated_at?: DateTimeFilter<"user_info"> | Date | string
+    last_login?: DateTimeNullableFilter<"user_info"> | Date | string | null
+    created_at?: DateTimeNullableFilter<"user_info"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"user_info"> | Date | string | null
   }
 
   export type user_infoOrderByWithRelationInput = {
@@ -3380,9 +4589,9 @@ export namespace Prisma {
     image?: SortOrderInput | SortOrder
     company?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
-    last_login?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
+    last_login?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
   }
 
   export type user_infoWhereUniqueInput = Prisma.AtLeast<{
@@ -3395,9 +4604,9 @@ export namespace Prisma {
     image?: StringNullableFilter<"user_info"> | string | null
     company?: StringNullableFilter<"user_info"> | string | null
     address?: StringNullableFilter<"user_info"> | string | null
-    last_login?: DateTimeFilter<"user_info"> | Date | string
-    created_at?: DateTimeFilter<"user_info"> | Date | string
-    updated_at?: DateTimeFilter<"user_info"> | Date | string
+    last_login?: DateTimeNullableFilter<"user_info"> | Date | string | null
+    created_at?: DateTimeNullableFilter<"user_info"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"user_info"> | Date | string | null
   }, "id" | "email">
 
   export type user_infoOrderByWithAggregationInput = {
@@ -3407,9 +4616,9 @@ export namespace Prisma {
     image?: SortOrderInput | SortOrder
     company?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
-    last_login?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
+    last_login?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
     _count?: user_infoCountOrderByAggregateInput
     _max?: user_infoMaxOrderByAggregateInput
     _min?: user_infoMinOrderByAggregateInput
@@ -3425,9 +4634,9 @@ export namespace Prisma {
     image?: StringNullableWithAggregatesFilter<"user_info"> | string | null
     company?: StringNullableWithAggregatesFilter<"user_info"> | string | null
     address?: StringNullableWithAggregatesFilter<"user_info"> | string | null
-    last_login?: DateTimeWithAggregatesFilter<"user_info"> | Date | string
-    created_at?: DateTimeWithAggregatesFilter<"user_info"> | Date | string
-    updated_at?: DateTimeWithAggregatesFilter<"user_info"> | Date | string
+    last_login?: DateTimeNullableWithAggregatesFilter<"user_info"> | Date | string | null
+    created_at?: DateTimeNullableWithAggregatesFilter<"user_info"> | Date | string | null
+    updated_at?: DateTimeNullableWithAggregatesFilter<"user_info"> | Date | string | null
   }
 
   export type customer_infoWhereInput = {
@@ -3446,8 +4655,8 @@ export namespace Prisma {
     company?: StringNullableFilter<"customer_info"> | string | null
     position?: StringNullableFilter<"customer_info"> | string | null
     tier?: StringNullableFilter<"customer_info"> | string | null
-    created_at?: DateTimeFilter<"customer_info"> | Date | string
-    modified_at?: DateTimeFilter<"customer_info"> | Date | string
+    created_at?: DateTimeNullableFilter<"customer_info"> | Date | string | null
+    modified_at?: DateTimeNullableFilter<"customer_info"> | Date | string | null
     address_company?: StringNullableFilter<"customer_info"> | string | null
     lat_company?: FloatNullableFilter<"customer_info"> | number | null
     lng_company?: FloatNullableFilter<"customer_info"> | number | null
@@ -3467,8 +4676,8 @@ export namespace Prisma {
     company?: SortOrderInput | SortOrder
     position?: SortOrderInput | SortOrder
     tier?: SortOrderInput | SortOrder
-    created_at?: SortOrder
-    modified_at?: SortOrder
+    created_at?: SortOrderInput | SortOrder
+    modified_at?: SortOrderInput | SortOrder
     address_company?: SortOrderInput | SortOrder
     lat_company?: SortOrderInput | SortOrder
     lng_company?: SortOrderInput | SortOrder
@@ -3491,8 +4700,8 @@ export namespace Prisma {
     company?: StringNullableFilter<"customer_info"> | string | null
     position?: StringNullableFilter<"customer_info"> | string | null
     tier?: StringNullableFilter<"customer_info"> | string | null
-    created_at?: DateTimeFilter<"customer_info"> | Date | string
-    modified_at?: DateTimeFilter<"customer_info"> | Date | string
+    created_at?: DateTimeNullableFilter<"customer_info"> | Date | string | null
+    modified_at?: DateTimeNullableFilter<"customer_info"> | Date | string | null
     address_company?: StringNullableFilter<"customer_info"> | string | null
     lat_company?: FloatNullableFilter<"customer_info"> | number | null
     lng_company?: FloatNullableFilter<"customer_info"> | number | null
@@ -3512,8 +4721,8 @@ export namespace Prisma {
     company?: SortOrderInput | SortOrder
     position?: SortOrderInput | SortOrder
     tier?: SortOrderInput | SortOrder
-    created_at?: SortOrder
-    modified_at?: SortOrder
+    created_at?: SortOrderInput | SortOrder
+    modified_at?: SortOrderInput | SortOrder
     address_company?: SortOrderInput | SortOrder
     lat_company?: SortOrderInput | SortOrder
     lng_company?: SortOrderInput | SortOrder
@@ -3541,12 +4750,86 @@ export namespace Prisma {
     company?: StringNullableWithAggregatesFilter<"customer_info"> | string | null
     position?: StringNullableWithAggregatesFilter<"customer_info"> | string | null
     tier?: StringNullableWithAggregatesFilter<"customer_info"> | string | null
-    created_at?: DateTimeWithAggregatesFilter<"customer_info"> | Date | string
-    modified_at?: DateTimeWithAggregatesFilter<"customer_info"> | Date | string
+    created_at?: DateTimeNullableWithAggregatesFilter<"customer_info"> | Date | string | null
+    modified_at?: DateTimeNullableWithAggregatesFilter<"customer_info"> | Date | string | null
     address_company?: StringNullableWithAggregatesFilter<"customer_info"> | string | null
     lat_company?: FloatNullableWithAggregatesFilter<"customer_info"> | number | null
     lng_company?: FloatNullableWithAggregatesFilter<"customer_info"> | number | null
     created_by?: StringNullableWithAggregatesFilter<"customer_info"> | string | null
+  }
+
+  export type institutionsWhereInput = {
+    AND?: institutionsWhereInput | institutionsWhereInput[]
+    OR?: institutionsWhereInput[]
+    NOT?: institutionsWhereInput | institutionsWhereInput[]
+    id?: IntFilter<"institutions"> | number
+    name?: StringFilter<"institutions"> | string
+    open_date?: StringNullableFilter<"institutions"> | string | null
+    phone?: StringNullableFilter<"institutions"> | string | null
+    address?: StringNullableFilter<"institutions"> | string | null
+    type?: StringNullableFilter<"institutions"> | string | null
+    lat?: DecimalNullableFilter<"institutions"> | Decimal | DecimalJsLike | number | string | null
+    lng?: DecimalNullableFilter<"institutions"> | Decimal | DecimalJsLike | number | string | null
+    created_at?: DateTimeNullableFilter<"institutions"> | Date | string | null
+  }
+
+  export type institutionsOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    open_date?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    type?: SortOrderInput | SortOrder
+    lat?: SortOrderInput | SortOrder
+    lng?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+  }
+
+  export type institutionsWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: institutionsWhereInput | institutionsWhereInput[]
+    OR?: institutionsWhereInput[]
+    NOT?: institutionsWhereInput | institutionsWhereInput[]
+    name?: StringFilter<"institutions"> | string
+    open_date?: StringNullableFilter<"institutions"> | string | null
+    phone?: StringNullableFilter<"institutions"> | string | null
+    address?: StringNullableFilter<"institutions"> | string | null
+    type?: StringNullableFilter<"institutions"> | string | null
+    lat?: DecimalNullableFilter<"institutions"> | Decimal | DecimalJsLike | number | string | null
+    lng?: DecimalNullableFilter<"institutions"> | Decimal | DecimalJsLike | number | string | null
+    created_at?: DateTimeNullableFilter<"institutions"> | Date | string | null
+  }, "id">
+
+  export type institutionsOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    open_date?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    type?: SortOrderInput | SortOrder
+    lat?: SortOrderInput | SortOrder
+    lng?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    _count?: institutionsCountOrderByAggregateInput
+    _avg?: institutionsAvgOrderByAggregateInput
+    _max?: institutionsMaxOrderByAggregateInput
+    _min?: institutionsMinOrderByAggregateInput
+    _sum?: institutionsSumOrderByAggregateInput
+  }
+
+  export type institutionsScalarWhereWithAggregatesInput = {
+    AND?: institutionsScalarWhereWithAggregatesInput | institutionsScalarWhereWithAggregatesInput[]
+    OR?: institutionsScalarWhereWithAggregatesInput[]
+    NOT?: institutionsScalarWhereWithAggregatesInput | institutionsScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"institutions"> | number
+    name?: StringWithAggregatesFilter<"institutions"> | string
+    open_date?: StringNullableWithAggregatesFilter<"institutions"> | string | null
+    phone?: StringNullableWithAggregatesFilter<"institutions"> | string | null
+    address?: StringNullableWithAggregatesFilter<"institutions"> | string | null
+    type?: StringNullableWithAggregatesFilter<"institutions"> | string | null
+    lat?: DecimalNullableWithAggregatesFilter<"institutions"> | Decimal | DecimalJsLike | number | string | null
+    lng?: DecimalNullableWithAggregatesFilter<"institutions"> | Decimal | DecimalJsLike | number | string | null
+    created_at?: DateTimeNullableWithAggregatesFilter<"institutions"> | Date | string | null
   }
 
   export type user_infoCreateInput = {
@@ -3556,9 +4839,9 @@ export namespace Prisma {
     image?: string | null
     company?: string | null
     address?: string | null
-    last_login?: Date | string
-    created_at?: Date | string
-    updated_at?: Date | string
+    last_login?: Date | string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type user_infoUncheckedCreateInput = {
@@ -3568,9 +4851,9 @@ export namespace Prisma {
     image?: string | null
     company?: string | null
     address?: string | null
-    last_login?: Date | string
-    created_at?: Date | string
-    updated_at?: Date | string
+    last_login?: Date | string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type user_infoUpdateInput = {
@@ -3580,9 +4863,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     company?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    last_login?: DateTimeFieldUpdateOperationsInput | Date | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    last_login?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type user_infoUncheckedUpdateInput = {
@@ -3592,9 +4875,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     company?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    last_login?: DateTimeFieldUpdateOperationsInput | Date | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    last_login?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type user_infoCreateManyInput = {
@@ -3604,9 +4887,9 @@ export namespace Prisma {
     image?: string | null
     company?: string | null
     address?: string | null
-    last_login?: Date | string
-    created_at?: Date | string
-    updated_at?: Date | string
+    last_login?: Date | string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type user_infoUpdateManyMutationInput = {
@@ -3616,9 +4899,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     company?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    last_login?: DateTimeFieldUpdateOperationsInput | Date | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    last_login?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type user_infoUncheckedUpdateManyInput = {
@@ -3628,9 +4911,9 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     company?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    last_login?: DateTimeFieldUpdateOperationsInput | Date | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    last_login?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type customer_infoCreateInput = {
@@ -3646,8 +4929,8 @@ export namespace Prisma {
     company?: string | null
     position?: string | null
     tier?: string | null
-    created_at?: Date | string
-    modified_at?: Date | string
+    created_at?: Date | string | null
+    modified_at?: Date | string | null
     address_company?: string | null
     lat_company?: number | null
     lng_company?: number | null
@@ -3667,8 +4950,8 @@ export namespace Prisma {
     company?: string | null
     position?: string | null
     tier?: string | null
-    created_at?: Date | string
-    modified_at?: Date | string
+    created_at?: Date | string | null
+    modified_at?: Date | string | null
     address_company?: string | null
     lat_company?: number | null
     lng_company?: number | null
@@ -3688,8 +4971,8 @@ export namespace Prisma {
     company?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     tier?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    modified_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    modified_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     address_company?: NullableStringFieldUpdateOperationsInput | string | null
     lat_company?: NullableFloatFieldUpdateOperationsInput | number | null
     lng_company?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -3709,8 +4992,8 @@ export namespace Prisma {
     company?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     tier?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    modified_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    modified_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     address_company?: NullableStringFieldUpdateOperationsInput | string | null
     lat_company?: NullableFloatFieldUpdateOperationsInput | number | null
     lng_company?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -3730,8 +5013,8 @@ export namespace Prisma {
     company?: string | null
     position?: string | null
     tier?: string | null
-    created_at?: Date | string
-    modified_at?: Date | string
+    created_at?: Date | string | null
+    modified_at?: Date | string | null
     address_company?: string | null
     lat_company?: number | null
     lng_company?: number | null
@@ -3751,8 +5034,8 @@ export namespace Prisma {
     company?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     tier?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    modified_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    modified_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     address_company?: NullableStringFieldUpdateOperationsInput | string | null
     lat_company?: NullableFloatFieldUpdateOperationsInput | number | null
     lng_company?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -3772,12 +5055,93 @@ export namespace Prisma {
     company?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     tier?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    modified_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    modified_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     address_company?: NullableStringFieldUpdateOperationsInput | string | null
     lat_company?: NullableFloatFieldUpdateOperationsInput | number | null
     lng_company?: NullableFloatFieldUpdateOperationsInput | number | null
     created_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type institutionsCreateInput = {
+    name: string
+    open_date?: string | null
+    phone?: string | null
+    address?: string | null
+    type?: string | null
+    lat?: Decimal | DecimalJsLike | number | string | null
+    lng?: Decimal | DecimalJsLike | number | string | null
+    created_at?: Date | string | null
+  }
+
+  export type institutionsUncheckedCreateInput = {
+    id?: number
+    name: string
+    open_date?: string | null
+    phone?: string | null
+    address?: string | null
+    type?: string | null
+    lat?: Decimal | DecimalJsLike | number | string | null
+    lng?: Decimal | DecimalJsLike | number | string | null
+    created_at?: Date | string | null
+  }
+
+  export type institutionsUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    open_date?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    lat?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lng?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type institutionsUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    open_date?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    lat?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lng?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type institutionsCreateManyInput = {
+    id?: number
+    name: string
+    open_date?: string | null
+    phone?: string | null
+    address?: string | null
+    type?: string | null
+    lat?: Decimal | DecimalJsLike | number | string | null
+    lng?: Decimal | DecimalJsLike | number | string | null
+    created_at?: Date | string | null
+  }
+
+  export type institutionsUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    open_date?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    lat?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lng?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type institutionsUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    open_date?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    lat?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lng?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -3810,15 +5174,15 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type DateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type SortOrderInput = {
@@ -3898,18 +5262,18 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type FloatNullableFilter<$PrismaModel = never> = {
@@ -4016,6 +5380,108 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type DecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type institutionsCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    open_date?: SortOrder
+    phone?: SortOrder
+    address?: SortOrder
+    type?: SortOrder
+    lat?: SortOrder
+    lng?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type institutionsAvgOrderByAggregateInput = {
+    id?: SortOrder
+    lat?: SortOrder
+    lng?: SortOrder
+  }
+
+  export type institutionsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    open_date?: SortOrder
+    phone?: SortOrder
+    address?: SortOrder
+    type?: SortOrder
+    lat?: SortOrder
+    lng?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type institutionsMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    open_date?: SortOrder
+    phone?: SortOrder
+    address?: SortOrder
+    type?: SortOrder
+    lat?: SortOrder
+    lng?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type institutionsSumOrderByAggregateInput = {
+    id?: SortOrder
+    lat?: SortOrder
+    lng?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -4024,12 +5490,28 @@ export namespace Prisma {
     set?: string | null
   }
 
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type NullableFloatFieldUpdateOperationsInput = {
     set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type NullableDecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string | null
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
     increment?: number
     decrement?: number
     multiply?: number
@@ -4064,15 +5546,15 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type NestedDateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
@@ -4131,18 +5613,18 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedFloatNullableFilter<$PrismaModel = never> = {
@@ -4170,6 +5652,60 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
 
