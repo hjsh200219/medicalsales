@@ -15,6 +15,7 @@ export default function MedicalInstitutions() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
+  const [showFilters, setShowFilters] = useState(true);
   
   // 페이지네이션 관련 상태
   const [currentPage, setCurrentPage] = useState(1);
@@ -90,6 +91,11 @@ export default function MedicalInstitutions() {
     fetchInstitutions();
   }, []);
 
+  // 필터 표시/숨김 토글 핸들러
+  const handleToggleFilters = (isVisible: boolean) => {
+    setShowFilters(isVisible);
+  };
+
   // 헤더와 뷰 모드 선택기 공통 컴포넌트
   const HeaderAndViewSelector = ({ disabled = false }: { disabled?: boolean }) => (
     <div className="flex justify-between items-center mb-4">
@@ -123,6 +129,8 @@ export default function MedicalInstitutions() {
           <SearchFilter
             institutions={allInstitutions}
             onFilterChange={setFilteredInstitutions}
+            onToggleFilters={handleToggleFilters}
+            showFilters={showFilters}
           />
           <div className="flex justify-center items-center min-h-[60vh]">
             <div className="text-center">
@@ -143,6 +151,8 @@ export default function MedicalInstitutions() {
           <SearchFilter
             institutions={allInstitutions}
             onFilterChange={setFilteredInstitutions}
+            onToggleFilters={handleToggleFilters}
+            showFilters={showFilters}
           />
           <div className="bg-red-800 text-white p-4 rounded-md">
             {error}
@@ -160,6 +170,8 @@ export default function MedicalInstitutions() {
         <SearchFilter
           institutions={allInstitutions}
           onFilterChange={setFilteredInstitutions}
+          onToggleFilters={handleToggleFilters}
+          showFilters={showFilters}
         />
         
         <div className="mt-4">
@@ -177,7 +189,10 @@ export default function MedicalInstitutions() {
               onPageChange={handlePageChange}
             />
           ) : (
-            <InstitutionMap institutions={filteredInstitutions} />
+            <InstitutionMap 
+              institutions={filteredInstitutions} 
+              isFilterVisible={showFilters} 
+            />
           )}
         </div>
       </div>

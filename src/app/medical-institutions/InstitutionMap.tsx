@@ -5,11 +5,24 @@ import { SerializedInstitution } from '@/types/institution';
 
 interface InstitutionMapProps {
   institutions: SerializedInstitution[];
+  isFilterVisible?: boolean;
 }
 
-export default function InstitutionMap({ institutions }: InstitutionMapProps) {
+export default function InstitutionMap({ 
+  institutions,
+  isFilterVisible = true 
+}: InstitutionMapProps) {
+  // 필터 표시 여부와 브라우저 너비에 따라 높이 계산
+  const getMapHeight = () => {
+    if (isFilterVisible) {
+      return 'h-[calc(100vh-350px)] md:h-[calc(100vh-350px)]  lg:h-[calc(100vh-300px)]';
+    } else {
+      return 'h-[calc(100vh-215px)] md:h-[calc(100vh-220px)]  lg:h-[calc(100vh-220px)]';
+    }
+  };
+
   return (
-    <div className="institution-map-view bg-gray-800 p-8 rounded-lg text-center h-[500px] flex items-center justify-center">
+    <div className={`institution-map-view bg-gray-800 p-8 rounded-lg text-center ${getMapHeight()} flex items-center justify-center transition-all duration-300`}>
       <div className="text-gray-400">
         <h3 className="text-xl mb-4">지도 보기</h3>
         <p>지도 보기 기능은 현재 준비 중입니다.</p>

@@ -7,16 +7,24 @@ import { SerializedInstitution, INSTITUTION_TYPES, InstitutionTypeCode } from '@
 
 export function SearchFilter({ 
   institutions, 
-  onFilterChange 
+  onFilterChange,
+  onToggleFilters,
+  showFilters = true
 }: { 
   institutions: SerializedInstitution[], 
-  onFilterChange: (filtered: SerializedInstitution[]) => void 
+  onFilterChange: (filtered: SerializedInstitution[]) => void,
+  onToggleFilters?: (isVisible: boolean) => void,
+  showFilters?: boolean
 }) {
   const [searchQuery, setSearchQuery] = React.useState('');
   const [regionFilter, setRegionFilter] = React.useState('all');
   const [typeFilter, setTypeFilter] = React.useState<InstitutionTypeCode>('all');
   const [dateFilter, setDateFilter] = useState('all');
-  const [showFilters, setShowFilters] = useState(true);
+  const [isFilterVisible, setIsFilterVisible] = useState(showFilters);
+
+  useEffect(() => {
+    setIsFilterVisible(showFilters);
+  }, [showFilters]);
 
   // 날짜 범위 계산 함수
   const getDateRange = (option: string): { start: Date, end: Date } => {
@@ -118,7 +126,11 @@ export function SearchFilter({
 
   // 필터 토글
   const toggleFilters = () => {
-    setShowFilters(!showFilters);
+    const newState = !isFilterVisible;
+    setIsFilterVisible(newState);
+    if (onToggleFilters) {
+      onToggleFilters(newState);
+    }
   };
 
   return (
@@ -130,7 +142,7 @@ export function SearchFilter({
           className="flex items-center text-sm text-gray-300 hover:text-white mb-1"
         >
           <svg 
-            className={`w-4 h-4 mr-1 transition-transform ${showFilters ? 'rotate-90' : ''}`} 
+            className={`w-4 h-4 mr-1 transition-transform ${isFilterVisible ? 'rotate-90' : ''}`} 
             fill="none" 
             stroke="currentColor" 
             viewBox="0 0 24 24" 
@@ -138,12 +150,12 @@ export function SearchFilter({
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
           </svg>
-          필터 {showFilters ? '숨기기' : '표시'}
+          필터 {isFilterVisible ? '숨기기' : '표시'}
         </button>
       </div>
       
       {/* 필터 내용 */}
-      {showFilters && (
+      {isFilterVisible && (
         <div className="p-4 bg-gray-800 rounded-md">
           <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-3">
             <div className="grid grid-cols-3 md:grid-cols-none md:flex md:gap-3 gap-2 md:w-auto w-full">
