@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Customer } from '@/types/customer';
 import { getTierColor } from '@/types/tierColors';
-import CustomerFilterForm from './CustomerFilterForm';
-import GoogleMap, { MapMarker } from './GoogleMap';
+import CustomerFilterForm from '@/components/CustomerFilterForm';
+import GoogleMap, { MapMarker } from '@/components/GoogleMap';
 
 interface CustomerMapProps {
   customers: Customer[];

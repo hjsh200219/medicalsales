@@ -159,10 +159,11 @@ export default function MyPage() {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-4">
-        <PageHeader 
-          title="마이페이지" 
-        />
-        
+        <div className="flex justify-between items-center mb-4">
+          <PageHeader 
+            title="마이페이지" 
+          />
+          </div>
         {userInfo && (
           <div className="bg-gray-800 rounded-lg shadow-md p-6">
             <div className="mb-6 flex items-center">

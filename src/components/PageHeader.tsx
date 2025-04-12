@@ -15,8 +15,8 @@ export default function PageHeader({
   onBack
 }: PageHeaderProps) {
   return (
-    <div className="mb-3">
-      <div className="flex justify-between items-center mb-2">
+    <div className="mb-0">
+      <div className="flex justify-between items-center mb-0">
         <div className="flex items-center">
           {backButton && (
             <button 

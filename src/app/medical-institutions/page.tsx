@@ -3,15 +3,18 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/PageHeader';
-import { InstitutionsList } from '@/components/InstitutionsList';
 import { SearchFilter } from '@/components/InstitutionFilter';
 import { SerializedInstitution } from '@/types/institution';
+import { InstitutionsList } from '@/app/medical-institutions/InstitutionsList';
+import InstitutionMap from '@/app/medical-institutions/InstitutionMap';
+import { LoadingSpinner, LoadingSpinnerStyles } from '@/components/LoadingSpinner';
 
 export default function MedicalInstitutions() {
   const [allInstitutions, setAllInstitutions] = useState<SerializedInstitution[]>([]);
   const [filteredInstitutions, setFilteredInstitutions] = useState<SerializedInstitution[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   
   // 페이지네이션 관련 상태
   const [currentPage, setCurrentPage] = useState(1);
@@ -87,12 +90,46 @@ export default function MedicalInstitutions() {
     fetchInstitutions();
   }, []);
 
+  // 헤더와 뷰 모드 선택기 공통 컴포넌트
+  const HeaderAndViewSelector = ({ disabled = false }: { disabled?: boolean }) => (
+    <div className="flex justify-between items-center mb-4">
+      <PageHeader title="의료기관 조회" />
+      
+      {/* 보기 모드 전환 버튼 */}
+      <div className="flex bg-gray-700 p-1 rounded-md">
+        <button
+          className={`py-1 px-4 rounded-md ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-600'}`}
+          onClick={() => setViewMode('list')}
+          disabled={disabled}
+        >
+          리스트
+        </button>
+        <button
+          className={`py-1 px-4 rounded-md ${viewMode === 'map' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-600'}`}
+          onClick={() => setViewMode('map')}
+          disabled={disabled}
+        >
+          지도
+        </button>
+      </div>
+    </div>
+  );
+
   if (loading) {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-4">
-          <PageHeader title="의료기관 조회" />
-          <div className="bg-gray-800 p-4 rounded-md">데이터를 불러오는 중...</div>
+          <HeaderAndViewSelector disabled={true} />
+          <SearchFilter
+            institutions={allInstitutions}
+            onFilterChange={setFilteredInstitutions}
+          />
+          <div className="flex justify-center items-center min-h-[60vh]">
+            <div className="text-center">
+              <LoadingSpinnerStyles />
+              <LoadingSpinner size="lg" message="의료기관 데이터를 불러오는 중" />
+            </div>
+          </div>
         </div>
       </Layout>
     );
@@ -102,7 +139,11 @@ export default function MedicalInstitutions() {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-4">
-          <PageHeader title="의료기관 조회" />
+          <HeaderAndViewSelector disabled={true} />
+          <SearchFilter
+            institutions={allInstitutions}
+            onFilterChange={setFilteredInstitutions}
+          />
           <div className="bg-red-800 text-white p-4 rounded-md">
             {error}
           </div>
@@ -114,23 +155,30 @@ export default function MedicalInstitutions() {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-4">
-        <PageHeader title="의료기관 조회" />
+        <HeaderAndViewSelector />
+        
         <SearchFilter
           institutions={allInstitutions}
           onFilterChange={setFilteredInstitutions}
         />
+        
         <div className="mt-4">
           <div className="text-gray-300 mb-2 flex justify-between items-center">
             <p>
               총 {filteredInstitutions.length}개의 의료기관
             </p>
           </div>
-          <InstitutionsList 
-            institutions={filteredInstitutions}
-            currentPage={currentPage}
-            itemsPerPage={itemsPerPage}
-            onPageChange={handlePageChange}
-          />
+          
+          {viewMode === 'list' ? (
+            <InstitutionsList 
+              institutions={filteredInstitutions}
+              currentPage={currentPage}
+              itemsPerPage={itemsPerPage}
+              onPageChange={handlePageChange}
+            />
+          ) : (
+            <InstitutionMap institutions={filteredInstitutions} />
+          )}
         </div>
       </div>
     </Layout>

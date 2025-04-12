@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CustomerForm, { CustomerFormData } from './CustomerForm';
+import CustomerForm, { CustomerFormData } from '@/components/CustomerForm';
 import CustomerExcelUpload from '@/components/CustomerExcelUpload';
 
 // 고객 추가 폼 컴포넌트

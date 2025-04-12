@@ -6,11 +6,12 @@ import { useRouter } from 'next/navigation';
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/PageHeader';
 import CustomerFilterForm from '@/components/CustomerFilterForm';
-import CustomerList from '@/components/CustomerList';
+import CustomerList from '@/app/customer-management/CustomerList';
 import CustomerAddForm from '@/components/CustomerAddForm';
 import CustomerEditForm from '@/components/CustomerEditForm';
-import CustomerMap from '@/components/CustomerMap';
+import CustomerMap from '@/app/customer-management/CustomerMap';
 import { Customer } from '@/types/customer';
+import { LoadingSpinner, LoadingSpinnerStyles } from '@/components/LoadingSpinner';
 
 export default function CustomerManagement() {
   const { data: session, status } = useSession();
@@ -183,7 +184,7 @@ export default function CustomerManagement() {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-4">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mb-4">
           <PageHeader 
             title="고객 관리"
           />
@@ -261,22 +262,40 @@ export default function CustomerManagement() {
             
             {/* 선택된 탭에 따라 고객 목록 또는 지도 표시 */}
             {activeTab === 'list' ? (
-              <CustomerList
-                customers={customers}
-                isLoading={isLoading}
-                currentPage={currentPage}
-                totalPages={totalPages}
-                totalCustomers={totalCustomers}
-                pageSize={pageSize}
-                handlePageChange={handlePageChange}
-                openEditForm={openEditForm}
-                deleteCustomer={deleteCustomer}
-              />
+              isLoading ? (
+                <div className="flex justify-center items-center min-h-[60vh]">
+                  <div className="text-center">
+                    <LoadingSpinnerStyles />
+                    <LoadingSpinner size="lg" message="고객 데이터를 불러오는 중" />
+                  </div>
+                </div>
+              ) : (
+                <CustomerList
+                  customers={customers}
+                  isLoading={false}
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  totalCustomers={totalCustomers}
+                  pageSize={pageSize}
+                  handlePageChange={handlePageChange}
+                  openEditForm={openEditForm}
+                  deleteCustomer={deleteCustomer}
+                />
+              )
             ) : (
-              <CustomerMap 
-                customers={customers} 
-                apiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY || ''} 
-              />
+              isLoading ? (
+                <div className="flex justify-center items-center min-h-[60vh]">
+                  <div className="text-center">
+                    <LoadingSpinnerStyles />
+                    <LoadingSpinner size="lg" message="지도 데이터를 불러오는 중" />
+                  </div>
+                </div>
+              ) : (
+                <CustomerMap 
+                  customers={customers} 
+                  apiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY || ''} 
+                />
+              )
             )}
           </>
         )}

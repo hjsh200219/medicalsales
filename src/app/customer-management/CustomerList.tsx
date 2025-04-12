@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Customer } from '@/types/customer';
-import Pagination from './Pagination';
+import Pagination from '@/components/Pagination';
 
 // 고객 목록 컴포넌트
 type CustomerListProps = {
