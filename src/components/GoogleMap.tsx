@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { applyInfoWindowStyle } from './InfoWindowManager';
+import { applyInfoWindowStyle, styleDefaultInfoWindows } from './InfoWindowManager';
 
 export interface MapPosition {
   lat: number;
@@ -160,56 +160,6 @@ declare global {
     } | undefined;
   }
 }
-
-// InfoWindow 스타일링 함수 추가 (브릿지 함수)
-const styleDefaultInfoWindows = () => {
-  // InfoWindow 요소 찾기
-  const allInfoWindows = document.querySelectorAll('.gm-style-iw-d');
-  
-  allInfoWindows.forEach((infoWindow) => {
-    // 모든 텍스트 요소를 검정색으로 설정
-    const allTextElements = infoWindow.querySelectorAll('span, div, h1, h2, h3, h4, h5, h6, p, a');
-    allTextElements.forEach((element) => {
-      (element as HTMLElement).style.color = 'black';
-    });
-    
-    // 타이틀 요소에 정확한 스타일 적용
-    const mainTitle = infoWindow.querySelector('.gm-style-iw-d > div > div') as HTMLElement;
-    if (mainTitle) {
-      mainTitle.style.color = '#374151';
-      
-      // 타이틀 내부의 첫 번째 요소에 직접 스타일 적용
-      const titleText = mainTitle.querySelector('div:first-child, span:first-child') as HTMLElement;
-      if (titleText) {
-        titleText.style.color = '#374151';
-      }
-    }
-    
-    // 특정 구조를 가진 타이틀 요소 선택자 (구글 지도의 일반적인 POI 정보창)
-    const titleElements = infoWindow.querySelectorAll(
-      '.gm-style-iw-d > div:first-child > div:first-child > div, ' + 
-      '.gm-style-iw-d > div > div > div:first-child, ' +
-      '.gm-style-iw-d > div > div:first-child, ' +
-      '.gm-style-iw-d > div:first-child > span'
-    );
-    
-    titleElements.forEach((title) => {
-      (title as HTMLElement).style.color = '#374151';
-    });
-  });
-  
-  // 추가적으로 기본 InfoWindow 컨테이너 스타일 조정
-  const iwContainers = document.querySelectorAll('.gm-style-iw');
-  iwContainers.forEach((container) => {
-    (container as HTMLElement).style.color = '#374151';
-    
-    // 첫 번째 자식 요소가 주로 타이틀을 포함함
-    const firstChild = container.querySelector('div:first-child') as HTMLElement;
-    if (firstChild) {
-      firstChild.style.color = 'black';
-    }
-  });
-};
 
 const GoogleMap: React.FC<GoogleMapProps> = ({
   apiKey,

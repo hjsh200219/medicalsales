@@ -1,6 +1,28 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { getTierColor } from '@/types/tierColors';
+
+// 스타일 관련 상수 정의
+const STYLE_CONSTANTS = {
+  colors: {
+    white: 'white',
+    black: 'black',
+    darkGray: '#374151',
+    lightGray: '#F3F4F6',
+    borderColor: '#E5E7EB',
+  },
+  borderRadius: '6px',
+  padding: '8px',
+  selectors: {
+    infoWindowContainer: '.gm-style-iw',
+    infoWindowContent: '.gm-style-iw-d',
+    outerContainer: '.gm-style-iw-a',
+    closeButton: '.gm-ui-hover-effect',
+    infoWindowTail: '.gm-style-iw-tc',
+    infoWindowBackground: '.gm-style-iw-t',
+  },
+};
 
 export interface InfoWindowStyle {
   backgroundColor?: string;
@@ -28,95 +50,47 @@ interface InfoWindowManagerProps {
   onClose?: () => void;
 }
 
+// 기본 스타일 객체
+const defaultInfoWindowStyle: InfoWindowStyle = {
+  backgroundColor: '#FFFFFF',
+  borderRadius: STYLE_CONSTANTS.borderRadius,
+  padding: STYLE_CONSTANTS.padding,
+  borderColor: STYLE_CONSTANTS.colors.borderColor,
+  closeButtonColor: STYLE_CONSTANTS.colors.lightGray
+};
+
 /**
  * InfoWindow 스타일을 적용하는 유틸리티 함수
  */
 export const applyInfoWindowStyle = (infoWindow: google.maps.InfoWindow, style: InfoWindowStyle = {}) => {
-  const defaultStyle: InfoWindowStyle = {
-    backgroundColor: '#FFFFFF',
-    textColor: '#000000',
-    borderRadius: '6px',
-    padding: '8px',
-    borderColor: '#E5E7EB',
-    closeButtonColor: '#F3F4F6'
-  };
+  const mergedStyle = { ...defaultInfoWindowStyle, ...style };
 
-  const mergedStyle = { ...defaultStyle, ...style };
-
-  // InfoWindow가 DOM에 추가된 후 스타일 적용
   infoWindow.addListener('domready', () => {
-    // InfoWindow의 부모 컨테이너 스타일 변경
-    const iwOuter = document.querySelector('.gm-style-iw-a') as HTMLElement;
-    if (iwOuter) {
-      // 기본 그림자 제거
-      iwOuter.style.boxShadow = 'none';
+    const closeButton = document.querySelector(STYLE_CONSTANTS.selectors.closeButton) as HTMLElement;
+    if (closeButton) {
+      closeButton.style.display = 'none';
     }
     
-    // 기본 닫기 버튼 숨기기
-    const defaultCloseButton = document.querySelector('.gm-ui-hover-effect') as HTMLElement;
-    if (defaultCloseButton) {
-      defaultCloseButton.style.display = 'none';
-    }
-    
-    // InfoWindow 컨테이너
-    const iwBackground = document.querySelector('.gm-style-iw-t') as HTMLElement;
+    const iwBackground = document.querySelector(STYLE_CONSTANTS.selectors.infoWindowBackground) as HTMLElement;
     if (iwBackground) {
-      // 삼각형 꼬리 요소 찾기
-      const iwTail = document.querySelector('.gm-style-iw-tc') as HTMLElement;
-      
-      // 배경색 변경 (삼각형 꼬리 제외)
-      const iwChildren = iwBackground.querySelectorAll('div');
-      for (let i = 0; i < iwChildren.length; i++) {
-        const child = iwChildren[i] as HTMLElement;
-        
-        // 삼각형 꼬리는 배경색 변경하지 않음
-        if (child.classList.contains('gm-style-iw-tc')) {
-          continue;
-        }
-        
-        child.style.backgroundColor = mergedStyle.backgroundColor!;
-        child.style.boxShadow = 'none';
-      }
-      
-      // 삼각형 꼬리 요소가 있으면 삼각형 모양 유지
+      const iwTail = document.querySelector(STYLE_CONSTANTS.selectors.infoWindowTail) as HTMLElement;
       if (iwTail) {
         iwTail.style.backgroundColor = 'transparent';
       }
     }
     
-    // 닫기 버튼 스타일 변경
-    const closeButton = document.querySelector('.gm-ui-hover-effect') as HTMLElement;
-    if (closeButton) {
-      closeButton.style.display = 'none'; // 기본 닫기 버튼 숨기기
+    // InfoWindow 컨테이너 배경색만 설정
+    const container = document.querySelector(STYLE_CONSTANTS.selectors.infoWindowContainer) as HTMLElement;
+    if (container) {
+      container.style.backgroundColor = mergedStyle.backgroundColor!;
+      container.style.padding = '0';
+      container.style.borderRadius = mergedStyle.borderRadius!;
     }
     
-    // InfoWindow 콘텐츠 컨테이너
-    const iwContent = document.querySelector('.gm-style-iw-d') as HTMLElement;
-    if (iwContent) {
-      iwContent.style.overflow = 'hidden';
-      iwContent.style.backgroundColor = mergedStyle.backgroundColor!;
-      
-      // 텍스트 색상 적용
-      const textElements = iwContent.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div');
-      textElements.forEach((element) => {
-        if ((element as HTMLElement).style.color !== 'white') { // 흰색 텍스트(예: 티어 라벨)는 유지
-          (element as HTMLElement).style.color = mergedStyle.textColor!;
-        }
-      });
-    }
-    
-    // InfoWindow 배경 색상 변경
-    const iwContainer = document.querySelector('.gm-style-iw') as HTMLElement;
-    if (iwContainer) {
-      iwContainer.style.backgroundColor = mergedStyle.backgroundColor!;
-      iwContainer.style.padding = '0';
-      iwContainer.style.borderRadius = mergedStyle.borderRadius!;
-      
-      // 모바일 화면에서 최대 너비 제한
-      const isMobile = window.innerWidth < 768;
-      if (isMobile) {
-        iwContainer.style.maxWidth = 'calc(100% - 30px)';
-      }
+    // 그림자 제거
+    const iwOuter = document.querySelector(STYLE_CONSTANTS.selectors.outerContainer) as HTMLElement;
+    if (iwOuter) {
+      iwOuter.style.boxShadow = 'none';
     }
   });
 
@@ -137,34 +111,27 @@ const InfoWindowManager: React.FC<InfoWindowManagerProps> = ({
   const infoWindowRef = useRef<google.maps.InfoWindow | null>(null);
 
   useEffect(() => {
-    // Google Maps API가 로드되지 않았다면 무시
     if (!window.google?.maps || !map) return;
     
-    // InfoWindow 생성
     if (!infoWindowRef.current) {
       const infoWindow = new google.maps.InfoWindow(options);
       infoWindowRef.current = applyInfoWindowStyle(infoWindow, style);
       
-      // 닫기 이벤트 설정
       if (onClose) {
         infoWindow.addListener('closeclick', onClose);
       }
     } else {
-      // 이미 존재하는 InfoWindow의 콘텐츠 업데이트
       infoWindowRef.current.setContent(options.content);
       
-      // 위치 업데이트 (있는 경우)
       if (options.position) {
         infoWindowRef.current.setPosition(options.position);
       }
       
-      // 기타 옵션 업데이트
       if (options.maxWidth !== undefined) {
         infoWindowRef.current.setOptions({ maxWidth: options.maxWidth });
       }
     }
     
-    // 열기/닫기 처리
     if (isOpen) {
       if (marker) {
         infoWindowRef.current?.open(map, marker);
@@ -175,7 +142,6 @@ const InfoWindowManager: React.FC<InfoWindowManagerProps> = ({
       infoWindowRef.current?.close();
     }
 
-    // 컴포넌트 언마운트 시 정보창 닫기
     return () => {
       if (infoWindowRef.current) {
         infoWindowRef.current.close();
@@ -210,34 +176,91 @@ export interface CustomerInfo {
 export const createCustomerInfoContent = (
   customer: CustomerInfo,
   isCompanyAddress: boolean,
-  tierColor: string,
   uniqueId: string
 ) => {
   const addressType = isCompanyAddress ? '회사' : '자택';
   const address = isCompanyAddress ? customer.address_company : customer.address;
+  const tierDisplayColor = customer.tier ? getTierColor(customer.tier) : getTierColor('default');
 
   return `
-    <div style="min-width: 250px; max-width: 280px; padding: 16px; word-break: break-word;">
+    <div style="min-width: 250px; max-width: 280px; padding: 16px; word-break: break-word; background-color: white; border-radius: 6px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <div style="max-width: 70%;">
-          <h3 style="font-size: 16px; font-weight: bold; color: black; margin: 0; overflow: hidden; text-overflow: ellipsis;">${customer.customer_name} (${addressType})</h3>
+          <h3 style="font-size: 16px; font-weight: bold; margin: 0; overflow: hidden; text-overflow: ellipsis; color: black;">${customer.customer_name}<span style="color: #9CA3AF; margin-left: 4px;">[${addressType}]</span></h3>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="background-color: ${tierColor}; color: white; padding: 2px 6px; border-radius: 4px; font-size: 12px;">${customer.tier || '일반'}</span>
+          <span style="background-color: ${tierDisplayColor}; color: white; padding: 2px 6px; border-radius: 4px; font-size: 12px;">${customer.tier || '일반'}</span>
           <button id="${uniqueId}" style="background-color: #f3f4f6; border: none; border-radius: 4px; color: black; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer;">✕</button>
         </div>
       </div>
-      <p style="color: black; margin: 6px 0;"><strong>연락처:</strong><a href="tel:${customer.phone || '없음'}" style="color: black; text-decoration: none;">${customer.phone || '없음'}</a></p>
-      <p style="color: black; margin: 6px 0;"><strong>휴대폰:</strong><a href="tel:${customer.mobile || '없음'}" style="color: black; text-decoration: none;">${customer.mobile || '없음'}</a></p>
-      <p style="color: black; margin: 6px 0;"><strong>이메일:</strong><a href="mailto:${customer.email || '없음'}" style="color: black; text-decoration: none;">${customer.email || '없음'}</a></p>
-      <p style="color: black; margin: 6px 0; padding-right: 20px;"><strong>${addressType}:</strong> ${address || '없음'}</p>
+      <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+        </svg>
+        <a href="tel:${customer.phone || '없음'}" style="text-decoration: none;">${customer.phone || '없음'}</a>
+      </p>
+      <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
+        <a href="tel:${customer.mobile || '없음'}" style="text-decoration: none;">${customer.mobile || '없음'}</a>
+      </p>
+      <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+        <a href="mailto:${customer.email || '없음'}" style="text-decoration: none;">${customer.email || '없음'}</a>
+      </p>
+      <p style="color: black; margin: 6px 0; padding-right: 20px; display: flex; align-items: center;">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        ${address || '없음'}
+      </p>
       ${customer.company ? `
           <div style="border-top: 1px solid #e5e7eb; margin-top: 10px; padding-top: 10px;">
-            <p style="color: black; margin: 6px 0;"><strong>회사:</strong> ${customer.company}</p>
+            <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+              ${customer.company}
+            </p>
           </div>` : ''}
-      ${customer.position ? `<p style="color: black; margin: 6px 0;"><strong>직책:</strong> ${customer.position}</p>` : ''}
+      ${customer.position ? `
+          <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
+            <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+            </svg>
+            ${customer.position}
+          </p>` : ''}
     </div>
   `;
+};
+
+/**
+ * 모든 InfoWindow의 스타일을 적용하는 글로벌 함수
+ */
+export const styleDefaultInfoWindows = () => {
+  // 기본 닫기 버튼 숨기기
+  const closeButton = document.querySelector(STYLE_CONSTANTS.selectors.closeButton) as HTMLElement;
+  if (closeButton) {
+    closeButton.style.display = 'none';
+  }
+  
+  // InfoWindow 컨테이너 배경색만 설정
+  const container = document.querySelector(STYLE_CONSTANTS.selectors.infoWindowContainer) as HTMLElement;
+  if (container) {
+    container.style.backgroundColor = defaultInfoWindowStyle.backgroundColor!;
+    container.style.padding = '0';
+    container.style.borderRadius = defaultInfoWindowStyle.borderRadius!;
+  }
+  
+  // 그림자 제거
+  const iwOuter = document.querySelector(STYLE_CONSTANTS.selectors.outerContainer) as HTMLElement;
+  if (iwOuter) {
+    iwOuter.style.boxShadow = 'none';
+  }
 };
 
 export default InfoWindowManager; 

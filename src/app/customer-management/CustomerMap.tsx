@@ -225,7 +225,6 @@ const CustomerMap: React.FC<CustomerMapProps> = ({ customers, apiKey }) => {
             content: createCustomerInfoContent(
               currentInfoWindow.customer as unknown as CustomerInfo, 
               currentInfoWindow.isCompany,
-              getTierColor(currentInfoWindow.customer.tier),
               uniqueIdRef.current
             ),
             disableAutoPan: false,

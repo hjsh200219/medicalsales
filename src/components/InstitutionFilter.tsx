@@ -19,7 +19,7 @@ export function SearchFilter({
   const [searchQuery, setSearchQuery] = React.useState('');
   const [regionFilter, setRegionFilter] = React.useState('all');
   const [typeFilter, setTypeFilter] = React.useState<InstitutionTypeCode>('all');
-  const [dateFilter, setDateFilter] = useState('all');
+  const [dateFilter, setDateFilter] = useState('month');
   const [isFilterVisible, setIsFilterVisible] = useState(showFilters);
 
   useEffect(() => {
