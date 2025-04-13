@@ -119,7 +119,7 @@ export default function PeriodFilter({
   };
 
   return (
-    <div className="mb-6 space-y-4 lg:space-y-0 lg:flex  item-center lg:gap-6">
+    <div className="mb-2 space-y-4 lg:space-y-0 lg:flex  item-center lg:gap-6">
       {/* 기간 옵션 선택 박스 */}
       <div className="w-full md:w-1/4">
         <select
