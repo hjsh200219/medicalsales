@@ -204,9 +204,23 @@ export default function CustomerManagement() {
                   setShowAddForm(false);
                   setEditingCustomer(null);
                 }}
-                className="px-2 py-0 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                className="px-1 py-1 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                aria-label="돌아가기"
               >
-                &lt;
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  width="16" 
+                  height="16" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                >
+                  <line x1="19" y1="12" x2="5" y2="12"></line>
+                  <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
               </button>
             )}
             
@@ -214,9 +228,23 @@ export default function CustomerManagement() {
             {!showAddForm && !editingCustomer && (
               <button
                 onClick={toggleAddForm}
-                className="px-2 py-0 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="px-1 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                aria-label="고객 등록"
               >
-                +
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  width="16" 
+                  height="16" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                >
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
               </button>
             )}
           </div>
@@ -243,13 +271,13 @@ export default function CustomerManagement() {
           {showAddForm && (
             <div className="flex bg-gray-700 p-1 rounded-md">
               <button
-                className={`py-1 px-4 rounded-md ${registrationMode === 'individual' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-600'}`}
+                className={`py-1 px-4 rounded-md ${registrationMode === 'individual' ? 'bg-green-600 text-white' : 'text-gray-300 hover:bg-gray-600'}`}
                 onClick={() => handleRegistrationModeChange('individual')}
               >
                 개별
               </button>
               <button
-                className={`py-1 px-4 rounded-md ${registrationMode === 'excel' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-600'}`}
+                className={`py-1 px-4 rounded-md ${registrationMode === 'excel' ? 'bg-green-600 text-white' : 'text-gray-300 hover:bg-gray-600'}`}
                 onClick={() => handleRegistrationModeChange('excel')}
               >
                 엑셀

@@ -15,9 +15,9 @@ export default function InstitutionMap({
   // 필터 표시 여부와 브라우저 너비에 따라 높이 계산
   const getMapHeight = () => {
     if (isFilterVisible) {
-      return 'h-[calc(100vh-350px)] md:h-[calc(100vh-350px)]  lg:h-[calc(100vh-300px)]';
+      return 'h-[calc(100vh-320px)] md:h-[calc(100vh-350px)]  lg:h-[calc(100vh-270px)]';
     } else {
-      return 'h-[calc(100vh-215px)] md:h-[calc(100vh-220px)]  lg:h-[calc(100vh-220px)]';
+      return 'h-[calc(100vh-190px)]';
     }
   };
 

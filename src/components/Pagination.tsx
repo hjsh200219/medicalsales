@@ -89,8 +89,7 @@ export default function Pagination({
     <div className="flex justify-between items-center mt-4 text-white">
       {totalItems && itemsPerPage && (
         <div>
-          총 {totalItems}명의 {label} 중 {(currentPage - 1) * itemsPerPage + 1}-
-          {Math.min(currentPage * itemsPerPage, totalItems)}명 표시
+          총 {totalItems.toLocaleString()}명의 {label}
         </div>
       )}
       <div className="flex space-x-2 ml-auto">

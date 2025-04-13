@@ -62,8 +62,14 @@ export default function CustomerAddForm({ onCancel, onSuccess, activeTab }: Cust
 
   // 엑셀 업로드 성공 핸들러
   const handleExcelUploadSuccess = (result: {success: number, failed: number}) => {
+    console.log('Excel upload success handler called with:', result);
     setUploadResult(result);
     setError(null);
+    
+    // 디버깅용: 상태 변경 후 확인
+    setTimeout(() => {
+      console.log('Current uploadResult state:', uploadResult);
+    }, 100);
   };
   
   // 엑셀 업로드 오류 핸들러
@@ -96,17 +102,20 @@ export default function CustomerAddForm({ onCancel, onSuccess, activeTab }: Cust
         />
       ) : (
         /* 엑셀 업로드 탭 */
-        <div className="bg-white p-6 rounded-md shadow-sm border border-gray-200">
+        <div className="bg-gray-800 p-4 rounded-md shadow-sm h-[calc(100vh-10rem)]">
           <div className="space-y-6">
-            <div className="border-b pb-4">
-              <h3 className="text-lg text-gray-700 font-medium mb-2">엑셀 파일로 고객 대량 등록</h3>
+            <div className="border-b border-gray-500">
+              <h3 className="text-lg text-gray-200 font-medium mb-2">엑셀 파일로 고객 대량 등록</h3>
             </div>
 
             <div className="flex flex-col space-y-4">
-              <div className="bg-gray-50 p-4 rounded-md">
-                <h4 className="font-medium text-gray-700 mb-2">1. 샘플 파일 다운로드</h4>
-                <p className="text-sm text-gray-600 mb-3">
+              <div className="bg-gray-700 py-8 px-4 rounded-md">
+                <h4 className="text-lg font-bold text-gray-200 mb-4">1. Download Sample Excel</h4>
+                <p className="text-sm text-gray-200 mb-0">
                   샘플 엑셀로 다운로드하여 형식을 확인하세요.
+                </p>
+                <p className="text-sm text-gray-200 mb-3">
+                  엑셀의 칼럼 이름을 정확히 맞추어 업로드 해주세요.
                 </p>
                 <CustomerExcelUpload
                   onSuccess={handleExcelUploadSuccess}
@@ -114,8 +123,8 @@ export default function CustomerAddForm({ onCancel, onSuccess, activeTab }: Cust
                 />
               </div>
 
-              <div className="bg-gray-50 p-4 rounded-md">
-                <h4 className="font-medium text-gray-700 mb-2">2. 업로드 결과</h4>
+              <div className="bg-gray-700 py-8 px-4 rounded-md">
+                <h4 className="text-lg font-bold text-gray-200 mb-6">2. Upload Result</h4>
                 {uploadResult ? (
                   <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md">
                     <h4 className="font-medium mb-1">업로드 완료</h4>
@@ -132,7 +141,7 @@ export default function CustomerAddForm({ onCancel, onSuccess, activeTab }: Cust
                     )}
                   </div>
                 ) : (
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-200">
                     엑셀 파일을 업로드하면 여기에 결과가 표시됩니다.
                   </p>
                 )}

@@ -157,60 +157,62 @@ export function SearchFilter({
       {/* 필터 내용 */}
       {isFilterVisible && (
         <div className="p-4 bg-gray-800 rounded-md">
-          <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-3">
-            <div className="grid grid-cols-3 md:grid-cols-none md:flex md:gap-3 gap-2 md:w-auto w-full">
-              <div className="w-full md:w-[180px]">
-                <select
-                  value={regionFilter}
-                  onChange={(e) => setRegionFilter(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
-                >
-                  <option value="all">지역 전체</option>
-                  {Object.entries(REGION_CODES)
-                    .filter(([code]) => code !== 'all')
-                    .map(([code, names]) => (
-                      <option key={code} value={code}>{names[names.length - 1]}</option>
-                    ))
-                  }
-                </select>
+          <form onSubmit={handleSearch} className="flex flex-col gap-3">
+            <div className="flex flex-col md:flex-row gap-3">
+              <div className="grid grid-cols-3 gap-2 w-full md:flex md:flex-row md:gap-3 md:flex-nowrap">
+                <div className="w-full md:w-[180px]">
+                  <select
+                    value={regionFilter}
+                    onChange={(e) => setRegionFilter(e.target.value)}
+                    className="w-full px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  >
+                    <option value="all">지역 전체</option>
+                    {Object.entries(REGION_CODES)
+                      .filter(([code]) => code !== 'all')
+                      .map(([code, names]) => (
+                        <option key={code} value={code}>{names[names.length - 1]}</option>
+                      ))
+                    }
+                  </select>
+                </div>
+                
+                <div className="w-full md:w-[180px]">
+                  <select
+                    value={typeFilter}
+                    onChange={(e) => setTypeFilter(e.target.value as InstitutionTypeCode)}
+                    className="w-full px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  >
+                    {INSTITUTION_TYPES.map((type) => (
+                      <option key={type.code} value={type.code}>{type.name}</option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div className="w-full md:w-[180px]">
+                  <select
+                    value={dateFilter}
+                    onChange={(e) => setDateFilter(e.target.value)}
+                    className="w-full px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  >
+                    <option value="all">전체 기간</option>
+                    <option value="week">최근 1주일</option>
+                    <option value="month">최근 1달</option>
+                    <option value="halfYear">최근 6개월</option>
+                    <option value="year">최근 1년</option>
+                    <option value="twoYears">최근 1~2년</option>
+                    <option value="fiveYears">최근 2~5년</option>
+                  </select>
+                </div>
               </div>
               
-              <div className="w-full md:w-[180px]">
-                <select
-                  value={typeFilter}
-                  onChange={(e) => setTypeFilter(e.target.value as InstitutionTypeCode)}
-                  className="w-full px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
-                >
-                  {INSTITUTION_TYPES.map((type) => (
-                    <option key={type.code} value={type.code}>{type.name}</option>
-                  ))}
-                </select>
+              <div className="w-full">
+                <SearchInput
+                  value={searchQuery}
+                  onChange={setSearchQuery}
+                  onSearch={handleSearch}
+                  placeholder="의료기관명, 전화번호, 주소 검색"
+                />
               </div>
-              
-              <div className="w-full md:w-[180px]">
-                <select
-                  value={dateFilter}
-                  onChange={(e) => setDateFilter(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
-                >
-                  <option value="all">전체 기간</option>
-                  <option value="week">최근 1주일</option>
-                  <option value="month">최근 1달</option>
-                  <option value="halfYear">최근 6개월</option>
-                  <option value="year">최근 1년</option>
-                  <option value="twoYears">최근 1~2년</option>
-                  <option value="fiveYears">최근 2~5년</option>
-                </select>
-              </div>
-            </div>
-            
-            <div className="w-full">
-              <SearchInput
-                value={searchQuery}
-                onChange={setSearchQuery}
-                onSearch={handleSearch}
-                placeholder="의료기관명, 전화번호, 주소 검색"
-              />
             </div>
           </form>
         </div>

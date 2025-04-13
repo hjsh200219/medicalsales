@@ -75,7 +75,7 @@ export function InstitutionsList({
         totalItems={institutions.length}
         itemsPerPage={itemsPerPage}
         onPageChange={onPageChange}
-        style="numbers"
+        style="simple"
         label="의료기관"
       />
     </div>

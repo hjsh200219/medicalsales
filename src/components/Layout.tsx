@@ -1,6 +1,7 @@
 import Navigation from '@/components/Navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import Script from 'next/script';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -9,6 +10,7 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen bg-gray-900 pb-16 md:pb-0">
+      <Script src="/xlsx.full.min.js" strategy="beforeInteractive" />
       {/* 헤더 */}
       <header className="bg-blue-500 text-white shadow-lg">
         <div className="container mx-auto px-2 py-2 flex justify-between items-center">

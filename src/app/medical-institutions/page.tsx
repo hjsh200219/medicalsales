@@ -174,13 +174,7 @@ export default function MedicalInstitutions() {
           showFilters={showFilters}
         />
         
-        <div className="mt-4">
-          <div className="text-gray-300 mb-2 flex justify-between items-center">
-            <p>
-              총 {filteredInstitutions.length}개의 의료기관
-            </p>
-          </div>
-          
+        <div className="mt-4">          
           {viewMode === 'list' ? (
             <InstitutionsList 
               institutions={filteredInstitutions}
