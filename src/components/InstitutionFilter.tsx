@@ -160,7 +160,7 @@ export function SearchFilter({
           <form onSubmit={handleSearch} className="flex flex-col gap-3">
             <div className="flex flex-col md:flex-row gap-3">
               <div className="grid grid-cols-3 gap-2 w-full md:flex md:flex-row md:gap-3 md:flex-nowrap">
-                <div className="w-full md:w-[180px]">
+                <div className="w-full md:w-40">
                   <select
                     value={regionFilter}
                     onChange={(e) => setRegionFilter(e.target.value)}
@@ -176,7 +176,7 @@ export function SearchFilter({
                   </select>
                 </div>
                 
-                <div className="w-full md:w-[180px]">
+                <div className="w-full md:w-40">
                   <select
                     value={typeFilter}
                     onChange={(e) => setTypeFilter(e.target.value as InstitutionTypeCode)}
@@ -188,7 +188,7 @@ export function SearchFilter({
                   </select>
                 </div>
                 
-                <div className="w-full md:w-[180px]">
+                <div className="w-full md:w-40">
                   <select
                     value={dateFilter}
                     onChange={(e) => setDateFilter(e.target.value)}

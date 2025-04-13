@@ -19,8 +19,7 @@ export async function GET() {
     // 데이터베이스에서 의료기관 정보 가져오기
     const institutions = await db.$queryRaw<Institution[]>`
       SELECT * FROM institutions 
-      ORDER BY name ASC 
-      LIMIT 50
+      ORDER BY name ASC
     `;
     
     // Decimal 객체를 문자열로 변환
