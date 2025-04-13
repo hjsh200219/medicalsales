@@ -37,8 +37,9 @@ export default function CustomerList({
 
   if (customers.length === 0) {
     return (
-      <div className="flex justify-center items-center h-40">
-        <div className="text-white">고객 정보가 없습니다.</div>
+      <div className="flex flex-col items-center justify-center p-10 text-center bg-gray-800 rounded-xl">
+        <p className="text-xl text-gray-300 mb-2">조회 결과가 없습니다.</p>
+        <p className="text-gray-400">다른 검색 조건을 사용해 보세요.</p>
       </div>
     );
   }

@@ -11,14 +11,22 @@
   "dependencies": {
     "@auth/core": "^0.34.2",
     "@prisma/client": "^6.6.0",
+    "@types/react-datepicker": "^6.2.0",
     "axios": "^1.8.4",
+    "chart.js": "^4.4.8",
+    "d3-scale": "^4.0.2",
+    "d3-shape": "^3.2.0",
+    "date-fns": "^4.1.0",
     "lucide-react": "^0.487.0",
     "next": "15.3.0",
     "next-auth": "^4.24.11",
     "next-pwa": "^5.6.0",
     "prisma": "^6.6.0",
     "react": "^19.0.0",
+    "react-chartjs-2": "^5.3.0",
+    "react-datepicker": "^8.3.0",
     "react-dom": "^19.0.0",
+    "victory": "^37.3.6",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

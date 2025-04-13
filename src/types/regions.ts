@@ -20,6 +20,50 @@ export const REGION_CODES: Record<string, string[]> = {
   "50": ["제주특별자치도", "제주도", "제주"]
 };
 
+// 지역 그룹 정의 및 색상 매핑
+export const REGION_GROUPS: Record<string, { codes: string[], baseColor: string }> = {
+  "수도권": {
+    codes: ["11", "28", "41"], // 서울, 인천, 경기
+    baseColor: "hsl(200, 70%, 50%)" // 파란색 계열
+  },
+  "경상권": {
+    codes: ["26", "27", "31", "47", "48"], // 부산, 대구, 울산, 경북, 경남
+    baseColor: "hsl(0, 70%, 50%)" // 빨간색 계열
+  },
+  "전라제주권": {
+    codes: ["29", "45", "46", "50"], // 광주, 전북, 전남, 제주
+    baseColor: "hsl(50, 70%, 50%)" // 노란색 계열
+  },
+  "충청권": {
+    codes: ["30", "36", "43", "44"], // 대전, 세종, 충북, 충남
+    baseColor: "hsl(120, 70%, 50%)" // 초록색 계열
+  },
+  "강원권": {
+    codes: ["42"], // 강원
+    baseColor: "hsl(30, 70%, 50%)" // 갈색 계열
+  }
+};
+
+// 지역 코드로 색상 가져오기
+export const getRegionColor = (regionCode: string, index = 0): string => {
+  if (regionCode === 'unknown' || regionCode === 'all') {
+    return "hsl(0, 0%, 70%)"; // 미상이나 전체는 회색 계열
+  }
+  
+  // 해당 지역이 속한 그룹 찾기
+  const group = Object.values(REGION_GROUPS).find(group => 
+    group.codes.includes(regionCode)
+  );
+  
+  if (!group) return "hsl(0, 0%, 70%)";
+  
+  // 그룹 내에서 약간 다른 색조 부여 (같은 그룹은 유사한 색상)
+  const hue = parseInt(group.baseColor.match(/hsl\((\d+),/)?.[1] || "0");
+  const variation = (index % 3) * 12 - 12; // -12, 0, 12 정도의 색조 변화
+  
+  return `hsl(${hue + variation}, 70%, 50%)`;
+};
+
 // 지역 코드 타입
 export type RegionCode = keyof typeof REGION_CODES;
 
