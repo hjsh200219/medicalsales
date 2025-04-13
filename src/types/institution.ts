@@ -28,8 +28,8 @@ export const INSTITUTION_TYPES: InstitutionTypeOption[] = [
   { code: "요양병원", name: "요양병원", color: "#0000FF" },
   { code: "치과병원", name: "치과병원", color: "#800080" },
   { code: "치과의원", name: "치과의원", color: "#800080" },
-  { code: "한방병원", name: "한방병원", color: "#FFFF00" },
-  { code: "한의원", name: "한의원", color: "#FFFF00" },
+  { code: "한방병원", name: "한방병원", color: "#8B4513" },
+  { code: "한의원", name: "한의원", color: "#8B4513" },
   { code: "약국", name: "약국", color: "#008000" }
 ];
 

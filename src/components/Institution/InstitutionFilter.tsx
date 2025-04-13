@@ -210,7 +210,7 @@ export function SearchFilter({
                 </div>
               </div>
               
-              <div className="w-full md:flex-1">
+              <div className="w-full">
                 <SearchInput
                   value={searchQuery}
                   onChange={setSearchQuery}

@@ -67,6 +67,7 @@ export const applyInfoWindowStyle = (infoWindow: google.maps.InfoWindow, style: 
   const mergedStyle = { ...defaultInfoWindowStyle, ...style };
 
   infoWindow.addListener('domready', () => {
+    // 닫기 버튼 숨김 (다시 활성화)
     const closeButton = document.querySelector(STYLE_CONSTANTS.selectors.closeButton) as HTMLElement;
     if (closeButton) {
       closeButton.style.display = 'none';
@@ -92,6 +93,14 @@ export const applyInfoWindowStyle = (infoWindow: google.maps.InfoWindow, style: 
     const iwOuter = document.querySelector(STYLE_CONSTANTS.selectors.outerContainer) as HTMLElement;
     if (iwOuter) {
       iwOuter.style.boxShadow = 'none';
+    }
+    
+    // 커스텀 닫기 버튼에 이벤트 리스너 추가
+    const customCloseButton = document.getElementById('infowindow-close-btn');
+    if (customCloseButton) {
+      customCloseButton.addEventListener('click', function() {
+        infoWindow.close();
+      });
     }
   });
 
@@ -246,7 +255,18 @@ export const formatOpenDate = (openDate: string | null | undefined): string => {
   if (!openDate) return '정보 없음';
   
   try {
-    const dateObj = new Date(openDate);
+    let dateObj: Date;
+    
+    // YYYYMMDD 형식인 경우 (숫자로만 이루어진 8자리 문자열)
+    if (openDate.length === 8 && /^\d+$/.test(openDate)) {
+      const year = openDate.slice(0, 4);
+      const month = openDate.slice(4, 6);
+      const day = openDate.slice(6, 8);
+      dateObj = new Date(`${year}-${month}-${day}`);
+    } else {
+      // 기존 방식으로 처리 (ISO 형식 등)
+      dateObj = new Date(openDate);
+    }
     
     // 유효한 날짜인지 확인
     if (isNaN(dateObj.getTime())) {
@@ -283,8 +303,9 @@ export const createInstitutionInfoContent = (institution: SerializedInstitution)
         <div style="max-width: 70%;">
           <h3 style="font-size: 16px; font-weight: bold; margin: 0; overflow: hidden; text-overflow: ellipsis; color: black;">${name || '이름 없음'}</h3>
         </div>
-        <div>
+        <div style="display: flex; align-items: center; gap: 8px;">
           <span style="background-color: ${typeColor}; color: white; padding: 4px 6px; border-radius: 4px; font-size: 12px;">${typeName}</span>
+          <button id="infowindow-close-btn" style="background-color: #f3f4f6; border: none; border-radius: 4px; color: black; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px;">✕</button>
         </div>
       </div>
       <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
@@ -298,7 +319,7 @@ export const createInstitutionInfoContent = (institution: SerializedInstitution)
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
-        ${address || '없음'}
+        ${address || '주소 정보 없음'}
       </p>
       <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
         <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -321,7 +342,7 @@ export const createInstitutionInfoContent = (institution: SerializedInstitution)
  * 모든 InfoWindow의 스타일을 적용하는 글로벌 함수
  */
 export const styleDefaultInfoWindows = () => {
-  // 기본 닫기 버튼 숨기기
+  // 기본 닫기 버튼 숨김 (다시 활성화)
   const closeButton = document.querySelector(STYLE_CONSTANTS.selectors.closeButton) as HTMLElement;
   if (closeButton) {
     closeButton.style.display = 'none';
@@ -339,6 +360,21 @@ export const styleDefaultInfoWindows = () => {
   const iwOuter = document.querySelector(STYLE_CONSTANTS.selectors.outerContainer) as HTMLElement;
   if (iwOuter) {
     iwOuter.style.boxShadow = 'none';
+  }
+  
+  // 커스텀 닫기 버튼에 이벤트 리스너 추가
+  const customCloseButton = document.getElementById('infowindow-close-btn');
+  if (customCloseButton) {
+    customCloseButton.addEventListener('click', function() {
+      const infoWindows = document.querySelectorAll('.gm-style-iw-a');
+      if (infoWindows.length > 0) {
+        // 구글맵 InfoWindow 닫기 버튼 클릭 효과 발생
+        const closeButton = document.querySelector('.gm-ui-hover-effect') as HTMLElement;
+        if (closeButton) {
+          closeButton.click();
+        }
+      }
+    });
   }
 };
 

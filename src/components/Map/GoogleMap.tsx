@@ -107,6 +107,64 @@ const darkModeStyle = [
     elementType: "labels.text.stroke",
     stylers: [{ color: "#17263c" }],
   },
+  // 도로 표시 최소화 스타일 추가
+  {
+    featureType: "road.local",
+    elementType: "geometry",
+    stylers: [{ visibility: "simplified" }], // 지역 도로 간소화
+  },
+  {
+    featureType: "road.local",
+    elementType: "labels",
+    stylers: [{ visibility: "off" }], // 지역 도로명 숨김
+  },
+  {
+    featureType: "road.arterial",
+    elementType: "labels",
+    stylers: [{ visibility: "simplified" }], // 주요 도로명 숨김
+  },
+  {
+    featureType: "road",
+    elementType: "labels.icon",
+    stylers: [{ visibility: "off" }], // 도로 아이콘 숨김
+  },
+  {
+    featureType: "transit",
+    stylers: [{ visibility: "off" }], // 대중교통 숨김
+  },
+  // 행정지역명 표시 최소화
+  {
+    featureType: "administrative.neighborhood",
+    stylers: [{ visibility: "off" }], // 동/읍/면 단위 행정구역 숨김
+  },
+  {
+    featureType: "administrative.locality",
+    elementType: "labels",
+    stylers: [{ visibility: "simplified" }], // 시/군/구 단위 행정구역 숨김
+  },
+  {
+    featureType: "administrative.land_parcel",
+    stylers: [{ visibility: "off" }], // 토지 구획 숨김
+  },
+  {
+    featureType: "administrative.neighborhood",
+    stylers: [{ visibility: "off" }], // 이웃/동네 숨김
+  },
+  // 산 정보 숨김
+  {
+    featureType: "landscape.natural",
+    elementType: "labels",
+    stylers: [{ visibility: "off" }], // 자연 지형(산, 강 등) 라벨 숨김
+  },
+  {
+    featureType: "poi.attraction",
+    stylers: [{ visibility: "off" }], // 관광 명소(산 포함) 숨김
+  },
+  {
+    featureType: "poi.park",
+    elementType: "labels",
+    stylers: [{ visibility: "off" }], // 공원 라벨 숨김
+  }
 ];
 
 // 라이트 모드를 위한 스타일 추가 (POI 마커만 숨김)
@@ -130,6 +188,64 @@ const lightModeStyle = [
   {
     featureType: "poi.government",
     stylers: [{ visibility: "off" }], // 정부기관 POI 숨김
+  },
+  // 도로 표시 최소화 스타일 추가
+  {
+    featureType: "road.local",
+    elementType: "geometry",
+    stylers: [{ visibility: "simplified" }], // 지역 도로 간소화
+  },
+  {
+    featureType: "road.local",
+    elementType: "labels",
+    stylers: [{ visibility: "off" }], // 지역 도로명 숨김
+  },
+  {
+    featureType: "road.arterial",
+    elementType: "labels",
+    stylers: [{ visibility: "simplified" }], // 주요 도로명 단순화
+  },
+  {
+    featureType: "road",
+    elementType: "labels.icon",
+    stylers: [{ visibility: "off" }], // 도로 아이콘 숨김
+  },
+  {
+    featureType: "transit",
+    stylers: [{ visibility: "off" }], // 대중교통 표시 단순화
+  },
+  // 행정지역명 표시 최소화
+  {
+    featureType: "administrative.neighborhood",
+    stylers: [{ visibility: "off" }], // 동/읍/면 단위 행정구역 숨김
+  },
+  {
+    featureType: "administrative.locality",
+    elementType: "labels",
+    stylers: [{ visibility: "simplified" }], // 시/군/구 단위 행정구역 단순화
+  },
+  {
+    featureType: "administrative.land_parcel",
+    stylers: [{ visibility: "off" }], // 토지 구획 숨김
+  },
+  {
+    featureType: "administrative.neighborhood",
+    stylers: [{ visibility: "off" }], // 이웃/동네 숨김
+  },
+  // 산 정보 숨김
+  {
+    featureType: "landscape.natural",
+    elementType: "labels",
+    stylers: [{ visibility: "off" }], // 자연 지형(산, 강 등) 라벨 숨김
+  },
+  {
+    featureType: "poi.attraction",
+    stylers: [{ visibility: "off" }], // 관광 명소(산 포함) 숨김
+  },
+  {
+    featureType: "poi.park",
+    elementType: "labels",
+    stylers: [{ visibility: "off" }], // 공원 라벨 숨김
   }
 ];
 
@@ -490,7 +606,6 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
     // 마커 상태 업데이트
     currentMarkersRef.current = newMarkers;
     
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [googleMap, markers, showDefaultMap, defaultCenter, defaultZoom]);
   
   // 전역 스타일링 함수 노출
