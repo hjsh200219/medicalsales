@@ -145,7 +145,7 @@ export default function CustomerManagement() {
         fetchAllCustomers();
       }
     }
-  }, [session, currentPage, tierFilter, activeTab, fetchCustomers, fetchAllCustomers]);
+  }, [session, currentPage, tierFilter, activeTab, fetchCustomers, fetchAllCustomers, search]);
   
   // 검색 처리
   const handleSearch = useCallback((e: React.FormEvent) => {

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/PageHeader';
 import { SearchFilter } from '@/components/InstitutionFilter';
@@ -58,23 +58,8 @@ export default function MedicalInstitutions() {
     setCurrentPage(1);
   }, [filterParams]);
 
-  // 페이지 또는 필터가 변경되면 데이터 다시 로드
-  useEffect(() => {
-    fetchInstitutions();
-  }, [currentPage, itemsPerPage, filterParams]);
-
-  // 페이지 변경 처리
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    // 페이지 상단으로 스크롤
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
-
-  // 데이터를 가져오는 함수
-  async function fetchInstitutions() {
+  // 데이터를 가져오는 함수를 useCallback으로 래핑
+  const fetchInstitutions = useCallback(async () => {
     try {
       setLoading(true);
       
@@ -114,7 +99,22 @@ export default function MedicalInstitutions() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [currentPage, itemsPerPage, filterParams]);
+
+  // 페이지 또는 필터가 변경되면 데이터 다시 로드
+  useEffect(() => {
+    fetchInstitutions();
+  }, [fetchInstitutions]);
+
+  // 페이지 변경 처리
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // 페이지 상단으로 스크롤
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
 
   // 필터 표시/숨김 토글 핸들러
   const handleToggleFilters = (isVisible: boolean) => {

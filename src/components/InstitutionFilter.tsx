@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { SearchInput } from './SearchInput';
 import { REGION_CODES, getRegionFromAddress } from '@/types/regions';
 import { SerializedInstitution, INSTITUTION_TYPES, InstitutionTypeCode } from '@/types/institution';
@@ -27,7 +27,7 @@ export function SearchFilter({
   }, [showFilters]);
 
   // 날짜 범위 계산 함수
-  const getDateRange = (option: string): { start: Date, end: Date } => {
+  const getDateRange = useCallback((option: string): { start: Date, end: Date } => {
     const end = new Date();
     let start = new Date();
     
@@ -57,10 +57,10 @@ export function SearchFilter({
     }
     
     return { start, end };
-  };
+  }, []);
 
   // 검색 및 필터 적용
-  const applyFilters = () => {
+  const applyFilters = useCallback(() => {
     let filtered = [...institutions];
     const filterParams: Record<string, string> = {};
 
@@ -117,12 +117,12 @@ export function SearchFilter({
     }
     
     onFilterChange(filtered, filterParams);
-  };
+  }, [institutions, searchQuery, regionFilter, typeFilter, dateFilter, onFilterChange, getDateRange]);
 
   // 필터 변경 시 필터 적용
   useEffect(() => {
     applyFilters();
-  }, [regionFilter, typeFilter, dateFilter]);
+  }, [regionFilter, typeFilter, dateFilter, applyFilters]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();

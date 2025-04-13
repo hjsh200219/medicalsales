@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { applyInfoWindowStyle, styleDefaultInfoWindows } from './InfoWindowManager';
 
 export interface MapPosition {
@@ -256,52 +256,8 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
     );
   };
   
-  // Google Maps API 로드
-  useEffect(() => {
-    if (!apiKey) {
-      setError('API 키가 제공되지 않았습니다.');
-      setIsLoading(false);
-      return;
-    }
-    
-    // 이미 로드된 경우
-    if (window.google && window.google.maps) {
-      setIsLoading(false);
-      initializeMap();
-      return;
-    }
-    
-    // 이미 스크립트가 로드 중인지 확인
-    const existingScript = document.getElementById('google-maps-script');
-    if (existingScript) {
-      window.initMap = initializeMap;
-      return;
-    }
-    
-    // 스크립트 로드
-    const script = document.createElement('script');
-    script.id = 'google-maps-script';
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
-    script.async = true;
-    script.defer = true;
-    
-    window.initMap = initializeMap;
-    
-    script.onerror = () => {
-      setError('Google Maps API를 로드하는 중 오류가 발생했습니다.');
-      setIsLoading(false);
-    };
-    
-    document.head.appendChild(script);
-    
-    return () => {
-      window.initMap = undefined;
-      // 스크립트 제거는 하지 않음 (다른 컴포넌트에서도 사용할 수 있음)
-    };
-  }, [apiKey]);
-  
   // 지도 초기화
-  const initializeMap = () => {
+  const initializeMap = useCallback(() => {
     if (!mapRef.current) return;
     
     try {
@@ -345,7 +301,51 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
       setError('지도를 초기화하는 중 오류가 발생했습니다.');
       setIsLoading(false);
     }
-  };
+  }, [defaultCenter, defaultZoom, isDarkMode, onMapInit]);
+  
+  // Google Maps API 로드
+  useEffect(() => {
+    if (!apiKey) {
+      setError('API 키가 제공되지 않았습니다.');
+      setIsLoading(false);
+      return;
+    }
+    
+    // 이미 로드된 경우
+    if (window.google && window.google.maps) {
+      setIsLoading(false);
+      initializeMap();
+      return;
+    }
+    
+    // 이미 스크립트가 로드 중인지 확인
+    const existingScript = document.getElementById('google-maps-script');
+    if (existingScript) {
+      window.initMap = initializeMap;
+      return;
+    }
+    
+    // 스크립트 로드
+    const script = document.createElement('script');
+    script.id = 'google-maps-script';
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+    script.async = true;
+    script.defer = true;
+    
+    window.initMap = initializeMap;
+    
+    script.onerror = () => {
+      setError('Google Maps API를 로드하는 중 오류가 발생했습니다.');
+      setIsLoading(false);
+    };
+    
+    document.head.appendChild(script);
+    
+    return () => {
+      window.initMap = undefined;
+      // 스크립트 제거는 하지 않음 (다른 컴포넌트에서도 사용할 수 있음)
+    };
+  }, [apiKey, initializeMap]);
   
   // 지도 이동이나 줌 변경 시에도 InfoWindow 스타일 적용
   useEffect(() => {
@@ -428,7 +428,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
     }
     
     setCurrentMarkers(newMarkers);
-  }, [googleMap, markers, showDefaultMap, defaultCenter, defaultZoom]);
+  }, [googleMap, markers, showDefaultMap, defaultCenter, defaultZoom, currentMarkers]);
   
   // 전역 스타일링 함수 노출
   interface ExtendedWindow extends Window {
