@@ -49,7 +49,6 @@ export default function PeriodFilter({
   onPeriodChange, 
   onFilterChange,
   onAnalysisUnitChange,
-  onSearchChange,
   onDateRangeChange
 }: PeriodFilterProps) {
   // 커스텀 날짜 범위 상태
@@ -86,17 +85,6 @@ export default function PeriodFilter({
     }
   }, [analysisUnit, onAnalysisUnitChange]);
 
-  // 검색어 상태 추가
-  const [searchTerm, setSearchTerm] = useState('');
-
-  // 검색어 변경 처리
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-    if (onSearchChange) {
-      onSearchChange(e.target.value);
-    }
-  };
-
   // 커스텀 날짜 범위 적용
   const applyCustomRange = () => {
     if (startDate && endDate) {
@@ -119,8 +107,7 @@ export default function PeriodFilter({
   };
 
   return (
-    <div className="mb-2 space-y-4 lg:space-y-0 lg:flex  item-center lg:gap-6">
-      {/* 기간 옵션 선택 박스 */}
+    <div className="flex flex-col md:flex-row lg:justify-between lg:items-center gap-2 mb-2 ">
       <div className="w-full md:w-1/4">
         <select
           value={useCustomRange ? 'custom' : period}
@@ -133,7 +120,7 @@ export default function PeriodFilter({
             setUseCustomRange(false);
             onPeriodChange(e.target.value);
           }}
-          className="w-full h-10 px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="w-full h-10 px-2 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
         >
           {PERIOD_OPTIONS.map(option => (
             <option key={option.id} value={option.id}>
@@ -144,31 +131,16 @@ export default function PeriodFilter({
         </select>
       </div>
 
-      {/* 검색 입력창 */}
-      <div className="w-full md:w-1/4">
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={handleSearchChange}
-          placeholder="검색어 입력"
-          className="w-full h-10 px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
-        />
-      </div>
-
-      {/* 커스텀 필터 부분 - 직접 선택일 때만 표시 */}
       {useCustomRange && (
-        <div className="flex flex-wrap  w-full">
-          {/* 모든 필터 요소를 한 줄로 정렬 (모바일에서는 2줄) */}
-          <div className="w-full flex flex-wrap md:flex-nowrap justify-between md:justify-between">
-            {/* 시작일 */}
-            <div className="w-1/2 md:w-[23%] mb-2 md:mb-0">
+        <div className="flex w-full gap-2">
+            <div className="w-1/2 ">
               <DatePickerInput
                 selected={startDate}
                 onChange={(date: Date | null) => setStartDate(date)}
                 selectsStart
                 startDate={startDate}
                 endDate={endDate}
-                placeholderText="시작일 선택"
+                placeholderText="시작일"
                 showMonthYearPicker={analysisUnit === 'month'}
                 showYearPicker={analysisUnit === 'year' || analysisUnit === 'decade'}
                 dateFormat={
@@ -179,8 +151,7 @@ export default function PeriodFilter({
               />
             </div>
 
-            {/* 종료일 */}
-            <div className="w-1/2 md:w-[23%] mb-2 md:mb-0">
+            <div className="w-1/2 ">
               <DatePickerInput
                 selected={endDate}
                 onChange={(date: Date | null) => setEndDate(date)}
@@ -188,7 +159,7 @@ export default function PeriodFilter({
                 startDate={startDate}
                 endDate={endDate}
                 minDate={startDate || undefined}
-                placeholderText="종료일 선택"
+                placeholderText="종료일"
                 showMonthYearPicker={analysisUnit === 'month'}
                 showYearPicker={analysisUnit === 'year' || analysisUnit === 'decade'}
                 dateFormat={
@@ -199,12 +170,11 @@ export default function PeriodFilter({
               />
             </div>
 
-            {/* 분석 단위 */}
-            <div className="w-1/2 md:w-[23%]">
+            <div className="w-1/4 ">
               <select
                 value={analysisUnit}
                 onChange={(e) => setAnalysisUnit(e.target.value)}
-                className="w-full h-10 px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full h-10 px-2 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-center"
               >
                 {UNIT_OPTIONS.map(option => (
                   <option key={option.id} value={option.id}>
@@ -214,15 +184,14 @@ export default function PeriodFilter({
               </select>
             </div>
 
-            {/* 적용 버튼 */}
-            <div className="w-1/2 md:w-[23%]">
+            <div className="w-1/4">
               <button
                 onClick={() => {
                   applyCustomRange();
                   setUseCustomRange(true);
                 }}
                 disabled={!startDate || !endDate}
-                className={`w-full h-10 px-4 py-2 rounded-md text-sm font-medium ${
+                className={`w-full h-10 px-2 py-2 rounded-md font-medium ${
                   !startDate || !endDate
                     ? 'bg-gray-500 text-gray-300 cursor-not-allowed'
                     : 'bg-blue-600 text-white hover:bg-blue-700'
@@ -232,7 +201,6 @@ export default function PeriodFilter({
               </button>
             </div>
           </div>
-        </div>
       )}
     </div>
   );

@@ -162,10 +162,10 @@ export function SearchFilter({
       {/* 필터 내용 */}
       {isFilterVisible && (
         <div className="p-4 bg-gray-800 rounded-md">
-          <form onSubmit={handleSearch} className="flex flex-col gap-3">
-            <div className="flex flex-col md:flex-row gap-3">
-              <div className="grid grid-cols-3 gap-2 w-full md:flex md:flex-row md:gap-3 md:flex-nowrap">
-                <div className="w-full md:w-40">
+          <form onSubmit={handleSearch}>
+            <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center w-full lg:gap-2">
+              <div className="grid grid-cols-3 w-full lg:w-1/2 gap-2">
+                <div className="w-full">
                   <select
                     value={regionFilter}
                     onChange={(e) => setRegionFilter(e.target.value)}
@@ -181,7 +181,7 @@ export function SearchFilter({
                   </select>
                 </div>
                 
-                <div className="w-full md:w-40">
+                <div className="w-full">
                   <select
                     value={typeFilter}
                     onChange={(e) => setTypeFilter(e.target.value as InstitutionTypeCode)}
@@ -193,7 +193,7 @@ export function SearchFilter({
                   </select>
                 </div>
                 
-                <div className="w-full md:w-40">
+                <div className="w-full">
                   <select
                     value={dateFilter}
                     onChange={(e) => setDateFilter(e.target.value)}
@@ -210,7 +210,7 @@ export function SearchFilter({
                 </div>
               </div>
               
-              <div className="w-full">
+              <div className="w-full lg:w-1/2 mt-3 lg:mt-0">
                 <SearchInput
                   value={searchQuery}
                   onChange={setSearchQuery}

@@ -33,7 +33,7 @@ const DatePickerInput: React.FC<DatePickerInputProps> = ({
   endDate,
   minDate,
   placeholderText,
-  className = "w-full h-10 px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500",
+  className = "w-full h-10 px-2 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-center",
   showMonthYearPicker = false,
   showYearPicker = false,
   dateFormat = "yyyy.MM.dd"
