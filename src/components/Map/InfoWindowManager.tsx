@@ -51,7 +51,6 @@ interface InfoWindowManagerProps {
   onClose?: () => void;
 }
 
-// 기본 스타일 객체
 const defaultInfoWindowStyle: InfoWindowStyle = {
   backgroundColor: '#FFFFFF',
   borderRadius: STYLE_CONSTANTS.borderRadius,
@@ -60,48 +59,81 @@ const defaultInfoWindowStyle: InfoWindowStyle = {
   closeButtonColor: STYLE_CONSTANTS.colors.lightGray
 };
 
-/**
- * InfoWindow 스타일을 적용하는 유틸리티 함수
- */
+const InfoWindowElements = {
+  getCloseButton(): HTMLElement | null {
+    return document.querySelector(STYLE_CONSTANTS.selectors.closeButton);
+  },
+  
+  getContainer(): HTMLElement | null {
+    return document.querySelector(STYLE_CONSTANTS.selectors.infoWindowContainer);
+  },
+  
+  getOuterContainer(): HTMLElement | null {
+    return document.querySelector(STYLE_CONSTANTS.selectors.outerContainer);
+  },
+  
+  getBackground(): HTMLElement | null {
+    return document.querySelector(STYLE_CONSTANTS.selectors.infoWindowBackground);
+  },
+  
+  getTail(): HTMLElement | null {
+    const background = this.getBackground();
+    if (!background) return null;
+    return background.querySelector(STYLE_CONSTANTS.selectors.infoWindowTail);
+  }
+};
+
+const InfoWindowStyling = {
+  setCloseButtonStyle(display: 'block' | 'none' = 'block'): void {
+    const closeButton = InfoWindowElements.getCloseButton();
+    if (closeButton) {
+      closeButton.style.display = display;
+    }
+  },
+  
+  setContainerStyle(style: InfoWindowStyle): void {
+    const container = InfoWindowElements.getContainer();
+    if (container) {
+      container.style.backgroundColor = style.backgroundColor || defaultInfoWindowStyle.backgroundColor!;
+      container.style.padding = '0';
+      container.style.borderRadius = style.borderRadius || defaultInfoWindowStyle.borderRadius!;
+    }
+  },
+  
+  removeBoxShadow(): void {
+    const outerContainer = InfoWindowElements.getOuterContainer();
+    if (outerContainer) {
+      outerContainer.style.boxShadow = 'none';
+    }
+  },
+  
+  setTailBackgroundColor(color: string = 'transparent'): void {
+    const tail = InfoWindowElements.getTail();
+    if (tail) {
+      tail.style.backgroundColor = color;
+    }
+  },
+  
+  applyDefaultStyles(): void {
+    this.setCloseButtonStyle('block');
+    this.setContainerStyle(defaultInfoWindowStyle);
+    this.removeBoxShadow();
+    this.setTailBackgroundColor('transparent');
+  }
+};
+
+export const styleDefaultInfoWindows = () => {
+  InfoWindowStyling.applyDefaultStyles();
+};
+
 export const applyInfoWindowStyle = (infoWindow: google.maps.InfoWindow, style: InfoWindowStyle = {}) => {
   const mergedStyle = { ...defaultInfoWindowStyle, ...style };
 
   infoWindow.addListener('domready', () => {
-    // 닫기 버튼 숨김 (다시 활성화)
-    const closeButton = document.querySelector(STYLE_CONSTANTS.selectors.closeButton) as HTMLElement;
-    if (closeButton) {
-      closeButton.style.display = 'none';
-    }
-    
-    const iwBackground = document.querySelector(STYLE_CONSTANTS.selectors.infoWindowBackground) as HTMLElement;
-    if (iwBackground) {
-      const iwTail = document.querySelector(STYLE_CONSTANTS.selectors.infoWindowTail) as HTMLElement;
-      if (iwTail) {
-        iwTail.style.backgroundColor = 'transparent';
-      }
-    }
-    
-    // InfoWindow 컨테이너 배경색만 설정
-    const container = document.querySelector(STYLE_CONSTANTS.selectors.infoWindowContainer) as HTMLElement;
-    if (container) {
-      container.style.backgroundColor = mergedStyle.backgroundColor!;
-      container.style.padding = '0';
-      container.style.borderRadius = mergedStyle.borderRadius!;
-    }
-    
-    // 그림자 제거
-    const iwOuter = document.querySelector(STYLE_CONSTANTS.selectors.outerContainer) as HTMLElement;
-    if (iwOuter) {
-      iwOuter.style.boxShadow = 'none';
-    }
-    
-    // 커스텀 닫기 버튼에 이벤트 리스너 추가
-    const customCloseButton = document.getElementById('infowindow-close-btn');
-    if (customCloseButton) {
-      customCloseButton.addEventListener('click', function() {
-        infoWindow.close();
-      });
-    }
+    InfoWindowStyling.setCloseButtonStyle('block');
+    InfoWindowStyling.setTailBackgroundColor('transparent');
+    InfoWindowStyling.setContainerStyle(mergedStyle);
+    InfoWindowStyling.removeBoxShadow();
   });
 
   return infoWindow;
@@ -124,7 +156,12 @@ const InfoWindowManager: React.FC<InfoWindowManagerProps> = ({
     if (!window.google?.maps || !map) return;
     
     if (!infoWindowRef.current) {
-      const infoWindow = new google.maps.InfoWindow(options);
+      // InfoWindow 생성 시 옵션에 disableAutoPan:true 추가
+      const infoWindowOptions = {
+        ...options,
+        disableAutoPan: true // 항상 true로 설정하여 줌 레벨 유지
+      };
+      const infoWindow = new google.maps.InfoWindow(infoWindowOptions);
       infoWindowRef.current = applyInfoWindowStyle(infoWindow, style);
       
       if (onClose) {
@@ -138,15 +175,33 @@ const InfoWindowManager: React.FC<InfoWindowManagerProps> = ({
       }
       
       if (options.maxWidth !== undefined) {
-        infoWindowRef.current.setOptions({ maxWidth: options.maxWidth });
+        infoWindowRef.current.setOptions({ 
+          maxWidth: options.maxWidth,
+          disableAutoPan: true // 항상 true로 설정하여 줌 레벨 유지
+        });
       }
     }
     
     if (isOpen) {
       if (marker) {
-        infoWindowRef.current?.open(map, marker);
+        // 항상 autoPan을 비활성화하는 옵션 설정
+        const options = { disableAutoPan: true };
+        infoWindowRef.current?.open({
+          map: map,
+          anchor: marker,
+          shouldFocus: false,
+          ...options
+        });
       } else if (options.position) {
-        infoWindowRef.current?.open(map);
+        // 항상 autoPan을 비활성화하는 옵션 설정
+        const openOptions = { disableAutoPan: true };
+        // 먼저 position 설정 후 open 호출
+        infoWindowRef.current?.setPosition(options.position);
+        infoWindowRef.current?.open({
+          map: map,
+          shouldFocus: false,
+          ...openOptions
+        });
       }
     } else {
       infoWindowRef.current?.close();
@@ -186,7 +241,6 @@ export interface CustomerInfo {
 export const createCustomerInfoContent = (
   customer: CustomerInfo,
   isCompanyAddress: boolean,
-  uniqueId: string
 ) => {
   const addressType = isCompanyAddress ? '회사' : '자택';
   const address = isCompanyAddress ? customer.address_company : customer.address;
@@ -195,12 +249,11 @@ export const createCustomerInfoContent = (
   return `
     <div style="min-width: 250px; max-width: 280px; padding: 16px; word-break: break-word; background-color: white; border-radius: 6px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-        <div style="max-width: 70%;">
+        <div style="max-width: 85%;">
           <h3 style="font-size: 16px; font-weight: bold; margin: 0; overflow: hidden; text-overflow: ellipsis; color: black;">${customer.customer_name}<span style="color: #9CA3AF; margin-left: 4px;">[${addressType}]</span></h3>
         </div>
-        <div style="display: flex; align-items: center; gap: 8px;">
+        <div style="display: flex; align-items: center;">
           <span style="background-color: ${tierDisplayColor}; color: white; padding: 4px 6px; border-radius: 4px; font-size: 12px;">${customer.tier || '일반'}</span>
-          <button id="${uniqueId}" style="background-color: #f3f4f6; border: none; border-radius: 4px; color: black; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer;">✕</button>
         </div>
       </div>
       <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
@@ -300,12 +353,11 @@ export const createInstitutionInfoContent = (institution: SerializedInstitution)
   return `
     <div style="min-width: 250px; max-width: 280px; padding: 16px; word-break: break-word; background-color: white; border-radius: 6px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-        <div style="max-width: 70%;">
+        <div style="max-width: 85%;">
           <h3 style="font-size: 16px; font-weight: bold; margin: 0; overflow: hidden; text-overflow: ellipsis; color: black;">${name || '이름 없음'}</h3>
         </div>
-        <div style="display: flex; align-items: center; gap: 8px;">
+        <div style="display: flex; align-items: center;">
           <span style="background-color: ${typeColor}; color: white; padding: 4px 6px; border-radius: 4px; font-size: 12px;">${typeName}</span>
-          <button id="infowindow-close-btn" style="background-color: #f3f4f6; border: none; border-radius: 4px; color: black; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px;">✕</button>
         </div>
       </div>
       <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
@@ -336,46 +388,6 @@ export const createInstitutionInfoContent = (institution: SerializedInstitution)
       </p>` : ''}
     </div>
   `;
-};
-
-/**
- * 모든 InfoWindow의 스타일을 적용하는 글로벌 함수
- */
-export const styleDefaultInfoWindows = () => {
-  // 기본 닫기 버튼 숨김 (다시 활성화)
-  const closeButton = document.querySelector(STYLE_CONSTANTS.selectors.closeButton) as HTMLElement;
-  if (closeButton) {
-    closeButton.style.display = 'none';
-  }
-  
-  // InfoWindow 컨테이너 배경색만 설정
-  const container = document.querySelector(STYLE_CONSTANTS.selectors.infoWindowContainer) as HTMLElement;
-  if (container) {
-    container.style.backgroundColor = defaultInfoWindowStyle.backgroundColor!;
-    container.style.padding = '0';
-    container.style.borderRadius = defaultInfoWindowStyle.borderRadius!;
-  }
-  
-  // 그림자 제거
-  const iwOuter = document.querySelector(STYLE_CONSTANTS.selectors.outerContainer) as HTMLElement;
-  if (iwOuter) {
-    iwOuter.style.boxShadow = 'none';
-  }
-  
-  // 커스텀 닫기 버튼에 이벤트 리스너 추가
-  const customCloseButton = document.getElementById('infowindow-close-btn');
-  if (customCloseButton) {
-    customCloseButton.addEventListener('click', function() {
-      const infoWindows = document.querySelectorAll('.gm-style-iw-a');
-      if (infoWindows.length > 0) {
-        // 구글맵 InfoWindow 닫기 버튼 클릭 효과 발생
-        const closeButton = document.querySelector('.gm-ui-hover-effect') as HTMLElement;
-        if (closeButton) {
-          closeButton.click();
-        }
-      }
-    });
-  }
 };
 
 export default InfoWindowManager; 

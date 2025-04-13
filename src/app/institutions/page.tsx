@@ -96,11 +96,6 @@ export default function MedicalInstitutions() {
       if (data.error) {
         throw new Error(data.error);
       }
-      
-      // 지도 뷰에서 데이터 로드 시 콘솔 메시지 추가
-      if (viewMode === 'map') {
-        console.log(`지도 뷰: ${data.institutions.length}개 의료기관 데이터 로드됨 (전체 ${data.total}개)`);
-      }
             
       setFilteredInstitutions(data.institutions);
       setTotalItems(data.total);

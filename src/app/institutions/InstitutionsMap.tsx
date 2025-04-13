@@ -116,7 +116,7 @@ export default function InstitutionMap({
           onClose={handleInfoWindowClose}
           options={{
             content: createInstitutionInfoContent(currentInfoWindow.institution),
-            disableAutoPan: false,
+            disableAutoPan: true,
             pixelOffset: window.google?.maps ? new google.maps.Size(0, -10) : undefined
           }}
           style={{

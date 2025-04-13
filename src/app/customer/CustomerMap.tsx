@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Customer } from '@/types/customer';
 import CustomerFilterForm from '@/components/Customer/CustomerFilterForm';
 import GoogleMap from '@/components/Map/GoogleMap';
@@ -28,7 +28,6 @@ const CustomerMap: React.FC<CustomerMapProps> = ({ customers, apiKey }) => {
   const [showDefaultMap, setShowDefaultMap] = useState<boolean>(false);
   const [currentInfoWindow, setCurrentInfoWindow] = useState<CurrentInfoWindow | null>(null);
   const [googleMapInstance, setGoogleMapInstance] = useState<google.maps.Map | null>(null);
-  const uniqueIdRef = useRef<string>(`close-btn-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
 
   // 필터링 로직
   const filterCustomers = useCallback((searchTerm: string, tier: string) => {
@@ -70,20 +69,6 @@ const CustomerMap: React.FC<CustomerMapProps> = ({ customers, apiKey }) => {
     setCurrentInfoWindow(null);
   }, []);
 
-  // 마커에 사용자 정의 클릭 이벤트 리스너 추가
-  const handleCustomCloseButtonClick = useCallback(() => {
-    // 정보창 닫기
-    handleInfoWindowClose();
-    
-    // 사용자 정의 버튼 이벤트 리스너 제거 (메모리 누수 방지)
-    setTimeout(() => {
-      const customBtn = document.getElementById(uniqueIdRef.current);
-      if (customBtn) {
-        customBtn.removeEventListener('click', handleCustomCloseButtonClick);
-      }
-    }, 100);
-  }, [handleInfoWindowClose]);
-
   // 지도 초기화 콜백
   const handleMapInit = useCallback((map: google.maps.Map) => {
     setGoogleMapInstance(map);
@@ -114,29 +99,6 @@ const CustomerMap: React.FC<CustomerMapProps> = ({ customers, apiKey }) => {
     setFilteredCustomers(filtered);
     setShowDefaultMap(filtered.length === 0);
   }, [search, tierFilter, filterCustomers]);
-
-  useEffect(() => {
-    // 현재 ref 값을 지역 변수로 캡처
-    const currentId = uniqueIdRef.current;
-    
-    // DOM에 추가된 후 사용자 정의 버튼에 이벤트 리스너 추가
-    if (currentInfoWindow?.isOpen) {
-      setTimeout(() => {
-        const customBtn = document.getElementById(currentId);
-        if (customBtn) {
-          customBtn.addEventListener('click', handleCustomCloseButtonClick);
-        }
-      }, 100);
-    }
-
-    return () => {
-      // 컴포넌트 언마운트 또는 정보창이 변경될 때 이벤트 리스너 제거
-      const customBtn = document.getElementById(currentId);
-      if (customBtn) {
-        customBtn.removeEventListener('click', handleCustomCloseButtonClick);
-      }
-    };
-  }, [currentInfoWindow, handleCustomCloseButtonClick]);
 
   useEffect(() => {
     if (!filteredCustomers?.length || !window.google?.maps) {
@@ -191,10 +153,9 @@ const CustomerMap: React.FC<CustomerMapProps> = ({ customers, apiKey }) => {
           options={{
             content: createCustomerInfoContent(
               currentInfoWindow.customer as unknown as CustomerInfo, 
-              currentInfoWindow.isCompany,
-              uniqueIdRef.current
+              currentInfoWindow.isCompany
             ),
-            disableAutoPan: false,
+            disableAutoPan: true,
             pixelOffset: new google.maps.Size(0, -10)
           }}
           style={{
