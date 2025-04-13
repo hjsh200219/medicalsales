@@ -31,7 +31,36 @@ export default function CustomerManagement() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalCustomers, setTotalCustomers] = useState(0);
-  const [pageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(10);
+  
+  // 화면 크기에 따라 페이지당 표시 아이템 수 조정
+  useEffect(() => {
+    function handleResize() {
+      // 모바일 화면 (sm)
+      if (window.innerWidth < 768) {
+        setPageSize(6);
+      } 
+      // 태블릿 화면 (md)
+      else if (window.innerWidth < 1024) {
+        setPageSize(8);
+      } 
+      // 데스크탑 화면 (lg)
+      else {
+        setPageSize(12);
+      }
+    }
+    
+    // 초기 로드 시 실행
+    handleResize();
+    
+    // 화면 크기 변경 시 실행
+    window.addEventListener('resize', handleResize);
+    
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
   
   // 로딩 상태일 때 로그인 확인
   useEffect(() => {

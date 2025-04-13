@@ -30,7 +30,7 @@ export default function MedicalInstitutions() {
       } 
       // 태블릿 화면 (md)
       else if (window.innerWidth < 1024) {
-        setItemsPerPage(10);
+        setItemsPerPage(8);
       } 
       // 데스크탑 화면 (lg)
       else {
