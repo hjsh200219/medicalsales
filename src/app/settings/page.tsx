@@ -1,5 +1,5 @@
 import Layout from '@/app/layout';
-import PageHeader from '@/components/PageHeader';
+import PageHeader from '@/components/UI/PageHeader';
 
 export default function Settings() {
   return (

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import Layout from '@/components/Layout';
-import PageHeader from '@/components/PageHeader';
+import PageHeader from '@/components/UI/PageHeader';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
