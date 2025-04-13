@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useCallback } from 'react';
-import { SearchInput } from './SearchInput';
+import { SearchInput } from '@/components/UI/SearchInput';
 import { REGION_CODES, getRegionFromAddress } from '@/types/regions';
 import { SerializedInstitution, INSTITUTION_TYPES, InstitutionTypeCode } from '@/types/institution';
 
@@ -210,7 +210,7 @@ export function SearchFilter({
                 </div>
               </div>
               
-              <div className="w-full">
+              <div className="w-full md:flex-1">
                 <SearchInput
                   value={searchQuery}
                   onChange={setSearchQuery}

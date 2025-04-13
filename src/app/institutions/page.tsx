@@ -2,12 +2,12 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Layout from '@/components/Layout';
-import PageHeader from '@/components/PageHeader';
-import { SearchFilter } from '@/components/InstitutionFilter';
+import PageHeader from '@/components/UI/PageHeader';
+import { SearchFilter } from '@/components/Institution/InstitutionFilter';
 import { SerializedInstitution } from '@/types/institution';
-import { InstitutionsList } from '@/app/medical-institutions/InstitutionsList';
-import InstitutionMap from '@/app/medical-institutions/InstitutionsMap';
-import { LoadingSpinner, LoadingSpinnerStyles } from '@/components/LoadingSpinner';
+import { InstitutionsList } from '@/app/institutions/InstitutionsList';
+import InstitutionMap from '@/app/institutions/InstitutionsMap';
+import { LoadingSpinner, LoadingSpinnerStyles } from '@/components/UI/LoadingSpinner';
 
 export default function MedicalInstitutions() {
   const [filteredInstitutions, setFilteredInstitutions] = useState<SerializedInstitution[]>([]);
@@ -58,19 +58,25 @@ export default function MedicalInstitutions() {
     setCurrentPage(1);
   }, [filterParams]);
 
-  // 데이터를 가져오는 함수를 useCallback으로 래핑
+  // 데이터를 가져오는 함수
   const fetchInstitutions = useCallback(async () => {
     try {
       setLoading(true);
       
-      // 페이지네이션 계산
-      const offset = (currentPage - 1) * itemsPerPage;
-      
       // URL 파라미터 생성
-      const queryParams = new URLSearchParams({
-        offset: offset.toString(),
-        limit: itemsPerPage.toString(),
-      });
+      const queryParams = new URLSearchParams();
+      
+      // 지도 뷰일 땐 페이지네이션 없이 모든 데이터를 가져옴
+      if (viewMode === 'map') {
+        // 지도 뷰에서는 제한 없이 모든 데이터를 로드
+        queryParams.append('limit', '5000'); // 충분히 큰 숫자로 설정
+        queryParams.append('offset', '0');
+      } else {
+        // 리스트 뷰에서는 페이지네이션 적용
+        const offset = (currentPage - 1) * itemsPerPage;
+        queryParams.append('offset', offset.toString());
+        queryParams.append('limit', itemsPerPage.toString());
+      }
       
       // 필터 파라미터 추가
       Object.entries(filterParams).forEach(([key, value]) => {
@@ -90,6 +96,11 @@ export default function MedicalInstitutions() {
       if (data.error) {
         throw new Error(data.error);
       }
+      
+      // 지도 뷰에서 데이터 로드 시 콘솔 메시지 추가
+      if (viewMode === 'map') {
+        console.log(`지도 뷰: ${data.institutions.length}개 의료기관 데이터 로드됨 (전체 ${data.total}개)`);
+      }
             
       setFilteredInstitutions(data.institutions);
       setTotalItems(data.total);
@@ -99,9 +110,9 @@ export default function MedicalInstitutions() {
     } finally {
       setLoading(false);
     }
-  }, [currentPage, itemsPerPage, filterParams]);
+  }, [currentPage, itemsPerPage, filterParams, viewMode]);
 
-  // 페이지 또는 필터가 변경되면 데이터 다시 로드
+  // 페이지, 필터 또는 뷰 모드가 변경되면 데이터 다시 로드
   useEffect(() => {
     fetchInstitutions();
   }, [fetchInstitutions]);
@@ -140,14 +151,14 @@ export default function MedicalInstitutions() {
       <div className="flex bg-gray-700 p-1 rounded-md">
         <button
           className={`py-1 px-4 rounded-md ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-600'}`}
-          onClick={() => setViewMode('list')}
+          onClick={() => viewMode !== 'list' && setViewMode('list')}
           disabled={disabled}
         >
           리스트
         </button>
         <button
           className={`py-1 px-4 rounded-md ${viewMode === 'map' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-600'}`}
-          onClick={() => setViewMode('map')}
+          onClick={() => viewMode !== 'map' && setViewMode('map')}
           disabled={disabled}
         >
           지도

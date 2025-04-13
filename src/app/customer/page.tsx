@@ -4,14 +4,14 @@ import { useState, useEffect, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Layout from '@/components/Layout';
-import PageHeader from '@/components/PageHeader';
-import CustomerFilterForm from '@/components/CustomerFilterForm';
-import CustomerList from '@/app/customer-management/CustomerList';
-import CustomerAddForm from '@/components/CustomerAddForm';
-import CustomerEditForm from '@/components/CustomerEditForm';
-import CustomerMap from '@/app/customer-management/CustomerMap';
+import PageHeader from '@/components/UI/PageHeader';
+import CustomerFilterForm from '@/components/Customer/CustomerFilterForm';
+import CustomerList from '@/app/customer/CustomerList';
+import CustomerAddForm from '@/components/Customer/CustomerAddForm';
+import CustomerEditForm from '@/components/Customer/CustomerEditForm';
+import CustomerMap from '@/app/customer/CustomerMap';
 import { Customer } from '@/types/customer';
-import { LoadingSpinner, LoadingSpinnerStyles } from '@/components/LoadingSpinner';
+import { LoadingSpinner, LoadingSpinnerStyles } from '@/components/UI/LoadingSpinner';
 
 export default function CustomerManagement() {
   const { data: session, status } = useSession();

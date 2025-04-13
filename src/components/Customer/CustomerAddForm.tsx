@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
-import CustomerForm, { CustomerFormData } from '@/components/CustomerForm';
-import CustomerExcelUpload from '@/components/CustomerExcelUpload';
+import CustomerForm, { CustomerFormData } from '@/components/Customer/CustomerForm';
+import CustomerExcelUpload from '@/components/Customer/CustomerExcelUpload';
 
 // 고객 추가 폼 컴포넌트
 type CustomerAddFormProps = {

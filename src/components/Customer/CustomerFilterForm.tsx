@@ -1,6 +1,6 @@
 import React from 'react';
 import { tierColors } from '@/types/tierColors';
-import { SearchInput } from './SearchInput';
+import { SearchInput } from '@/components/UI/SearchInput';
 
 // 고객 검색 필터 컴포넌트
 type CustomerFilterFormProps = {
@@ -41,7 +41,7 @@ export default function CustomerFilterForm({
           }
         </select>
         
-        <div className="flex-1 min-w-[200px]">
+        <div className="flex-1 w-full md:w-auto lg:w-full xl:w-full">
           <SearchInput
             value={search}
             onChange={setSearch}

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { getTierColor } from '@/types/tierColors';
+import { SerializedInstitution, INSTITUTION_TYPES } from '@/types/institution';
 
 // 스타일 관련 상수 정의
 const STYLE_CONSTANTS = {
@@ -189,7 +190,7 @@ export const createCustomerInfoContent = (
           <h3 style="font-size: 16px; font-weight: bold; margin: 0; overflow: hidden; text-overflow: ellipsis; color: black;">${customer.customer_name}<span style="color: #9CA3AF; margin-left: 4px;">[${addressType}]</span></h3>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="background-color: ${tierDisplayColor}; color: white; padding: 2px 6px; border-radius: 4px; font-size: 12px;">${customer.tier || '일반'}</span>
+          <span style="background-color: ${tierDisplayColor}; color: white; padding: 4px 6px; border-radius: 4px; font-size: 12px;">${customer.tier || '일반'}</span>
           <button id="${uniqueId}" style="background-color: #f3f4f6; border: none; border-radius: 4px; color: black; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer;">✕</button>
         </div>
       </div>
@@ -234,6 +235,84 @@ export const createCustomerInfoContent = (
             </svg>
             ${customer.position}
           </p>` : ''}
+    </div>
+  `;
+};
+
+/**
+ * 개설일자 포맷팅 함수
+ */
+export const formatOpenDate = (openDate: string | null | undefined): string => {
+  if (!openDate) return '정보 없음';
+  
+  try {
+    const dateObj = new Date(openDate);
+    
+    // 유효한 날짜인지 확인
+    if (isNaN(dateObj.getTime())) {
+      return '정보 없음';
+    }
+    
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    
+    return `${year}년 ${month}월 ${day}일`;
+  } catch {
+    return '정보 없음';
+  }
+};
+
+/**
+ * 의료기관 정보창 내용 생성 함수
+ */
+export const createInstitutionInfoContent = (institution: SerializedInstitution) => {
+  const { name, address, phone, type, open_date } = institution;
+  const code = 'code' in institution ? institution['code' as keyof typeof institution] : undefined;
+  
+  // 의료기관 유형 찾기
+  const institutionType = INSTITUTION_TYPES.find(t => t.code === type) || INSTITUTION_TYPES[0];
+  const typeName = institutionType.name;
+  const typeColor = institutionType.color;
+  
+  const formattedOpenDate = formatOpenDate(open_date);
+  
+  return `
+    <div style="min-width: 250px; max-width: 280px; padding: 16px; word-break: break-word; background-color: white; border-radius: 6px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <div style="max-width: 70%;">
+          <h3 style="font-size: 16px; font-weight: bold; margin: 0; overflow: hidden; text-overflow: ellipsis; color: black;">${name || '이름 없음'}</h3>
+        </div>
+        <div>
+          <span style="background-color: ${typeColor}; color: white; padding: 4px 6px; border-radius: 4px; font-size: 12px;">${typeName}</span>
+        </div>
+      </div>
+      <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+        </svg>
+        <a href="tel:${phone || '없음'}" style="text-decoration: none;">${phone || '없음'}</a>
+      </p>
+      <p style="color: black; margin: 6px 0; padding-right: 20px; display: flex; align-items: center;">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        ${address || '없음'}
+      </p>
+      <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        ${formattedOpenDate}
+      </p>
+      ${code ? `
+      <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+        </svg>
+        ${code}
+      </p>` : ''}
     </div>
   `;
 };

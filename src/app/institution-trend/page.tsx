@@ -1,5 +1,5 @@
 import Layout from '@/components/Layout';
-import PageHeader from '@/components/PageHeader';
+import PageHeader from '@/components/UI/PageHeader';
 
 export default function OpeningTrends() {
   return (

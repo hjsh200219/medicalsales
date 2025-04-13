@@ -1,7 +1,7 @@
 import React from 'react';
 import { Customer } from '@/types/customer';
-import Pagination from '@/components/Pagination';
-import CustomerCard from '@/components/CustomerCard';
+import Pagination from '@/components/UI/Pagination';
+import CustomerCard from '@/components/Customer/CustomerCard';
 
 // 고객 목록 컴포넌트
 type CustomerListProps = {

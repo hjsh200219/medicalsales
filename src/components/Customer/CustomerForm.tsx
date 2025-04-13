@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import AddressCoordinateConverter from './AddressCoordinateConverter';
+import AddressCoordinateConverter from '@/components/Map/AddressCoordinateConverter';
 import { Customer } from '@/types/customer';
 import { tierColors } from '@/types/tierColors';
 

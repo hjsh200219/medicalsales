@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import * as XLSX from 'xlsx';
 import { useSession } from 'next-auth/react';
-import { LoadingSpinner, LoadingSpinnerStyles } from '@/components/LoadingSpinner';
+import { LoadingSpinner, LoadingSpinnerStyles } from '@/components/UI/LoadingSpinner';
 
 interface CustomerExcelUploadProps {
   onSuccess?: (result: { success: number, failed: number }) => void;

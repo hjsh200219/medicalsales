@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 function SignInContent() {
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/medical-institutions';
+  const callbackUrl = searchParams.get('callbackUrl') || '/institutions';
   const error = searchParams.get('error');
 
   return (

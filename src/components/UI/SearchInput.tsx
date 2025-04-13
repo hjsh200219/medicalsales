@@ -25,16 +25,16 @@ export function SearchInput({
   
   return (
     <div className="w-full">
-      <div className="relative flex-1 min-w-[200px] md:pr-4 lg:pr-0">
+      <div className="relative flex-1 min-w-[200px] w-full md:w-full lg:w-full xl:w-full">
         <input 
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className="w-full px-3 py-2 pr-10 ㅡㅇ bg-gray-700 text-white rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="w-full px-3 py-2 pr-10 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
         />
-        <div className="absolute inset-y-0 right-0 flex items-center pr-3 md:pr-7 lg:pr-3 pointer-events-none">
+        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"

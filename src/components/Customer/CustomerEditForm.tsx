@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Customer } from '@/types/customer';
-import CustomerForm, { CustomerFormData } from '@/components/CustomerForm';
+import CustomerForm, { CustomerFormData } from '@/components/Customer/CustomerForm';
 
 // 고객 수정 폼 컴포넌트
 type CustomerEditFormProps = {

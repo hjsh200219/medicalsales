@@ -1,20 +1,12 @@
 'use client';
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { applyInfoWindowStyle, styleDefaultInfoWindows } from './InfoWindowManager';
+import { applyInfoWindowStyle, styleDefaultInfoWindows } from '@/components/Map/InfoWindowManager';
+import { MapMarker } from '@/components/Map/MarkerUtils';
 
 export interface MapPosition {
   lat: number;
   lng: number;
-}
-
-export interface MapMarker {
-  id: string;
-  position: MapPosition;
-  title?: string;
-  icon?: google.maps.Icon | string;
-  label?: google.maps.MarkerLabel | string;
-  onClick?: (marker: google.maps.Marker) => void;
 }
 
 interface GoogleMapProps {
@@ -178,7 +170,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [googleMap, setGoogleMap] = useState<google.maps.Map | null>(null);
-  const [currentMarkers, setCurrentMarkers] = useState<Map<string, google.maps.Marker>>(new Map());
+  const currentMarkersRef = useRef<Map<string, google.maps.Marker>>(new Map());
   const [isLocating, setIsLocating] = useState(false);
   const currentLocationMarkerRef = useRef<google.maps.Marker | null>(null);
   
@@ -305,15 +297,20 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
   
   // Google Maps API 로드
   useEffect(() => {
+    // API 키가 없는 경우
     if (!apiKey) {
       setError('API 키가 제공되지 않았습니다.');
       setIsLoading(false);
       return;
     }
     
-    // 이미 로드된 경우
+    // 이미 초기화된 맵이 있는 경우 다시 초기화하지 않음
+    if (googleMap) {
+      return;
+    }
+    
+    // 이미 구글 맵이 로드된 경우
     if (window.google && window.google.maps) {
-      setIsLoading(false);
       initializeMap();
       return;
     }
@@ -345,7 +342,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
       window.initMap = undefined;
       // 스크립트 제거는 하지 않음 (다른 컴포넌트에서도 사용할 수 있음)
     };
-  }, [apiKey, initializeMap]);
+  }, [apiKey, initializeMap, googleMap]);
   
   // 지도 이동이나 줌 변경 시에도 InfoWindow 스타일 적용
   useEffect(() => {
@@ -370,65 +367,131 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
     
     // Google Maps API가 로드되었는지 확인
     if (typeof window === 'undefined' || !window.google || !window.google.maps) {
+      console.error('GoogleMap 컴포넌트: Google Maps API가 로드되지 않음');
       return;
     }
     
+    console.log(`GoogleMap 컴포넌트: ${markers.length}개의 마커 업데이트 시작`);
+    
     // 기존 마커 제거
-    currentMarkers.forEach(marker => marker.setMap(null));
+    const previousMarkerCount = currentMarkersRef.current.size;
+    currentMarkersRef.current.forEach(marker => marker.setMap(null));
+    console.log(`GoogleMap 컴포넌트: ${previousMarkerCount}개의 기존 마커 제거됨`);
+    
     const newMarkers = new Map<string, google.maps.Marker>();
     
     // 기본 지도 모드이거나 마커가 없는 경우 중앙 위치 기본값 사용
     if (showDefaultMap || markers.length === 0) {
       googleMap.setCenter(defaultCenter);
       googleMap.setZoom(defaultZoom);
-      setCurrentMarkers(newMarkers);
+      currentMarkersRef.current = newMarkers;
+      console.log('GoogleMap 컴포넌트: 마커가 없거나 기본 지도 모드로 표시');
       return;
     }
     
+    // 마커 데이터 검증
+    if (markers.some(m => !m.position || typeof m.position.lat !== 'number' || typeof m.position.lng !== 'number')) {
+      console.error('GoogleMap 컴포넌트: 일부 마커에 잘못된 좌표 포함됨', 
+        markers.filter(m => !m.position || typeof m.position.lat !== 'number' || typeof m.position.lng !== 'number')
+      );
+    }
+    
+    // 실제 마커 좌표 샘플 로깅
+    console.log('GoogleMap 컴포넌트: 마커 좌표 샘플', 
+      markers.slice(0, 5).map(m => `${m.id}: (${m.position.lat}, ${m.position.lng})`)
+    );
+    
     // 새 마커 추가 및 bounds 계산
     const bounds = new google.maps.LatLngBounds();
-    markers.forEach(markerData => {
-      const marker = new google.maps.Marker({
-        position: markerData.position,
-        map: googleMap,
-        title: markerData.title,
-        icon: markerData.icon,
-        label: markerData.label
-      });
-      
-      // 클릭 이벤트 핸들러 추가
-      if (markerData.onClick) {
-        marker.addListener('click', () => {
-          // 마커 클릭 핸들러 호출
-          markerData.onClick!(marker);
-          
-          // 짧은 지연 후 InfoWindow 스타일링 적용
-          setTimeout(styleDefaultInfoWindows, 10);
+    let addedMarkers = 0;
+    let failedMarkers = 0;
+    
+    // 마커가 많은 경우 성능 개선을 위해 배치 처리
+    const batchSize = 100;
+    const totalBatches = Math.ceil(markers.length / batchSize);
+    
+    try {
+      for (let batchIndex = 0; batchIndex < totalBatches; batchIndex++) {
+        const start = batchIndex * batchSize;
+        const end = Math.min(start + batchSize, markers.length);
+        const currentBatch = markers.slice(start, end);
+        console.log(`GoogleMap 컴포넌트: 배치 ${batchIndex + 1}/${totalBatches} 처리 중 (${currentBatch.length}개)`);
+        
+        currentBatch.forEach(markerData => {
+          try {
+            // 좌표가 유효한지 확인
+            if (!markerData.position || 
+                typeof markerData.position.lat !== 'number' || 
+                typeof markerData.position.lng !== 'number' ||
+                isNaN(markerData.position.lat) || 
+                isNaN(markerData.position.lng)) {
+              console.warn(`GoogleMap 컴포넌트: 유효하지 않은 마커 좌표 - ${markerData.id}`);
+              failedMarkers++;
+              return;
+            }
+            
+            const marker = new google.maps.Marker({
+              position: markerData.position,
+              map: googleMap,
+              title: markerData.title,
+              icon: markerData.icon,
+              label: markerData.label
+            });
+            
+            // 클릭 이벤트 핸들러 추가
+            if (markerData.onClick) {
+              marker.addListener('click', () => {
+                // 마커 클릭 핸들러 호출
+                markerData.onClick!(marker);
+                
+                // 짧은 지연 후 InfoWindow 스타일링 적용
+                setTimeout(styleDefaultInfoWindows, 10);
+              });
+            }
+            
+            newMarkers.set(markerData.id, marker);
+            bounds.extend(markerData.position);
+            addedMarkers++;
+          } catch (err) {
+            failedMarkers++;
+            console.error(`GoogleMap 컴포넌트: 마커 생성 중 오류 (${markerData.id}):`, err);
+          }
         });
       }
       
-      newMarkers.set(markerData.id, marker);
-      bounds.extend(markerData.position);
-    });
+      console.log(`GoogleMap 컴포넌트: ${addedMarkers}/${markers.length}개의 마커가 성공적으로 추가됨 (실패: ${failedMarkers}개)`);
     
-    // 모든 마커가 보이도록 지도 이동
-    if (markers.length > 1) {
-      googleMap.fitBounds(bounds);
-      
-      // 과도한 줌 방지
-      google.maps.event.addListenerOnce(googleMap, 'bounds_changed', () => {
-        if (googleMap.getZoom() && googleMap.getZoom()! > 15) {
-          googleMap.setZoom(15);
-        }
-      });
-    } else if (markers.length === 1) {
-      // 마커가 하나인 경우 해당 위치로 이동
-      googleMap.setCenter(markers[0].position);
-      googleMap.setZoom(14);
+      // 모든 마커가 보이도록 지도 이동
+      if (addedMarkers > 1) {
+        console.log('GoogleMap 컴포넌트: 여러 마커 표시를 위해 지도 범위 조정');
+        googleMap.fitBounds(bounds);
+        
+        // 과도한 줌 방지
+        google.maps.event.addListenerOnce(googleMap, 'bounds_changed', () => {
+          if (googleMap.getZoom() && googleMap.getZoom()! > 15) {
+            googleMap.setZoom(15);
+          }
+        });
+      } else if (addedMarkers === 1) {
+        // 마커가 하나인 경우 해당 위치로 이동
+        const onlyMarker = Array.from(newMarkers.values())[0];
+        googleMap.setCenter(onlyMarker.getPosition()!);
+        googleMap.setZoom(14);
+        console.log('GoogleMap 컴포넌트: 단일 마커 위치로 지도 중앙 이동');
+      } else {
+        console.warn('GoogleMap 컴포넌트: 추가된 마커가 없어 기본 위치 표시');
+        googleMap.setCenter(defaultCenter);
+        googleMap.setZoom(defaultZoom);
+      }
+    } catch (error) {
+      console.error('GoogleMap 컴포넌트: 마커 처리 중 치명적 오류 발생:', error);
     }
     
-    setCurrentMarkers(newMarkers);
-  }, [googleMap, markers, showDefaultMap, defaultCenter, defaultZoom, currentMarkers]);
+    // 마커 상태 업데이트
+    currentMarkersRef.current = newMarkers;
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [googleMap, markers, showDefaultMap, defaultCenter, defaultZoom]);
   
   // 전역 스타일링 함수 노출
   interface ExtendedWindow extends Window {

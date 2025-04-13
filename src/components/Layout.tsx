@@ -1,4 +1,4 @@
-import Navigation from '@/components/Navigation';
+import Navigation from '@/components/UI/Navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import Script from 'next/script';
@@ -14,7 +14,7 @@ export default function Layout({ children }: LayoutProps) {
       {/* 헤더 */}
       <header className="bg-blue-500 text-white shadow-lg">
         <div className="container mx-auto px-2 py-2 flex justify-between items-center">
-          <Link href="/medical-institutions" className="text-2xl font-bold hover:text-white/90 transition-colors">
+          <Link href="/institutions" className="text-2xl font-bold hover:text-white/90 transition-colors">
             <Image
               src="/images/ms_logo.png" 
               alt="Medical Sales" 

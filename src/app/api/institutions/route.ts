@@ -163,7 +163,7 @@ export async function GET(request: NextRequest) {
     console.log(`[API] 페이징 파라미터: limit=${actualLimit}, offset=${actualOffset}, 파라미터 인덱스=${paramIndex}-${paramIndex+1}`);
     const dataQuery = `
       SELECT * FROM institutions${whereClause} 
-      ORDER BY name ASC
+      ORDER BY open_date DESC
       LIMIT $${paramIndex} OFFSET $${paramIndex+1}
     `;
     console.log('[API] 데이터 쿼리:', dataQuery);

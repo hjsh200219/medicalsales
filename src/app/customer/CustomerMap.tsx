@@ -2,10 +2,10 @@
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Customer } from '@/types/customer';
-import { getTierColor } from '@/types/tierColors';
-import CustomerFilterForm from '@/components/CustomerFilterForm';
-import GoogleMap, { MapMarker } from '@/components/GoogleMap';
-import InfoWindowManager, { createCustomerInfoContent, CustomerInfo } from '@/components/InfoWindowManager';
+import CustomerFilterForm from '@/components/Customer/CustomerFilterForm';
+import GoogleMap from '@/components/Map/GoogleMap';
+import InfoWindowManager, { createCustomerInfoContent, CustomerInfo } from '@/components/Map/InfoWindowManager';
+import { createCustomerMarker, MapMarker } from '@/components/Map/MarkerUtils';
 
 interface CustomerMapProps {
   customers: Customer[];
@@ -52,53 +52,17 @@ const CustomerMap: React.FC<CustomerMapProps> = ({ customers, apiKey }) => {
     });
   }, [customers]);
 
-  // 마커 생성 로직
-  const createMarker = useCallback((customer: Customer, index: number, isCompany: boolean): MapMarker | null => {
-    const lat = isCompany ? customer.lat_company : customer.lat;
-    const lng = isCompany ? customer.lng_company : customer.lng;
-    
-    if (!lat || !lng || isNaN(parseFloat(String(lat))) || isNaN(parseFloat(String(lng)))) {
-      return null;
+  // 마커 클릭 핸들러
+  const handleMarkerClick = useCallback((customer: Customer, marker: google.maps.Marker, isCompany: boolean) => {
+    if (marker && window.google && window.google.maps) {
+      // InfoWindow 열기
+      setCurrentInfoWindow({
+        customer,
+        marker,
+        isCompany,
+        isOpen: true
+      });
     }
-
-    const tierColor = getTierColor(customer.tier);
-    const pinSVG = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 384 512">
-        <path fill="${tierColor}" d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"/>
-      </svg>
-    `;
-
-    return {
-      id: `${isCompany ? 'company' : 'home'}-${customer.id || index}`,
-      position: {
-        lat: parseFloat(String(lat)),
-        lng: parseFloat(String(lng))
-      },
-      title: `${customer.customer_name} (${isCompany ? '회사' : '자택'})`,
-      icon: {
-        url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(pinSVG),
-        scaledSize: new google.maps.Size(30, 30),
-        anchor: new google.maps.Point(10, 20),
-        labelOrigin: new google.maps.Point(10, 8)
-      },
-      label: {
-        text: isCompany ? 'C' : 'H',
-        color: 'white',
-        fontSize: '12px',
-        fontWeight: 'bold'
-      },
-      onClick: (marker: google.maps.Marker) => {
-        if (marker && window.google && window.google.maps) {
-          // InfoWindow 열기
-          setCurrentInfoWindow({
-            customer,
-            marker,
-            isCompany,
-            isOpen: true
-          });
-        }
-      }
-    };
   }, []);
 
   // 정보창 닫기 핸들러
@@ -152,10 +116,13 @@ const CustomerMap: React.FC<CustomerMapProps> = ({ customers, apiKey }) => {
   }, [search, tierFilter, filterCustomers]);
 
   useEffect(() => {
+    // 현재 ref 값을 지역 변수로 캡처
+    const currentId = uniqueIdRef.current;
+    
     // DOM에 추가된 후 사용자 정의 버튼에 이벤트 리스너 추가
     if (currentInfoWindow?.isOpen) {
       setTimeout(() => {
-        const customBtn = document.getElementById(uniqueIdRef.current);
+        const customBtn = document.getElementById(currentId);
         if (customBtn) {
           customBtn.addEventListener('click', handleCustomCloseButtonClick);
         }
@@ -164,7 +131,7 @@ const CustomerMap: React.FC<CustomerMapProps> = ({ customers, apiKey }) => {
 
     return () => {
       // 컴포넌트 언마운트 또는 정보창이 변경될 때 이벤트 리스너 제거
-      const customBtn = document.getElementById(uniqueIdRef.current);
+      const customBtn = document.getElementById(currentId);
       if (customBtn) {
         customBtn.removeEventListener('click', handleCustomCloseButtonClick);
       }
@@ -179,14 +146,14 @@ const CustomerMap: React.FC<CustomerMapProps> = ({ customers, apiKey }) => {
     }
 
     const newMarkers = filteredCustomers.flatMap((customer, index) => {
-      const homeMarker = createMarker(customer, index, false);
-      const companyMarker = createMarker(customer, index, true);
+      const homeMarker = createCustomerMarker(customer, index, false, handleMarkerClick);
+      const companyMarker = createCustomerMarker(customer, index, true, handleMarkerClick);
       return [homeMarker, companyMarker].filter(Boolean) as MapMarker[];
     });
 
     setMarkers(newMarkers);
-    setShowDefaultMap(false);
-  }, [filteredCustomers, createMarker]);
+    setShowDefaultMap(newMarkers.length === 0);
+  }, [filteredCustomers, handleMarkerClick]);
 
   return (
     <div className="space-y-4">

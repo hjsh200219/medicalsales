@@ -9,15 +9,15 @@ import Image from 'next/image';
 const menuItems = [
   {
     name: '의료기관 조회',
-    path: '/medical-institutions'
+    path: '/institutions'
   },
   {
     name: '개업 추이',
-    path: '/opening-trends'
+    path: '/institution-trend'
   },
   {
     name: '고객 관리',
-    path: '/customer-management'
+    path: '/customer'
   },
 ];
 
@@ -111,7 +111,7 @@ export default function Navigation() {
             <button
               onClick={() => {
                 setIsUserMenuOpen(false);
-                signOut({ callbackUrl: '/medical-institutions' });
+                signOut({ callbackUrl: '/institutions' });
               }}
               className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-blue-500"
             >
@@ -172,7 +172,7 @@ export default function Navigation() {
             <button
               onClick={() => {
                 setIsMobileMenuOpen(false);
-                signOut({ callbackUrl: '/medical-institutions' });
+                signOut({ callbackUrl: '/institutions' });
               }}
               className="w-full flex items-center p-3 rounded-lg text-white hover:bg-blue-600 text-left"
             >

@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/InstitutionCard';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/Institution/InstitutionCard';
 import { MapPin, Phone, Calendar, Building } from 'lucide-react';
 import { SerializedInstitution } from '@/types/institution';
-import Pagination from '@/components/Pagination';
+import Pagination from '@/components/UI/Pagination';
 
 interface InstitutionsListProps {
   institutions: SerializedInstitution[];
