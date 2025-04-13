@@ -40,7 +40,7 @@ export function InstitutionsList({
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <p className="text-gray-300 flex items-center gap-2">
                   <MapPin size={16} />
                   {institution.address ? (
