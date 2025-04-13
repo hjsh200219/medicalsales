@@ -379,7 +379,9 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
         mapTypeControl: false,
         streetViewControl: false,
         fullscreenControl: true,
-        zoomControl: true
+        zoomControl: true,
+        gestureHandling: 'greedy', // 모바일에서 더블 터치로 줌인 가능하도록 설정
+        disableDoubleClickZoom: false // 더블 클릭 줌 기능 활성화
       };
       
       const map = new google.maps.Map(mapRef.current, mapOptions);
@@ -460,6 +462,74 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
       // 스크립트 제거는 하지 않음 (다른 컴포넌트에서도 사용할 수 있음)
     };
   }, [apiKey, initializeMap, googleMap]);
+  
+  // 모바일 제스처 이벤트 처리를 위한 효과
+  useEffect(() => {
+    if (!googleMap || !mapRef.current) return;
+
+    // 마지막 탭 시간 추적
+    let lastTapTime = 0;
+    // 마지막 탭 위치 추적
+    let lastTapPosition = { x: 0, y: 0 };
+
+    // 더블 탭 처리 함수
+    const handleTouchStart = (event: TouchEvent) => {
+      // 모바일에서 더블 탭 감지
+      const currentTime = new Date().getTime();
+      const tapPosition = {
+        x: event.touches[0].clientX,
+        y: event.touches[0].clientY
+      };
+      
+      // 더블 탭 감지 (500ms 이내의 두 번째 탭, 같은 위치 30px 이내)
+      const timeDiff = currentTime - lastTapTime;
+      const xDiff = Math.abs(tapPosition.x - lastTapPosition.x);
+      const yDiff = Math.abs(tapPosition.y - lastTapPosition.y);
+      
+      if (timeDiff < 500 && xDiff < 30 && yDiff < 30) {
+        // 이중 탭으로 인식하여 현재 위치에서 줌 인
+        event.preventDefault();
+        
+        // 터치 위치를 지도 좌표로 변환
+        const mapDiv = mapRef.current;
+        if (mapDiv) {
+          const rect = mapDiv.getBoundingClientRect();
+          const x = event.touches[0].clientX - rect.left;
+          const y = event.touches[0].clientY - rect.top;
+          
+          const point = new google.maps.Point(x, y);
+          const projection = googleMap.getProjection();
+          
+          if (projection) {
+            const latLng = projection.fromPointToLatLng(point);
+            if (latLng) {
+              // 현재 줌 레벨보다 1단계 줌인
+              const newZoom = Math.min((googleMap.getZoom() || 0) + 1, 20);
+              googleMap.setZoom(newZoom);
+              googleMap.setCenter(latLng);
+            }
+          }
+        }
+      }
+      
+      // 현재 탭 정보 저장
+      lastTapTime = currentTime;
+      lastTapPosition = tapPosition;
+    };
+
+    // 이벤트 리스너 등록
+    const mapDomElement = mapRef.current;
+    if (mapDomElement) {
+      mapDomElement.addEventListener('touchstart', handleTouchStart, { passive: false });
+    }
+
+    // 정리 함수
+    return () => {
+      if (mapDomElement) {
+        mapDomElement.removeEventListener('touchstart', handleTouchStart);
+      }
+    };
+  }, [googleMap]);
   
   // 마커 업데이트
   const updateMarkers = useCallback(() => {
