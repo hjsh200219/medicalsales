@@ -6,11 +6,10 @@ import PageHeader from '@/components/PageHeader';
 import { SearchFilter } from '@/components/InstitutionFilter';
 import { SerializedInstitution } from '@/types/institution';
 import { InstitutionsList } from '@/app/medical-institutions/InstitutionsList';
-import InstitutionMap from '@/app/medical-institutions/InstitutionMap';
+import InstitutionMap from '@/app/medical-institutions/InstitutionsMap';
 import { LoadingSpinner, LoadingSpinnerStyles } from '@/components/LoadingSpinner';
 
 export default function MedicalInstitutions() {
-  const [allInstitutions, setAllInstitutions] = useState<SerializedInstitution[]>([]);
   const [filteredInstitutions, setFilteredInstitutions] = useState<SerializedInstitution[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -20,6 +19,10 @@ export default function MedicalInstitutions() {
   // 페이지네이션 관련 상태
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(12); // 기본값 (lg 화면)
+  const [totalItems, setTotalItems] = useState(0); // 전체 아이템 수
+  
+  // 필터 상태 - 초기값은 빈 객체로 설정
+  const [filterParams, setFilterParams] = useState<Record<string, string>>({});
   
   // 화면 크기에 따라 페이지당 표시 아이템 수 조정
   useEffect(() => {
@@ -53,7 +56,12 @@ export default function MedicalInstitutions() {
   // 필터링 결과가 변경되면 페이지를 1로 리셋
   useEffect(() => {
     setCurrentPage(1);
-  }, [filteredInstitutions]);
+  }, [filterParams]);
+
+  // 페이지 또는 필터가 변경되면 데이터 다시 로드
+  useEffect(() => {
+    fetchInstitutions();
+  }, [currentPage, itemsPerPage, filterParams]);
 
   // 페이지 변경 처리
   const handlePageChange = (page: number) => {
@@ -69,15 +77,37 @@ export default function MedicalInstitutions() {
   async function fetchInstitutions() {
     try {
       setLoading(true);
-      const response = await fetch('/api/institutions');
+      
+      // 페이지네이션 계산
+      const offset = (currentPage - 1) * itemsPerPage;
+      
+      // URL 파라미터 생성
+      const queryParams = new URLSearchParams({
+        offset: offset.toString(),
+        limit: itemsPerPage.toString(),
+      });
+      
+      // 필터 파라미터 추가
+      Object.entries(filterParams).forEach(([key, value]) => {
+        if (value) {
+          queryParams.append(key, value);
+        }
+      });
+            
+      const response = await fetch(`/api/institutions?${queryParams}`);
       
       if (!response.ok) {
         throw new Error('데이터를 불러오는 중 오류가 발생했습니다.');
       }
       
       const data = await response.json();
-      setAllInstitutions(data);
-      setFilteredInstitutions(data);
+      
+      if (data.error) {
+        throw new Error(data.error);
+      }
+            
+      setFilteredInstitutions(data.institutions);
+      setTotalItems(data.total);
     } catch (err) {
       console.error('데이터 로딩 중 오류:', err);
       setError(err instanceof Error ? err.message : '데이터를 불러오는 중 오류가 발생했습니다.');
@@ -86,14 +116,19 @@ export default function MedicalInstitutions() {
     }
   }
 
-  // 컴포넌트 마운트 시 데이터 로드
-  React.useEffect(() => {
-    fetchInstitutions();
-  }, []);
-
   // 필터 표시/숨김 토글 핸들러
   const handleToggleFilters = (isVisible: boolean) => {
     setShowFilters(isVisible);
+  };
+  
+  // 필터 변경 핸들러
+  const handleFilterChange = (_: SerializedInstitution[], params: Record<string, string>) => {
+    const hasChanged = Object.keys(params).some(key => filterParams[key] !== params[key]) || 
+                       Object.keys(filterParams).some(key => !params[key]);
+                       
+    if (hasChanged) {
+      setFilterParams(params);
+    }
   };
 
   // 헤더와 뷰 모드 선택기 공통 컴포넌트
@@ -127,8 +162,8 @@ export default function MedicalInstitutions() {
         <div className="container mx-auto px-4 py-4">
           <HeaderAndViewSelector disabled={true} />
           <SearchFilter
-            institutions={allInstitutions}
-            onFilterChange={setFilteredInstitutions}
+            institutions={[]}
+            onFilterChange={handleFilterChange}
             onToggleFilters={handleToggleFilters}
             showFilters={showFilters}
           />
@@ -149,8 +184,8 @@ export default function MedicalInstitutions() {
         <div className="container mx-auto px-4 py-4">
           <HeaderAndViewSelector disabled={true} />
           <SearchFilter
-            institutions={allInstitutions}
-            onFilterChange={setFilteredInstitutions}
+            institutions={[]}
+            onFilterChange={handleFilterChange}
             onToggleFilters={handleToggleFilters}
             showFilters={showFilters}
           />
@@ -168,8 +203,8 @@ export default function MedicalInstitutions() {
         <HeaderAndViewSelector />
         
         <SearchFilter
-          institutions={allInstitutions}
-          onFilterChange={setFilteredInstitutions}
+          institutions={[]}
+          onFilterChange={handleFilterChange}
           onToggleFilters={handleToggleFilters}
           showFilters={showFilters}
         />
@@ -180,6 +215,7 @@ export default function MedicalInstitutions() {
               institutions={filteredInstitutions}
               currentPage={currentPage}
               itemsPerPage={itemsPerPage}
+              totalItems={totalItems}
               onPageChange={handlePageChange}
             />
           ) : (

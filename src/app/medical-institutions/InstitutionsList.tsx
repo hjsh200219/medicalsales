@@ -10,6 +10,7 @@ interface InstitutionsListProps {
   institutions: SerializedInstitution[];
   currentPage: number;
   itemsPerPage: number;
+  totalItems: number;
   onPageChange: (page: number) => void;
 }
 
@@ -17,15 +18,14 @@ export function InstitutionsList({
   institutions, 
   currentPage, 
   itemsPerPage, 
+  totalItems,
   onPageChange 
 }: InstitutionsListProps) {
-  // 현재 페이지에 표시할 기관 목록 계산
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentItems = institutions.slice(startIndex, endIndex);
+  // 현재 페이지에 표시할 기관 목록은 이미 서버에서 필터링되어 있음
+  const currentItems = institutions;
   
   // 총 페이지 수 계산
-  const totalPages = Math.ceil(institutions.length / itemsPerPage);
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   return (
     <div>
@@ -72,7 +72,7 @@ export function InstitutionsList({
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
-        totalItems={institutions.length}
+        totalItems={totalItems}
         itemsPerPage={itemsPerPage}
         onPageChange={onPageChange}
         style="simple"

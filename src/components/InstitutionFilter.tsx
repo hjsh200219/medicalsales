@@ -12,7 +12,7 @@ export function SearchFilter({
   showFilters = true
 }: { 
   institutions: SerializedInstitution[], 
-  onFilterChange: (filtered: SerializedInstitution[]) => void,
+  onFilterChange: (filtered: SerializedInstitution[], params: Record<string, string>) => void,
   onToggleFilters?: (isVisible: boolean) => void,
   showFilters?: boolean
 }) {
@@ -62,6 +62,7 @@ export function SearchFilter({
   // 검색 및 필터 적용
   const applyFilters = () => {
     let filtered = [...institutions];
+    const filterParams: Record<string, string> = {};
 
     // 검색어 필터링
     if (searchQuery.trim()) {
@@ -73,6 +74,7 @@ export function SearchFilter({
           (institution.address && institution.address?.toLowerCase().includes(query))
         );
       });
+      filterParams.search = searchQuery.trim();
     }
     
     // 지역 필터링
@@ -81,6 +83,7 @@ export function SearchFilter({
         const regionCode = getRegionFromAddress(institution.address);
         return regionCode === regionFilter;
       });
+      filterParams.region = regionFilter;
     }
     
     // 의료기관 유형 필터링
@@ -88,6 +91,7 @@ export function SearchFilter({
       filtered = filtered.filter(institution => {
         return institution.type === typeFilter;
       });
+      filterParams.type = typeFilter;
     }
     
     // 개업일 필터링
@@ -109,9 +113,10 @@ export function SearchFilter({
           openDate <= dateRange.end
         );
       });
+      filterParams.date = dateFilter;
     }
     
-    onFilterChange(filtered);
+    onFilterChange(filtered, filterParams);
   };
 
   // 필터 변경 시 필터 적용
