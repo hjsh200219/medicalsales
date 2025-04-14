@@ -298,7 +298,7 @@ export const InfoWindowHeader = (
     ">
       <div style="max-width: 80%;">
         <h3 style="
-          font-size: 16px; 
+          font-size: 20px; 
           font-weight: bold; 
           margin: 0; 
           overflow: hidden; 
@@ -363,7 +363,7 @@ export const InfoWindowItem = (
   const linkEnd = hasLink && href ? '</a>' : '';
 
   return `
-    <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
+    <p style="color: black; margin: 6px 0; display: flex; align-items: center; font-size: 16px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
       <svg 
         xmlns="http://www.w3.org/2000/svg" 
         style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" 

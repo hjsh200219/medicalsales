@@ -352,8 +352,6 @@ const getChartOptions = (period: string) => {
 const findDateIndex = (openDate: Date, period: string, unit: string, startDate?: Date, endDate?: Date): number => {
   let index = -1;
   
-  console.log(`인덱스 찾기: date=${format(openDate, 'yyyy-MM-dd')}, unit=${unit}, period=${period}`);
-
   // 커스텀 기간인 경우
   if (period === 'custom' && startDate && endDate) {
     const openYear = openDate.getFullYear();
