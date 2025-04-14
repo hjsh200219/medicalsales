@@ -14,7 +14,7 @@ const STYLE_CONSTANTS = {
     borderColor: '#E5E7EB',
   },
   borderRadius: '6px',
-  padding: '8px',
+  padding: '0px',
   selectors: {
     infoWindowContainer: '.gm-style-iw',
     infoWindowContent: '.gm-style-iw-d',
@@ -115,7 +115,7 @@ const InfoWindowStyling = {
   },
   
   applyDefaultStyles(): void {
-    this.setCloseButtonStyle('block');
+    this.setCloseButtonStyle('none');
     this.setContainerStyle(defaultInfoWindowStyle);
     this.removeBoxShadow();
     this.setTailBackgroundColor('transparent');
@@ -130,7 +130,7 @@ export const applyInfoWindowStyle = (infoWindow: google.maps.InfoWindow, style: 
   const mergedStyle = { ...defaultInfoWindowStyle, ...style };
 
   infoWindow.addListener('domready', () => {
-    InfoWindowStyling.setCloseButtonStyle('block');
+    InfoWindowStyling.setCloseButtonStyle('none');
     InfoWindowStyling.setTailBackgroundColor('transparent');
     InfoWindowStyling.setContainerStyle(mergedStyle);
     InfoWindowStyling.removeBoxShadow();
@@ -249,11 +249,16 @@ export const createCustomerInfoContent = (
   return `
     <div style="min-width: 250px; max-width: 280px; padding: 16px; word-break: break-word; background-color: white; border-radius: 6px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-        <div style="max-width: 85%;">
+        <div style="max-width: 75%;">
           <h3 style="font-size: 16px; font-weight: bold; margin: 0; overflow: hidden; text-overflow: ellipsis; color: black;">${customer.customer_name}<span style="color: #9CA3AF; margin-left: 4px;">[${addressType}]</span></h3>
         </div>
-        <div style="display: flex; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 8px;">
           <span style="background-color: ${tierDisplayColor}; color: white; padding: 4px 6px; border-radius: 4px; font-size: 12px;">${customer.tier || '일반'}</span>
+          <button onclick="this.closest('.gm-style-iw-a').querySelector('.gm-ui-hover-effect').click();" style="border: none; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 2px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 18L18 6M6 6L18 18" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
         </div>
       </div>
       <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
@@ -274,7 +279,7 @@ export const createCustomerInfoContent = (
         </svg>
         <a href="mailto:${customer.email || '없음'}" style="text-decoration: none;">${customer.email || '없음'}</a>
       </p>
-      <p style="color: black; margin: 6px 0; padding-right: 20px; display: flex; align-items: center;">
+      <p style="color: black; margin: 6px 0;  display: flex; align-items: center;">
         <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -353,11 +358,16 @@ export const createInstitutionInfoContent = (institution: SerializedInstitution)
   return `
     <div style="min-width: 250px; max-width: 280px; padding: 16px; word-break: break-word; background-color: white; border-radius: 6px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-        <div style="max-width: 85%;">
+        <div style="max-width: 90%;">
           <h3 style="font-size: 16px; font-weight: bold; margin: 0; overflow: hidden; text-overflow: ellipsis; color: black;">${name || '이름 없음'}</h3>
         </div>
-        <div style="display: flex; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 8px;">
           <span style="background-color: ${typeColor}; color: white; padding: 4px 6px; border-radius: 4px; font-size: 12px;">${typeName}</span>
+          <button onclick="this.closest('.gm-style-iw-a').querySelector('.gm-ui-hover-effect').click();" style="border: none; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 2px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 18L18 6M6 6L18 18" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
         </div>
       </div>
       <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
@@ -366,7 +376,7 @@ export const createInstitutionInfoContent = (institution: SerializedInstitution)
         </svg>
         <a href="tel:${phone || '없음'}" style="text-decoration: none;">${phone || '없음'}</a>
       </p>
-      <p style="color: black; margin: 6px 0; padding-right: 20px; display: flex; align-items: center;">
+      <p style="color: black; margin: 6px 0;  display: flex; align-items: center;">
         <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
