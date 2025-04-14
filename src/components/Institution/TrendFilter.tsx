@@ -12,6 +12,7 @@ export const PERIOD_OPTIONS = [
   { id: 'year', label: '최근 1년', unit: 'month' },
   { id: 'twoYears', label: '최근 2년', unit: 'month' },
   { id: 'fiveYears', label: '최근 5년', unit: 'month' },
+  { id: 'tenYears', label: '최근 10년', unit: 'year' },
   { id: 'all', label: '전체', unit: 'year' },
 ];
 
@@ -45,7 +46,7 @@ interface PeriodFilterProps {
 }
 
 export default function PeriodFilter({ 
-  period, 
+  period = DEFAULT_PERIOD, 
   onPeriodChange, 
   onFilterChange,
   onAnalysisUnitChange
@@ -55,10 +56,26 @@ export default function PeriodFilter({
   const [useCustomRange, setUseCustomRange] = useState(false);
   // const [startDate, setStartDate] = useState<Date | null>(null);
   // const [endDate, setEndDate] = useState<Date | null>(null);
-  const analysisUnit = DEFAULT_UNIT; // useState(DEFAULT_UNIT)에서 변경
+  
+  // 기간에 맞는 분석 단위 찾기
+  const findUnitForPeriod = (periodId: string) => {
+    const option = PERIOD_OPTIONS.find(opt => opt.id === periodId);
+    return option ? option.unit : DEFAULT_UNIT;
+  };
+  
+  // 분석 단위를 useState로 관리하고 현재 선택된 기간에 맞게 초기화
+  const [analysisUnit, setAnalysisUnit] = useState(findUnitForPeriod(period));
   
   // 초기 렌더링 감지용 ref
   const isInitialRender = useRef(true);
+
+  // 기간이 변경되면 해당 기간에 맞는 분석 단위로 업데이트
+  useEffect(() => {
+    if (!useCustomRange) {
+      const newUnit = findUnitForPeriod(period);
+      setAnalysisUnit(newUnit);
+    }
+  }, [period, useCustomRange]);
 
   // 필터 변경 시 부모 컴포넌트에 알림
   useEffect(() => {

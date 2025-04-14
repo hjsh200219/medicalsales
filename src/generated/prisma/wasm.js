@@ -162,6 +162,20 @@ exports.Prisma.InstitutionsScalarFieldEnum = {
   created_at: 'created_at'
 };
 
+exports.Prisma.Institution_region_yearScalarFieldEnum = {
+  id: 'id',
+  year: 'year',
+  region: 'region',
+  count: 'count'
+};
+
+exports.Prisma.Institution_type_yearScalarFieldEnum = {
+  id: 'id',
+  year: 'year',
+  type: 'type',
+  count: 'count'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -181,7 +195,9 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ModelName = {
   user_info: 'user_info',
   customer_info: 'customer_info',
-  institutions: 'institutions'
+  institutions: 'institutions',
+  institution_region_year: 'institution_region_year',
+  institution_type_year: 'institution_type_year'
 };
 
 /**

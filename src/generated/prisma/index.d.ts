@@ -28,6 +28,16 @@ export type customer_info = $Result.DefaultSelection<Prisma.$customer_infoPayloa
  * 
  */
 export type institutions = $Result.DefaultSelection<Prisma.$institutionsPayload>
+/**
+ * Model institution_region_year
+ * 
+ */
+export type institution_region_year = $Result.DefaultSelection<Prisma.$institution_region_yearPayload>
+/**
+ * Model institution_type_year
+ * 
+ */
+export type institution_type_year = $Result.DefaultSelection<Prisma.$institution_type_yearPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -183,6 +193,26 @@ export class PrismaClient<
     * ```
     */
   get institutions(): Prisma.institutionsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.institution_region_year`: Exposes CRUD operations for the **institution_region_year** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Institution_region_years
+    * const institution_region_years = await prisma.institution_region_year.findMany()
+    * ```
+    */
+  get institution_region_year(): Prisma.institution_region_yearDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.institution_type_year`: Exposes CRUD operations for the **institution_type_year** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Institution_type_years
+    * const institution_type_years = await prisma.institution_type_year.findMany()
+    * ```
+    */
+  get institution_type_year(): Prisma.institution_type_yearDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -625,7 +655,9 @@ export namespace Prisma {
   export const ModelName: {
     user_info: 'user_info',
     customer_info: 'customer_info',
-    institutions: 'institutions'
+    institutions: 'institutions',
+    institution_region_year: 'institution_region_year',
+    institution_type_year: 'institution_type_year'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -644,7 +676,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user_info" | "customer_info" | "institutions"
+      modelProps: "user_info" | "customer_info" | "institutions" | "institution_region_year" | "institution_type_year"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -870,6 +902,154 @@ export namespace Prisma {
           }
         }
       }
+      institution_region_year: {
+        payload: Prisma.$institution_region_yearPayload<ExtArgs>
+        fields: Prisma.institution_region_yearFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.institution_region_yearFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_region_yearPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.institution_region_yearFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_region_yearPayload>
+          }
+          findFirst: {
+            args: Prisma.institution_region_yearFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_region_yearPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.institution_region_yearFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_region_yearPayload>
+          }
+          findMany: {
+            args: Prisma.institution_region_yearFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_region_yearPayload>[]
+          }
+          create: {
+            args: Prisma.institution_region_yearCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_region_yearPayload>
+          }
+          createMany: {
+            args: Prisma.institution_region_yearCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.institution_region_yearCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_region_yearPayload>[]
+          }
+          delete: {
+            args: Prisma.institution_region_yearDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_region_yearPayload>
+          }
+          update: {
+            args: Prisma.institution_region_yearUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_region_yearPayload>
+          }
+          deleteMany: {
+            args: Prisma.institution_region_yearDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.institution_region_yearUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.institution_region_yearUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_region_yearPayload>[]
+          }
+          upsert: {
+            args: Prisma.institution_region_yearUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_region_yearPayload>
+          }
+          aggregate: {
+            args: Prisma.Institution_region_yearAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateInstitution_region_year>
+          }
+          groupBy: {
+            args: Prisma.institution_region_yearGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Institution_region_yearGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.institution_region_yearCountArgs<ExtArgs>
+            result: $Utils.Optional<Institution_region_yearCountAggregateOutputType> | number
+          }
+        }
+      }
+      institution_type_year: {
+        payload: Prisma.$institution_type_yearPayload<ExtArgs>
+        fields: Prisma.institution_type_yearFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.institution_type_yearFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_type_yearPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.institution_type_yearFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_type_yearPayload>
+          }
+          findFirst: {
+            args: Prisma.institution_type_yearFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_type_yearPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.institution_type_yearFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_type_yearPayload>
+          }
+          findMany: {
+            args: Prisma.institution_type_yearFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_type_yearPayload>[]
+          }
+          create: {
+            args: Prisma.institution_type_yearCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_type_yearPayload>
+          }
+          createMany: {
+            args: Prisma.institution_type_yearCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.institution_type_yearCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_type_yearPayload>[]
+          }
+          delete: {
+            args: Prisma.institution_type_yearDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_type_yearPayload>
+          }
+          update: {
+            args: Prisma.institution_type_yearUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_type_yearPayload>
+          }
+          deleteMany: {
+            args: Prisma.institution_type_yearDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.institution_type_yearUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.institution_type_yearUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_type_yearPayload>[]
+          }
+          upsert: {
+            args: Prisma.institution_type_yearUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$institution_type_yearPayload>
+          }
+          aggregate: {
+            args: Prisma.Institution_type_yearAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateInstitution_type_year>
+          }
+          groupBy: {
+            args: Prisma.institution_type_yearGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Institution_type_yearGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.institution_type_yearCountArgs<ExtArgs>
+            result: $Utils.Optional<Institution_type_yearCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -957,6 +1137,8 @@ export namespace Prisma {
     user_info?: user_infoOmit
     customer_info?: customer_infoOmit
     institutions?: institutionsOmit
+    institution_region_year?: institution_region_yearOmit
+    institution_type_year?: institution_type_yearOmit
   }
 
   /* Types for Logging */
@@ -4398,6 +4580,2054 @@ export namespace Prisma {
 
 
   /**
+   * Model institution_region_year
+   */
+
+  export type AggregateInstitution_region_year = {
+    _count: Institution_region_yearCountAggregateOutputType | null
+    _avg: Institution_region_yearAvgAggregateOutputType | null
+    _sum: Institution_region_yearSumAggregateOutputType | null
+    _min: Institution_region_yearMinAggregateOutputType | null
+    _max: Institution_region_yearMaxAggregateOutputType | null
+  }
+
+  export type Institution_region_yearAvgAggregateOutputType = {
+    id: number | null
+    year: number | null
+    count: number | null
+  }
+
+  export type Institution_region_yearSumAggregateOutputType = {
+    id: number | null
+    year: number | null
+    count: number | null
+  }
+
+  export type Institution_region_yearMinAggregateOutputType = {
+    id: number | null
+    year: number | null
+    region: string | null
+    count: number | null
+  }
+
+  export type Institution_region_yearMaxAggregateOutputType = {
+    id: number | null
+    year: number | null
+    region: string | null
+    count: number | null
+  }
+
+  export type Institution_region_yearCountAggregateOutputType = {
+    id: number
+    year: number
+    region: number
+    count: number
+    _all: number
+  }
+
+
+  export type Institution_region_yearAvgAggregateInputType = {
+    id?: true
+    year?: true
+    count?: true
+  }
+
+  export type Institution_region_yearSumAggregateInputType = {
+    id?: true
+    year?: true
+    count?: true
+  }
+
+  export type Institution_region_yearMinAggregateInputType = {
+    id?: true
+    year?: true
+    region?: true
+    count?: true
+  }
+
+  export type Institution_region_yearMaxAggregateInputType = {
+    id?: true
+    year?: true
+    region?: true
+    count?: true
+  }
+
+  export type Institution_region_yearCountAggregateInputType = {
+    id?: true
+    year?: true
+    region?: true
+    count?: true
+    _all?: true
+  }
+
+  export type Institution_region_yearAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which institution_region_year to aggregate.
+     */
+    where?: institution_region_yearWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of institution_region_years to fetch.
+     */
+    orderBy?: institution_region_yearOrderByWithRelationInput | institution_region_yearOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: institution_region_yearWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` institution_region_years from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` institution_region_years.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned institution_region_years
+    **/
+    _count?: true | Institution_region_yearCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Institution_region_yearAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Institution_region_yearSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Institution_region_yearMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Institution_region_yearMaxAggregateInputType
+  }
+
+  export type GetInstitution_region_yearAggregateType<T extends Institution_region_yearAggregateArgs> = {
+        [P in keyof T & keyof AggregateInstitution_region_year]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateInstitution_region_year[P]>
+      : GetScalarType<T[P], AggregateInstitution_region_year[P]>
+  }
+
+
+
+
+  export type institution_region_yearGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: institution_region_yearWhereInput
+    orderBy?: institution_region_yearOrderByWithAggregationInput | institution_region_yearOrderByWithAggregationInput[]
+    by: Institution_region_yearScalarFieldEnum[] | Institution_region_yearScalarFieldEnum
+    having?: institution_region_yearScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Institution_region_yearCountAggregateInputType | true
+    _avg?: Institution_region_yearAvgAggregateInputType
+    _sum?: Institution_region_yearSumAggregateInputType
+    _min?: Institution_region_yearMinAggregateInputType
+    _max?: Institution_region_yearMaxAggregateInputType
+  }
+
+  export type Institution_region_yearGroupByOutputType = {
+    id: number
+    year: number
+    region: string
+    count: number
+    _count: Institution_region_yearCountAggregateOutputType | null
+    _avg: Institution_region_yearAvgAggregateOutputType | null
+    _sum: Institution_region_yearSumAggregateOutputType | null
+    _min: Institution_region_yearMinAggregateOutputType | null
+    _max: Institution_region_yearMaxAggregateOutputType | null
+  }
+
+  type GetInstitution_region_yearGroupByPayload<T extends institution_region_yearGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Institution_region_yearGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Institution_region_yearGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Institution_region_yearGroupByOutputType[P]>
+            : GetScalarType<T[P], Institution_region_yearGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type institution_region_yearSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    year?: boolean
+    region?: boolean
+    count?: boolean
+  }, ExtArgs["result"]["institution_region_year"]>
+
+  export type institution_region_yearSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    year?: boolean
+    region?: boolean
+    count?: boolean
+  }, ExtArgs["result"]["institution_region_year"]>
+
+  export type institution_region_yearSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    year?: boolean
+    region?: boolean
+    count?: boolean
+  }, ExtArgs["result"]["institution_region_year"]>
+
+  export type institution_region_yearSelectScalar = {
+    id?: boolean
+    year?: boolean
+    region?: boolean
+    count?: boolean
+  }
+
+  export type institution_region_yearOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "year" | "region" | "count", ExtArgs["result"]["institution_region_year"]>
+
+  export type $institution_region_yearPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "institution_region_year"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      year: number
+      region: string
+      count: number
+    }, ExtArgs["result"]["institution_region_year"]>
+    composites: {}
+  }
+
+  type institution_region_yearGetPayload<S extends boolean | null | undefined | institution_region_yearDefaultArgs> = $Result.GetResult<Prisma.$institution_region_yearPayload, S>
+
+  type institution_region_yearCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<institution_region_yearFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Institution_region_yearCountAggregateInputType | true
+    }
+
+  export interface institution_region_yearDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['institution_region_year'], meta: { name: 'institution_region_year' } }
+    /**
+     * Find zero or one Institution_region_year that matches the filter.
+     * @param {institution_region_yearFindUniqueArgs} args - Arguments to find a Institution_region_year
+     * @example
+     * // Get one Institution_region_year
+     * const institution_region_year = await prisma.institution_region_year.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends institution_region_yearFindUniqueArgs>(args: SelectSubset<T, institution_region_yearFindUniqueArgs<ExtArgs>>): Prisma__institution_region_yearClient<$Result.GetResult<Prisma.$institution_region_yearPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Institution_region_year that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {institution_region_yearFindUniqueOrThrowArgs} args - Arguments to find a Institution_region_year
+     * @example
+     * // Get one Institution_region_year
+     * const institution_region_year = await prisma.institution_region_year.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends institution_region_yearFindUniqueOrThrowArgs>(args: SelectSubset<T, institution_region_yearFindUniqueOrThrowArgs<ExtArgs>>): Prisma__institution_region_yearClient<$Result.GetResult<Prisma.$institution_region_yearPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Institution_region_year that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {institution_region_yearFindFirstArgs} args - Arguments to find a Institution_region_year
+     * @example
+     * // Get one Institution_region_year
+     * const institution_region_year = await prisma.institution_region_year.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends institution_region_yearFindFirstArgs>(args?: SelectSubset<T, institution_region_yearFindFirstArgs<ExtArgs>>): Prisma__institution_region_yearClient<$Result.GetResult<Prisma.$institution_region_yearPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Institution_region_year that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {institution_region_yearFindFirstOrThrowArgs} args - Arguments to find a Institution_region_year
+     * @example
+     * // Get one Institution_region_year
+     * const institution_region_year = await prisma.institution_region_year.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends institution_region_yearFindFirstOrThrowArgs>(args?: SelectSubset<T, institution_region_yearFindFirstOrThrowArgs<ExtArgs>>): Prisma__institution_region_yearClient<$Result.GetResult<Prisma.$institution_region_yearPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Institution_region_years that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {institution_region_yearFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Institution_region_years
+     * const institution_region_years = await prisma.institution_region_year.findMany()
+     * 
+     * // Get first 10 Institution_region_years
+     * const institution_region_years = await prisma.institution_region_year.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const institution_region_yearWithIdOnly = await prisma.institution_region_year.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends institution_region_yearFindManyArgs>(args?: SelectSubset<T, institution_region_yearFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$institution_region_yearPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Institution_region_year.
+     * @param {institution_region_yearCreateArgs} args - Arguments to create a Institution_region_year.
+     * @example
+     * // Create one Institution_region_year
+     * const Institution_region_year = await prisma.institution_region_year.create({
+     *   data: {
+     *     // ... data to create a Institution_region_year
+     *   }
+     * })
+     * 
+     */
+    create<T extends institution_region_yearCreateArgs>(args: SelectSubset<T, institution_region_yearCreateArgs<ExtArgs>>): Prisma__institution_region_yearClient<$Result.GetResult<Prisma.$institution_region_yearPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Institution_region_years.
+     * @param {institution_region_yearCreateManyArgs} args - Arguments to create many Institution_region_years.
+     * @example
+     * // Create many Institution_region_years
+     * const institution_region_year = await prisma.institution_region_year.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends institution_region_yearCreateManyArgs>(args?: SelectSubset<T, institution_region_yearCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Institution_region_years and returns the data saved in the database.
+     * @param {institution_region_yearCreateManyAndReturnArgs} args - Arguments to create many Institution_region_years.
+     * @example
+     * // Create many Institution_region_years
+     * const institution_region_year = await prisma.institution_region_year.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Institution_region_years and only return the `id`
+     * const institution_region_yearWithIdOnly = await prisma.institution_region_year.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends institution_region_yearCreateManyAndReturnArgs>(args?: SelectSubset<T, institution_region_yearCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$institution_region_yearPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Institution_region_year.
+     * @param {institution_region_yearDeleteArgs} args - Arguments to delete one Institution_region_year.
+     * @example
+     * // Delete one Institution_region_year
+     * const Institution_region_year = await prisma.institution_region_year.delete({
+     *   where: {
+     *     // ... filter to delete one Institution_region_year
+     *   }
+     * })
+     * 
+     */
+    delete<T extends institution_region_yearDeleteArgs>(args: SelectSubset<T, institution_region_yearDeleteArgs<ExtArgs>>): Prisma__institution_region_yearClient<$Result.GetResult<Prisma.$institution_region_yearPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Institution_region_year.
+     * @param {institution_region_yearUpdateArgs} args - Arguments to update one Institution_region_year.
+     * @example
+     * // Update one Institution_region_year
+     * const institution_region_year = await prisma.institution_region_year.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends institution_region_yearUpdateArgs>(args: SelectSubset<T, institution_region_yearUpdateArgs<ExtArgs>>): Prisma__institution_region_yearClient<$Result.GetResult<Prisma.$institution_region_yearPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Institution_region_years.
+     * @param {institution_region_yearDeleteManyArgs} args - Arguments to filter Institution_region_years to delete.
+     * @example
+     * // Delete a few Institution_region_years
+     * const { count } = await prisma.institution_region_year.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends institution_region_yearDeleteManyArgs>(args?: SelectSubset<T, institution_region_yearDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Institution_region_years.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {institution_region_yearUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Institution_region_years
+     * const institution_region_year = await prisma.institution_region_year.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends institution_region_yearUpdateManyArgs>(args: SelectSubset<T, institution_region_yearUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Institution_region_years and returns the data updated in the database.
+     * @param {institution_region_yearUpdateManyAndReturnArgs} args - Arguments to update many Institution_region_years.
+     * @example
+     * // Update many Institution_region_years
+     * const institution_region_year = await prisma.institution_region_year.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Institution_region_years and only return the `id`
+     * const institution_region_yearWithIdOnly = await prisma.institution_region_year.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends institution_region_yearUpdateManyAndReturnArgs>(args: SelectSubset<T, institution_region_yearUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$institution_region_yearPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Institution_region_year.
+     * @param {institution_region_yearUpsertArgs} args - Arguments to update or create a Institution_region_year.
+     * @example
+     * // Update or create a Institution_region_year
+     * const institution_region_year = await prisma.institution_region_year.upsert({
+     *   create: {
+     *     // ... data to create a Institution_region_year
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Institution_region_year we want to update
+     *   }
+     * })
+     */
+    upsert<T extends institution_region_yearUpsertArgs>(args: SelectSubset<T, institution_region_yearUpsertArgs<ExtArgs>>): Prisma__institution_region_yearClient<$Result.GetResult<Prisma.$institution_region_yearPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Institution_region_years.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {institution_region_yearCountArgs} args - Arguments to filter Institution_region_years to count.
+     * @example
+     * // Count the number of Institution_region_years
+     * const count = await prisma.institution_region_year.count({
+     *   where: {
+     *     // ... the filter for the Institution_region_years we want to count
+     *   }
+     * })
+    **/
+    count<T extends institution_region_yearCountArgs>(
+      args?: Subset<T, institution_region_yearCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Institution_region_yearCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Institution_region_year.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Institution_region_yearAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Institution_region_yearAggregateArgs>(args: Subset<T, Institution_region_yearAggregateArgs>): Prisma.PrismaPromise<GetInstitution_region_yearAggregateType<T>>
+
+    /**
+     * Group by Institution_region_year.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {institution_region_yearGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends institution_region_yearGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: institution_region_yearGroupByArgs['orderBy'] }
+        : { orderBy?: institution_region_yearGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, institution_region_yearGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInstitution_region_yearGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the institution_region_year model
+   */
+  readonly fields: institution_region_yearFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for institution_region_year.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__institution_region_yearClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the institution_region_year model
+   */
+  interface institution_region_yearFieldRefs {
+    readonly id: FieldRef<"institution_region_year", 'Int'>
+    readonly year: FieldRef<"institution_region_year", 'Int'>
+    readonly region: FieldRef<"institution_region_year", 'String'>
+    readonly count: FieldRef<"institution_region_year", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * institution_region_year findUnique
+   */
+  export type institution_region_yearFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_region_year
+     */
+    select?: institution_region_yearSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_region_year
+     */
+    omit?: institution_region_yearOmit<ExtArgs> | null
+    /**
+     * Filter, which institution_region_year to fetch.
+     */
+    where: institution_region_yearWhereUniqueInput
+  }
+
+  /**
+   * institution_region_year findUniqueOrThrow
+   */
+  export type institution_region_yearFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_region_year
+     */
+    select?: institution_region_yearSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_region_year
+     */
+    omit?: institution_region_yearOmit<ExtArgs> | null
+    /**
+     * Filter, which institution_region_year to fetch.
+     */
+    where: institution_region_yearWhereUniqueInput
+  }
+
+  /**
+   * institution_region_year findFirst
+   */
+  export type institution_region_yearFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_region_year
+     */
+    select?: institution_region_yearSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_region_year
+     */
+    omit?: institution_region_yearOmit<ExtArgs> | null
+    /**
+     * Filter, which institution_region_year to fetch.
+     */
+    where?: institution_region_yearWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of institution_region_years to fetch.
+     */
+    orderBy?: institution_region_yearOrderByWithRelationInput | institution_region_yearOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for institution_region_years.
+     */
+    cursor?: institution_region_yearWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` institution_region_years from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` institution_region_years.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of institution_region_years.
+     */
+    distinct?: Institution_region_yearScalarFieldEnum | Institution_region_yearScalarFieldEnum[]
+  }
+
+  /**
+   * institution_region_year findFirstOrThrow
+   */
+  export type institution_region_yearFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_region_year
+     */
+    select?: institution_region_yearSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_region_year
+     */
+    omit?: institution_region_yearOmit<ExtArgs> | null
+    /**
+     * Filter, which institution_region_year to fetch.
+     */
+    where?: institution_region_yearWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of institution_region_years to fetch.
+     */
+    orderBy?: institution_region_yearOrderByWithRelationInput | institution_region_yearOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for institution_region_years.
+     */
+    cursor?: institution_region_yearWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` institution_region_years from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` institution_region_years.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of institution_region_years.
+     */
+    distinct?: Institution_region_yearScalarFieldEnum | Institution_region_yearScalarFieldEnum[]
+  }
+
+  /**
+   * institution_region_year findMany
+   */
+  export type institution_region_yearFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_region_year
+     */
+    select?: institution_region_yearSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_region_year
+     */
+    omit?: institution_region_yearOmit<ExtArgs> | null
+    /**
+     * Filter, which institution_region_years to fetch.
+     */
+    where?: institution_region_yearWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of institution_region_years to fetch.
+     */
+    orderBy?: institution_region_yearOrderByWithRelationInput | institution_region_yearOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing institution_region_years.
+     */
+    cursor?: institution_region_yearWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` institution_region_years from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` institution_region_years.
+     */
+    skip?: number
+    distinct?: Institution_region_yearScalarFieldEnum | Institution_region_yearScalarFieldEnum[]
+  }
+
+  /**
+   * institution_region_year create
+   */
+  export type institution_region_yearCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_region_year
+     */
+    select?: institution_region_yearSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_region_year
+     */
+    omit?: institution_region_yearOmit<ExtArgs> | null
+    /**
+     * The data needed to create a institution_region_year.
+     */
+    data: XOR<institution_region_yearCreateInput, institution_region_yearUncheckedCreateInput>
+  }
+
+  /**
+   * institution_region_year createMany
+   */
+  export type institution_region_yearCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many institution_region_years.
+     */
+    data: institution_region_yearCreateManyInput | institution_region_yearCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * institution_region_year createManyAndReturn
+   */
+  export type institution_region_yearCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_region_year
+     */
+    select?: institution_region_yearSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_region_year
+     */
+    omit?: institution_region_yearOmit<ExtArgs> | null
+    /**
+     * The data used to create many institution_region_years.
+     */
+    data: institution_region_yearCreateManyInput | institution_region_yearCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * institution_region_year update
+   */
+  export type institution_region_yearUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_region_year
+     */
+    select?: institution_region_yearSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_region_year
+     */
+    omit?: institution_region_yearOmit<ExtArgs> | null
+    /**
+     * The data needed to update a institution_region_year.
+     */
+    data: XOR<institution_region_yearUpdateInput, institution_region_yearUncheckedUpdateInput>
+    /**
+     * Choose, which institution_region_year to update.
+     */
+    where: institution_region_yearWhereUniqueInput
+  }
+
+  /**
+   * institution_region_year updateMany
+   */
+  export type institution_region_yearUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update institution_region_years.
+     */
+    data: XOR<institution_region_yearUpdateManyMutationInput, institution_region_yearUncheckedUpdateManyInput>
+    /**
+     * Filter which institution_region_years to update
+     */
+    where?: institution_region_yearWhereInput
+    /**
+     * Limit how many institution_region_years to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * institution_region_year updateManyAndReturn
+   */
+  export type institution_region_yearUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_region_year
+     */
+    select?: institution_region_yearSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_region_year
+     */
+    omit?: institution_region_yearOmit<ExtArgs> | null
+    /**
+     * The data used to update institution_region_years.
+     */
+    data: XOR<institution_region_yearUpdateManyMutationInput, institution_region_yearUncheckedUpdateManyInput>
+    /**
+     * Filter which institution_region_years to update
+     */
+    where?: institution_region_yearWhereInput
+    /**
+     * Limit how many institution_region_years to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * institution_region_year upsert
+   */
+  export type institution_region_yearUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_region_year
+     */
+    select?: institution_region_yearSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_region_year
+     */
+    omit?: institution_region_yearOmit<ExtArgs> | null
+    /**
+     * The filter to search for the institution_region_year to update in case it exists.
+     */
+    where: institution_region_yearWhereUniqueInput
+    /**
+     * In case the institution_region_year found by the `where` argument doesn't exist, create a new institution_region_year with this data.
+     */
+    create: XOR<institution_region_yearCreateInput, institution_region_yearUncheckedCreateInput>
+    /**
+     * In case the institution_region_year was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<institution_region_yearUpdateInput, institution_region_yearUncheckedUpdateInput>
+  }
+
+  /**
+   * institution_region_year delete
+   */
+  export type institution_region_yearDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_region_year
+     */
+    select?: institution_region_yearSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_region_year
+     */
+    omit?: institution_region_yearOmit<ExtArgs> | null
+    /**
+     * Filter which institution_region_year to delete.
+     */
+    where: institution_region_yearWhereUniqueInput
+  }
+
+  /**
+   * institution_region_year deleteMany
+   */
+  export type institution_region_yearDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which institution_region_years to delete
+     */
+    where?: institution_region_yearWhereInput
+    /**
+     * Limit how many institution_region_years to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * institution_region_year without action
+   */
+  export type institution_region_yearDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_region_year
+     */
+    select?: institution_region_yearSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_region_year
+     */
+    omit?: institution_region_yearOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model institution_type_year
+   */
+
+  export type AggregateInstitution_type_year = {
+    _count: Institution_type_yearCountAggregateOutputType | null
+    _avg: Institution_type_yearAvgAggregateOutputType | null
+    _sum: Institution_type_yearSumAggregateOutputType | null
+    _min: Institution_type_yearMinAggregateOutputType | null
+    _max: Institution_type_yearMaxAggregateOutputType | null
+  }
+
+  export type Institution_type_yearAvgAggregateOutputType = {
+    id: number | null
+    year: number | null
+    count: number | null
+  }
+
+  export type Institution_type_yearSumAggregateOutputType = {
+    id: number | null
+    year: number | null
+    count: number | null
+  }
+
+  export type Institution_type_yearMinAggregateOutputType = {
+    id: number | null
+    year: number | null
+    type: string | null
+    count: number | null
+  }
+
+  export type Institution_type_yearMaxAggregateOutputType = {
+    id: number | null
+    year: number | null
+    type: string | null
+    count: number | null
+  }
+
+  export type Institution_type_yearCountAggregateOutputType = {
+    id: number
+    year: number
+    type: number
+    count: number
+    _all: number
+  }
+
+
+  export type Institution_type_yearAvgAggregateInputType = {
+    id?: true
+    year?: true
+    count?: true
+  }
+
+  export type Institution_type_yearSumAggregateInputType = {
+    id?: true
+    year?: true
+    count?: true
+  }
+
+  export type Institution_type_yearMinAggregateInputType = {
+    id?: true
+    year?: true
+    type?: true
+    count?: true
+  }
+
+  export type Institution_type_yearMaxAggregateInputType = {
+    id?: true
+    year?: true
+    type?: true
+    count?: true
+  }
+
+  export type Institution_type_yearCountAggregateInputType = {
+    id?: true
+    year?: true
+    type?: true
+    count?: true
+    _all?: true
+  }
+
+  export type Institution_type_yearAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which institution_type_year to aggregate.
+     */
+    where?: institution_type_yearWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of institution_type_years to fetch.
+     */
+    orderBy?: institution_type_yearOrderByWithRelationInput | institution_type_yearOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: institution_type_yearWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` institution_type_years from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` institution_type_years.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned institution_type_years
+    **/
+    _count?: true | Institution_type_yearCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Institution_type_yearAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Institution_type_yearSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Institution_type_yearMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Institution_type_yearMaxAggregateInputType
+  }
+
+  export type GetInstitution_type_yearAggregateType<T extends Institution_type_yearAggregateArgs> = {
+        [P in keyof T & keyof AggregateInstitution_type_year]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateInstitution_type_year[P]>
+      : GetScalarType<T[P], AggregateInstitution_type_year[P]>
+  }
+
+
+
+
+  export type institution_type_yearGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: institution_type_yearWhereInput
+    orderBy?: institution_type_yearOrderByWithAggregationInput | institution_type_yearOrderByWithAggregationInput[]
+    by: Institution_type_yearScalarFieldEnum[] | Institution_type_yearScalarFieldEnum
+    having?: institution_type_yearScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Institution_type_yearCountAggregateInputType | true
+    _avg?: Institution_type_yearAvgAggregateInputType
+    _sum?: Institution_type_yearSumAggregateInputType
+    _min?: Institution_type_yearMinAggregateInputType
+    _max?: Institution_type_yearMaxAggregateInputType
+  }
+
+  export type Institution_type_yearGroupByOutputType = {
+    id: number
+    year: number
+    type: string
+    count: number
+    _count: Institution_type_yearCountAggregateOutputType | null
+    _avg: Institution_type_yearAvgAggregateOutputType | null
+    _sum: Institution_type_yearSumAggregateOutputType | null
+    _min: Institution_type_yearMinAggregateOutputType | null
+    _max: Institution_type_yearMaxAggregateOutputType | null
+  }
+
+  type GetInstitution_type_yearGroupByPayload<T extends institution_type_yearGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Institution_type_yearGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Institution_type_yearGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Institution_type_yearGroupByOutputType[P]>
+            : GetScalarType<T[P], Institution_type_yearGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type institution_type_yearSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    year?: boolean
+    type?: boolean
+    count?: boolean
+  }, ExtArgs["result"]["institution_type_year"]>
+
+  export type institution_type_yearSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    year?: boolean
+    type?: boolean
+    count?: boolean
+  }, ExtArgs["result"]["institution_type_year"]>
+
+  export type institution_type_yearSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    year?: boolean
+    type?: boolean
+    count?: boolean
+  }, ExtArgs["result"]["institution_type_year"]>
+
+  export type institution_type_yearSelectScalar = {
+    id?: boolean
+    year?: boolean
+    type?: boolean
+    count?: boolean
+  }
+
+  export type institution_type_yearOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "year" | "type" | "count", ExtArgs["result"]["institution_type_year"]>
+
+  export type $institution_type_yearPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "institution_type_year"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      year: number
+      type: string
+      count: number
+    }, ExtArgs["result"]["institution_type_year"]>
+    composites: {}
+  }
+
+  type institution_type_yearGetPayload<S extends boolean | null | undefined | institution_type_yearDefaultArgs> = $Result.GetResult<Prisma.$institution_type_yearPayload, S>
+
+  type institution_type_yearCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<institution_type_yearFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Institution_type_yearCountAggregateInputType | true
+    }
+
+  export interface institution_type_yearDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['institution_type_year'], meta: { name: 'institution_type_year' } }
+    /**
+     * Find zero or one Institution_type_year that matches the filter.
+     * @param {institution_type_yearFindUniqueArgs} args - Arguments to find a Institution_type_year
+     * @example
+     * // Get one Institution_type_year
+     * const institution_type_year = await prisma.institution_type_year.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends institution_type_yearFindUniqueArgs>(args: SelectSubset<T, institution_type_yearFindUniqueArgs<ExtArgs>>): Prisma__institution_type_yearClient<$Result.GetResult<Prisma.$institution_type_yearPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Institution_type_year that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {institution_type_yearFindUniqueOrThrowArgs} args - Arguments to find a Institution_type_year
+     * @example
+     * // Get one Institution_type_year
+     * const institution_type_year = await prisma.institution_type_year.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends institution_type_yearFindUniqueOrThrowArgs>(args: SelectSubset<T, institution_type_yearFindUniqueOrThrowArgs<ExtArgs>>): Prisma__institution_type_yearClient<$Result.GetResult<Prisma.$institution_type_yearPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Institution_type_year that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {institution_type_yearFindFirstArgs} args - Arguments to find a Institution_type_year
+     * @example
+     * // Get one Institution_type_year
+     * const institution_type_year = await prisma.institution_type_year.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends institution_type_yearFindFirstArgs>(args?: SelectSubset<T, institution_type_yearFindFirstArgs<ExtArgs>>): Prisma__institution_type_yearClient<$Result.GetResult<Prisma.$institution_type_yearPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Institution_type_year that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {institution_type_yearFindFirstOrThrowArgs} args - Arguments to find a Institution_type_year
+     * @example
+     * // Get one Institution_type_year
+     * const institution_type_year = await prisma.institution_type_year.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends institution_type_yearFindFirstOrThrowArgs>(args?: SelectSubset<T, institution_type_yearFindFirstOrThrowArgs<ExtArgs>>): Prisma__institution_type_yearClient<$Result.GetResult<Prisma.$institution_type_yearPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Institution_type_years that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {institution_type_yearFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Institution_type_years
+     * const institution_type_years = await prisma.institution_type_year.findMany()
+     * 
+     * // Get first 10 Institution_type_years
+     * const institution_type_years = await prisma.institution_type_year.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const institution_type_yearWithIdOnly = await prisma.institution_type_year.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends institution_type_yearFindManyArgs>(args?: SelectSubset<T, institution_type_yearFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$institution_type_yearPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Institution_type_year.
+     * @param {institution_type_yearCreateArgs} args - Arguments to create a Institution_type_year.
+     * @example
+     * // Create one Institution_type_year
+     * const Institution_type_year = await prisma.institution_type_year.create({
+     *   data: {
+     *     // ... data to create a Institution_type_year
+     *   }
+     * })
+     * 
+     */
+    create<T extends institution_type_yearCreateArgs>(args: SelectSubset<T, institution_type_yearCreateArgs<ExtArgs>>): Prisma__institution_type_yearClient<$Result.GetResult<Prisma.$institution_type_yearPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Institution_type_years.
+     * @param {institution_type_yearCreateManyArgs} args - Arguments to create many Institution_type_years.
+     * @example
+     * // Create many Institution_type_years
+     * const institution_type_year = await prisma.institution_type_year.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends institution_type_yearCreateManyArgs>(args?: SelectSubset<T, institution_type_yearCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Institution_type_years and returns the data saved in the database.
+     * @param {institution_type_yearCreateManyAndReturnArgs} args - Arguments to create many Institution_type_years.
+     * @example
+     * // Create many Institution_type_years
+     * const institution_type_year = await prisma.institution_type_year.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Institution_type_years and only return the `id`
+     * const institution_type_yearWithIdOnly = await prisma.institution_type_year.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends institution_type_yearCreateManyAndReturnArgs>(args?: SelectSubset<T, institution_type_yearCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$institution_type_yearPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Institution_type_year.
+     * @param {institution_type_yearDeleteArgs} args - Arguments to delete one Institution_type_year.
+     * @example
+     * // Delete one Institution_type_year
+     * const Institution_type_year = await prisma.institution_type_year.delete({
+     *   where: {
+     *     // ... filter to delete one Institution_type_year
+     *   }
+     * })
+     * 
+     */
+    delete<T extends institution_type_yearDeleteArgs>(args: SelectSubset<T, institution_type_yearDeleteArgs<ExtArgs>>): Prisma__institution_type_yearClient<$Result.GetResult<Prisma.$institution_type_yearPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Institution_type_year.
+     * @param {institution_type_yearUpdateArgs} args - Arguments to update one Institution_type_year.
+     * @example
+     * // Update one Institution_type_year
+     * const institution_type_year = await prisma.institution_type_year.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends institution_type_yearUpdateArgs>(args: SelectSubset<T, institution_type_yearUpdateArgs<ExtArgs>>): Prisma__institution_type_yearClient<$Result.GetResult<Prisma.$institution_type_yearPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Institution_type_years.
+     * @param {institution_type_yearDeleteManyArgs} args - Arguments to filter Institution_type_years to delete.
+     * @example
+     * // Delete a few Institution_type_years
+     * const { count } = await prisma.institution_type_year.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends institution_type_yearDeleteManyArgs>(args?: SelectSubset<T, institution_type_yearDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Institution_type_years.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {institution_type_yearUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Institution_type_years
+     * const institution_type_year = await prisma.institution_type_year.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends institution_type_yearUpdateManyArgs>(args: SelectSubset<T, institution_type_yearUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Institution_type_years and returns the data updated in the database.
+     * @param {institution_type_yearUpdateManyAndReturnArgs} args - Arguments to update many Institution_type_years.
+     * @example
+     * // Update many Institution_type_years
+     * const institution_type_year = await prisma.institution_type_year.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Institution_type_years and only return the `id`
+     * const institution_type_yearWithIdOnly = await prisma.institution_type_year.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends institution_type_yearUpdateManyAndReturnArgs>(args: SelectSubset<T, institution_type_yearUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$institution_type_yearPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Institution_type_year.
+     * @param {institution_type_yearUpsertArgs} args - Arguments to update or create a Institution_type_year.
+     * @example
+     * // Update or create a Institution_type_year
+     * const institution_type_year = await prisma.institution_type_year.upsert({
+     *   create: {
+     *     // ... data to create a Institution_type_year
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Institution_type_year we want to update
+     *   }
+     * })
+     */
+    upsert<T extends institution_type_yearUpsertArgs>(args: SelectSubset<T, institution_type_yearUpsertArgs<ExtArgs>>): Prisma__institution_type_yearClient<$Result.GetResult<Prisma.$institution_type_yearPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Institution_type_years.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {institution_type_yearCountArgs} args - Arguments to filter Institution_type_years to count.
+     * @example
+     * // Count the number of Institution_type_years
+     * const count = await prisma.institution_type_year.count({
+     *   where: {
+     *     // ... the filter for the Institution_type_years we want to count
+     *   }
+     * })
+    **/
+    count<T extends institution_type_yearCountArgs>(
+      args?: Subset<T, institution_type_yearCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Institution_type_yearCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Institution_type_year.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Institution_type_yearAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Institution_type_yearAggregateArgs>(args: Subset<T, Institution_type_yearAggregateArgs>): Prisma.PrismaPromise<GetInstitution_type_yearAggregateType<T>>
+
+    /**
+     * Group by Institution_type_year.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {institution_type_yearGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends institution_type_yearGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: institution_type_yearGroupByArgs['orderBy'] }
+        : { orderBy?: institution_type_yearGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, institution_type_yearGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInstitution_type_yearGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the institution_type_year model
+   */
+  readonly fields: institution_type_yearFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for institution_type_year.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__institution_type_yearClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the institution_type_year model
+   */
+  interface institution_type_yearFieldRefs {
+    readonly id: FieldRef<"institution_type_year", 'Int'>
+    readonly year: FieldRef<"institution_type_year", 'Int'>
+    readonly type: FieldRef<"institution_type_year", 'String'>
+    readonly count: FieldRef<"institution_type_year", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * institution_type_year findUnique
+   */
+  export type institution_type_yearFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_type_year
+     */
+    select?: institution_type_yearSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_type_year
+     */
+    omit?: institution_type_yearOmit<ExtArgs> | null
+    /**
+     * Filter, which institution_type_year to fetch.
+     */
+    where: institution_type_yearWhereUniqueInput
+  }
+
+  /**
+   * institution_type_year findUniqueOrThrow
+   */
+  export type institution_type_yearFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_type_year
+     */
+    select?: institution_type_yearSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_type_year
+     */
+    omit?: institution_type_yearOmit<ExtArgs> | null
+    /**
+     * Filter, which institution_type_year to fetch.
+     */
+    where: institution_type_yearWhereUniqueInput
+  }
+
+  /**
+   * institution_type_year findFirst
+   */
+  export type institution_type_yearFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_type_year
+     */
+    select?: institution_type_yearSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_type_year
+     */
+    omit?: institution_type_yearOmit<ExtArgs> | null
+    /**
+     * Filter, which institution_type_year to fetch.
+     */
+    where?: institution_type_yearWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of institution_type_years to fetch.
+     */
+    orderBy?: institution_type_yearOrderByWithRelationInput | institution_type_yearOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for institution_type_years.
+     */
+    cursor?: institution_type_yearWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` institution_type_years from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` institution_type_years.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of institution_type_years.
+     */
+    distinct?: Institution_type_yearScalarFieldEnum | Institution_type_yearScalarFieldEnum[]
+  }
+
+  /**
+   * institution_type_year findFirstOrThrow
+   */
+  export type institution_type_yearFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_type_year
+     */
+    select?: institution_type_yearSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_type_year
+     */
+    omit?: institution_type_yearOmit<ExtArgs> | null
+    /**
+     * Filter, which institution_type_year to fetch.
+     */
+    where?: institution_type_yearWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of institution_type_years to fetch.
+     */
+    orderBy?: institution_type_yearOrderByWithRelationInput | institution_type_yearOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for institution_type_years.
+     */
+    cursor?: institution_type_yearWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` institution_type_years from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` institution_type_years.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of institution_type_years.
+     */
+    distinct?: Institution_type_yearScalarFieldEnum | Institution_type_yearScalarFieldEnum[]
+  }
+
+  /**
+   * institution_type_year findMany
+   */
+  export type institution_type_yearFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_type_year
+     */
+    select?: institution_type_yearSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_type_year
+     */
+    omit?: institution_type_yearOmit<ExtArgs> | null
+    /**
+     * Filter, which institution_type_years to fetch.
+     */
+    where?: institution_type_yearWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of institution_type_years to fetch.
+     */
+    orderBy?: institution_type_yearOrderByWithRelationInput | institution_type_yearOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing institution_type_years.
+     */
+    cursor?: institution_type_yearWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` institution_type_years from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` institution_type_years.
+     */
+    skip?: number
+    distinct?: Institution_type_yearScalarFieldEnum | Institution_type_yearScalarFieldEnum[]
+  }
+
+  /**
+   * institution_type_year create
+   */
+  export type institution_type_yearCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_type_year
+     */
+    select?: institution_type_yearSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_type_year
+     */
+    omit?: institution_type_yearOmit<ExtArgs> | null
+    /**
+     * The data needed to create a institution_type_year.
+     */
+    data: XOR<institution_type_yearCreateInput, institution_type_yearUncheckedCreateInput>
+  }
+
+  /**
+   * institution_type_year createMany
+   */
+  export type institution_type_yearCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many institution_type_years.
+     */
+    data: institution_type_yearCreateManyInput | institution_type_yearCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * institution_type_year createManyAndReturn
+   */
+  export type institution_type_yearCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_type_year
+     */
+    select?: institution_type_yearSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_type_year
+     */
+    omit?: institution_type_yearOmit<ExtArgs> | null
+    /**
+     * The data used to create many institution_type_years.
+     */
+    data: institution_type_yearCreateManyInput | institution_type_yearCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * institution_type_year update
+   */
+  export type institution_type_yearUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_type_year
+     */
+    select?: institution_type_yearSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_type_year
+     */
+    omit?: institution_type_yearOmit<ExtArgs> | null
+    /**
+     * The data needed to update a institution_type_year.
+     */
+    data: XOR<institution_type_yearUpdateInput, institution_type_yearUncheckedUpdateInput>
+    /**
+     * Choose, which institution_type_year to update.
+     */
+    where: institution_type_yearWhereUniqueInput
+  }
+
+  /**
+   * institution_type_year updateMany
+   */
+  export type institution_type_yearUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update institution_type_years.
+     */
+    data: XOR<institution_type_yearUpdateManyMutationInput, institution_type_yearUncheckedUpdateManyInput>
+    /**
+     * Filter which institution_type_years to update
+     */
+    where?: institution_type_yearWhereInput
+    /**
+     * Limit how many institution_type_years to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * institution_type_year updateManyAndReturn
+   */
+  export type institution_type_yearUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_type_year
+     */
+    select?: institution_type_yearSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_type_year
+     */
+    omit?: institution_type_yearOmit<ExtArgs> | null
+    /**
+     * The data used to update institution_type_years.
+     */
+    data: XOR<institution_type_yearUpdateManyMutationInput, institution_type_yearUncheckedUpdateManyInput>
+    /**
+     * Filter which institution_type_years to update
+     */
+    where?: institution_type_yearWhereInput
+    /**
+     * Limit how many institution_type_years to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * institution_type_year upsert
+   */
+  export type institution_type_yearUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_type_year
+     */
+    select?: institution_type_yearSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_type_year
+     */
+    omit?: institution_type_yearOmit<ExtArgs> | null
+    /**
+     * The filter to search for the institution_type_year to update in case it exists.
+     */
+    where: institution_type_yearWhereUniqueInput
+    /**
+     * In case the institution_type_year found by the `where` argument doesn't exist, create a new institution_type_year with this data.
+     */
+    create: XOR<institution_type_yearCreateInput, institution_type_yearUncheckedCreateInput>
+    /**
+     * In case the institution_type_year was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<institution_type_yearUpdateInput, institution_type_yearUncheckedUpdateInput>
+  }
+
+  /**
+   * institution_type_year delete
+   */
+  export type institution_type_yearDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_type_year
+     */
+    select?: institution_type_yearSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_type_year
+     */
+    omit?: institution_type_yearOmit<ExtArgs> | null
+    /**
+     * Filter which institution_type_year to delete.
+     */
+    where: institution_type_yearWhereUniqueInput
+  }
+
+  /**
+   * institution_type_year deleteMany
+   */
+  export type institution_type_yearDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which institution_type_years to delete
+     */
+    where?: institution_type_yearWhereInput
+    /**
+     * Limit how many institution_type_years to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * institution_type_year without action
+   */
+  export type institution_type_yearDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the institution_type_year
+     */
+    select?: institution_type_yearSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the institution_type_year
+     */
+    omit?: institution_type_yearOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -4463,6 +6693,26 @@ export namespace Prisma {
   };
 
   export type InstitutionsScalarFieldEnum = (typeof InstitutionsScalarFieldEnum)[keyof typeof InstitutionsScalarFieldEnum]
+
+
+  export const Institution_region_yearScalarFieldEnum: {
+    id: 'id',
+    year: 'year',
+    region: 'region',
+    count: 'count'
+  };
+
+  export type Institution_region_yearScalarFieldEnum = (typeof Institution_region_yearScalarFieldEnum)[keyof typeof Institution_region_yearScalarFieldEnum]
+
+
+  export const Institution_type_yearScalarFieldEnum: {
+    id: 'id',
+    year: 'year',
+    type: 'type',
+    count: 'count'
+  };
+
+  export type Institution_type_yearScalarFieldEnum = (typeof Institution_type_yearScalarFieldEnum)[keyof typeof Institution_type_yearScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -4832,6 +7082,104 @@ export namespace Prisma {
     created_at?: DateTimeNullableWithAggregatesFilter<"institutions"> | Date | string | null
   }
 
+  export type institution_region_yearWhereInput = {
+    AND?: institution_region_yearWhereInput | institution_region_yearWhereInput[]
+    OR?: institution_region_yearWhereInput[]
+    NOT?: institution_region_yearWhereInput | institution_region_yearWhereInput[]
+    id?: IntFilter<"institution_region_year"> | number
+    year?: IntFilter<"institution_region_year"> | number
+    region?: StringFilter<"institution_region_year"> | string
+    count?: IntFilter<"institution_region_year"> | number
+  }
+
+  export type institution_region_yearOrderByWithRelationInput = {
+    id?: SortOrder
+    year?: SortOrder
+    region?: SortOrder
+    count?: SortOrder
+  }
+
+  export type institution_region_yearWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: institution_region_yearWhereInput | institution_region_yearWhereInput[]
+    OR?: institution_region_yearWhereInput[]
+    NOT?: institution_region_yearWhereInput | institution_region_yearWhereInput[]
+    year?: IntFilter<"institution_region_year"> | number
+    region?: StringFilter<"institution_region_year"> | string
+    count?: IntFilter<"institution_region_year"> | number
+  }, "id">
+
+  export type institution_region_yearOrderByWithAggregationInput = {
+    id?: SortOrder
+    year?: SortOrder
+    region?: SortOrder
+    count?: SortOrder
+    _count?: institution_region_yearCountOrderByAggregateInput
+    _avg?: institution_region_yearAvgOrderByAggregateInput
+    _max?: institution_region_yearMaxOrderByAggregateInput
+    _min?: institution_region_yearMinOrderByAggregateInput
+    _sum?: institution_region_yearSumOrderByAggregateInput
+  }
+
+  export type institution_region_yearScalarWhereWithAggregatesInput = {
+    AND?: institution_region_yearScalarWhereWithAggregatesInput | institution_region_yearScalarWhereWithAggregatesInput[]
+    OR?: institution_region_yearScalarWhereWithAggregatesInput[]
+    NOT?: institution_region_yearScalarWhereWithAggregatesInput | institution_region_yearScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"institution_region_year"> | number
+    year?: IntWithAggregatesFilter<"institution_region_year"> | number
+    region?: StringWithAggregatesFilter<"institution_region_year"> | string
+    count?: IntWithAggregatesFilter<"institution_region_year"> | number
+  }
+
+  export type institution_type_yearWhereInput = {
+    AND?: institution_type_yearWhereInput | institution_type_yearWhereInput[]
+    OR?: institution_type_yearWhereInput[]
+    NOT?: institution_type_yearWhereInput | institution_type_yearWhereInput[]
+    id?: IntFilter<"institution_type_year"> | number
+    year?: IntFilter<"institution_type_year"> | number
+    type?: StringFilter<"institution_type_year"> | string
+    count?: IntFilter<"institution_type_year"> | number
+  }
+
+  export type institution_type_yearOrderByWithRelationInput = {
+    id?: SortOrder
+    year?: SortOrder
+    type?: SortOrder
+    count?: SortOrder
+  }
+
+  export type institution_type_yearWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: institution_type_yearWhereInput | institution_type_yearWhereInput[]
+    OR?: institution_type_yearWhereInput[]
+    NOT?: institution_type_yearWhereInput | institution_type_yearWhereInput[]
+    year?: IntFilter<"institution_type_year"> | number
+    type?: StringFilter<"institution_type_year"> | string
+    count?: IntFilter<"institution_type_year"> | number
+  }, "id">
+
+  export type institution_type_yearOrderByWithAggregationInput = {
+    id?: SortOrder
+    year?: SortOrder
+    type?: SortOrder
+    count?: SortOrder
+    _count?: institution_type_yearCountOrderByAggregateInput
+    _avg?: institution_type_yearAvgOrderByAggregateInput
+    _max?: institution_type_yearMaxOrderByAggregateInput
+    _min?: institution_type_yearMinOrderByAggregateInput
+    _sum?: institution_type_yearSumOrderByAggregateInput
+  }
+
+  export type institution_type_yearScalarWhereWithAggregatesInput = {
+    AND?: institution_type_yearScalarWhereWithAggregatesInput | institution_type_yearScalarWhereWithAggregatesInput[]
+    OR?: institution_type_yearScalarWhereWithAggregatesInput[]
+    NOT?: institution_type_yearScalarWhereWithAggregatesInput | institution_type_yearScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"institution_type_year"> | number
+    year?: IntWithAggregatesFilter<"institution_type_year"> | number
+    type?: StringWithAggregatesFilter<"institution_type_year"> | string
+    count?: IntWithAggregatesFilter<"institution_type_year"> | number
+  }
+
   export type user_infoCreateInput = {
     id?: string
     email: string
@@ -5142,6 +7490,98 @@ export namespace Prisma {
     lat?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     lng?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type institution_region_yearCreateInput = {
+    year: number
+    region: string
+    count: number
+  }
+
+  export type institution_region_yearUncheckedCreateInput = {
+    id?: number
+    year: number
+    region: string
+    count: number
+  }
+
+  export type institution_region_yearUpdateInput = {
+    year?: IntFieldUpdateOperationsInput | number
+    region?: StringFieldUpdateOperationsInput | string
+    count?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type institution_region_yearUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    year?: IntFieldUpdateOperationsInput | number
+    region?: StringFieldUpdateOperationsInput | string
+    count?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type institution_region_yearCreateManyInput = {
+    id?: number
+    year: number
+    region: string
+    count: number
+  }
+
+  export type institution_region_yearUpdateManyMutationInput = {
+    year?: IntFieldUpdateOperationsInput | number
+    region?: StringFieldUpdateOperationsInput | string
+    count?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type institution_region_yearUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    year?: IntFieldUpdateOperationsInput | number
+    region?: StringFieldUpdateOperationsInput | string
+    count?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type institution_type_yearCreateInput = {
+    year: number
+    type: string
+    count: number
+  }
+
+  export type institution_type_yearUncheckedCreateInput = {
+    id?: number
+    year: number
+    type: string
+    count: number
+  }
+
+  export type institution_type_yearUpdateInput = {
+    year?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    count?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type institution_type_yearUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    year?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    count?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type institution_type_yearCreateManyInput = {
+    id?: number
+    year: number
+    type: string
+    count: number
+  }
+
+  export type institution_type_yearUpdateManyMutationInput = {
+    year?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    count?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type institution_type_yearUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    year?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    count?: IntFieldUpdateOperationsInput | number
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -5480,6 +7920,72 @@ export namespace Prisma {
     _sum?: NestedDecimalNullableFilter<$PrismaModel>
     _min?: NestedDecimalNullableFilter<$PrismaModel>
     _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
+  export type institution_region_yearCountOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    region?: SortOrder
+    count?: SortOrder
+  }
+
+  export type institution_region_yearAvgOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    count?: SortOrder
+  }
+
+  export type institution_region_yearMaxOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    region?: SortOrder
+    count?: SortOrder
+  }
+
+  export type institution_region_yearMinOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    region?: SortOrder
+    count?: SortOrder
+  }
+
+  export type institution_region_yearSumOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    count?: SortOrder
+  }
+
+  export type institution_type_yearCountOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    type?: SortOrder
+    count?: SortOrder
+  }
+
+  export type institution_type_yearAvgOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    count?: SortOrder
+  }
+
+  export type institution_type_yearMaxOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    type?: SortOrder
+    count?: SortOrder
+  }
+
+  export type institution_type_yearMinOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    type?: SortOrder
+    count?: SortOrder
+  }
+
+  export type institution_type_yearSumOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    count?: SortOrder
   }
 
   export type StringFieldUpdateOperationsInput = {

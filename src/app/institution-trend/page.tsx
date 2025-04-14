@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import PageHeader from '@/components/UI/PageHeader';
 import TrendFilter from '@/components/Institution/TrendFilter';
@@ -8,8 +8,8 @@ import { RegionTrendChart, InstitutionTypeChart, PharmacyTrendChart } from '@/co
 
 export default function InstitutionTrend() {
   // 필터 상태 관리
-  const [period, setPeriod] = useState('year'); // 기본값 수정
-  const [analysisUnit, setAnalysisUnit] = useState('month');
+  const [period, setPeriod] = useState('month'); // 기본값 수정
+  const [analysisUnit, setAnalysisUnit] = useState('day'); // 기본값을 day로 변경
   const [searchTerm, setSearchTerm] = useState('');
   // 직접 선택 기능을 주석 처리했으므로 날짜 관련 상태도 주석 처리
   // const [startDate, setStartDate] = useState<Date | undefined>(undefined);
@@ -17,10 +17,12 @@ export default function InstitutionTrend() {
 
   // 필터 변경 처리
   const handlePeriodChange = (newPeriod: string) => {
+    console.log(`기간 변경: ${period} -> ${newPeriod}`);
     setPeriod(newPeriod);
   };
 
   const handleAnalysisUnitChange = (newUnit: string) => {
+    console.log(`분석 단위 변경: ${analysisUnit} -> ${newUnit}`);
     setAnalysisUnit(newUnit);
   };
 
@@ -35,6 +37,11 @@ export default function InstitutionTrend() {
       setPeriod('custom');
     }
   }; */
+
+  // 컴포넌트 마운트 및 업데이트 시 현재 상태 로깅
+  useEffect(() => {
+    console.log(`현재 상태 - 기간: ${period}, 분석단위: ${analysisUnit}`);
+  }, [period, analysisUnit]);
 
   return (
     <Layout>

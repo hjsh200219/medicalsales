@@ -17,7 +17,7 @@ model user_info {
   address    String?
   last_login DateTime? @default(now()) @db.Timestamp(6)
   created_at DateTime? @default(now()) @db.Timestamp(6)
-  updated_at DateTime? @default(now()) @updatedAt @db.Timestamp(6)
+  updated_at DateTime? @default(now()) @db.Timestamp(6)
 
   @@map("user_info")
 }
@@ -36,7 +36,7 @@ model customer_info {
   position        String?
   tier            String?
   created_at      DateTime? @default(now()) @db.Timestamp(6)
-  updated_at     DateTime? @default(now()) @updatedAt @db.Timestamp(6)
+  updated_at      DateTime? @default(now()) @db.Timestamp(6)
   address_company String?
   lat_company     Float?
   lng_company     Float?
@@ -55,4 +55,20 @@ model institutions {
   lat        Decimal?  @db.Decimal
   lng        Decimal?  @db.Decimal
   created_at DateTime? @default(now()) @db.Timestamp(6)
+}
+
+// 연도별 지역 집계 데이터 테이블
+model institution_region_year {
+  id     Int    @id @default(autoincrement())
+  year   Int
+  region String
+  count  Int
+}
+
+// 연도별 유형 집계 데이터 테이블
+model institution_type_year {
+  id    Int    @id @default(autoincrement())
+  year  Int
+  type  String
+  count Int
 }

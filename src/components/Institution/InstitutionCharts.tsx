@@ -14,7 +14,7 @@ import {
   TooltipItem
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { format, subDays, subMonths, subYears, startOfYear, endOfYear, parseISO } from 'date-fns';
+import { format, subDays, subMonths, subYears, parseISO } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { PERIOD_OPTIONS } from '@/components/Institution/TrendFilter';
 import { REGION_CODES, getRegionFromAddress, getRegionColor } from '@/types/regions';
@@ -88,75 +88,96 @@ const calculateStartDate = (
   endDate?: Date,
   analysisUnit?: string
 ): { fetchStartDate: Date, unit: string } => {
-  let fetchStartDate = new Date();
+  // 기본값: 현재 날짜
+  const now = new Date();
+  let fetchStartDate = new Date(now);
   let unit = analysisUnit || 'month';
+  
+  // 커스텀 기간이 제공된 경우 그대로 사용
+  if (period === 'custom' && startDate) {
+    return { fetchStartDate: startDate, unit };
+  }
 
-  // 커스텀 날짜 범위 사용 처리
-  if (period === 'custom' && startDate && endDate) {
-    fetchStartDate = startDate;
-    // 커스텀 기간일 때는 분석 단위를 연도로 설정
-    if (!analysisUnit || analysisUnit === 'month') {
-      // 1년 이상 차이나면 연 단위로 설정
-      const yearDiff = endDate.getFullYear() - startDate.getFullYear();
-      if (yearDiff >= 1) {
+  // 기간별 시작 날짜 조정
+  switch (period) {
+    case 'week':
+      fetchStartDate = subDays(now, 7);
+      if (!analysisUnit || analysisUnit === 'month') {
+        unit = 'day';
+      }
+      break;
+    case 'month':
+      fetchStartDate = subMonths(now, 1);
+      if (!analysisUnit || analysisUnit === 'month') {
+        unit = 'day';
+      }
+      break;
+    case 'halfYear':
+      fetchStartDate = subMonths(now, 6);
+      if (!analysisUnit || analysisUnit === 'month') {
+        unit = 'week';
+      }
+      break;
+    case 'year':
+      fetchStartDate = subYears(now, 1);
+      break;
+    case 'twoYears':
+      fetchStartDate = subYears(now, 2);
+      break;
+    case 'fiveYears':
+      fetchStartDate = subYears(now, 5);
+      break;
+    case 'tenYears':
+      fetchStartDate = subYears(now, 10);
+      if (!analysisUnit || analysisUnit === 'month') {
         unit = 'year';
       }
-    }
-  } else {
-    switch (period) {
-      case 'week':
-        fetchStartDate = subDays(new Date(), 7);
-        unit = 'day';
-        break;
-      case 'month':
-        fetchStartDate = subMonths(new Date(), 1);
-        unit = 'day';
-        break;
-      case 'halfYear':
-        fetchStartDate = subMonths(new Date(), 6);
-        unit = 'week';
-        break;
-      case 'year':
-        fetchStartDate = subYears(new Date(), 1);
-        unit = 'month';
-        break;
-      case 'twoYears':
-        fetchStartDate = subYears(new Date(), 2);
-        unit = 'month';
-        break;
-      case 'fiveYears':
-        fetchStartDate = subYears(new Date(), 5);
-        unit = 'month';
-        break;
-      case 'all':
-        fetchStartDate = new Date(1990, 0, 1); // 1990년 1월 1일
+      break;
+    case 'all':
+      // 1990년부터 현재까지 (의료기관 데이터의 일반적 시작점)
+      fetchStartDate = new Date(1990, 0, 1);
+      if (!analysisUnit || analysisUnit === 'month') {
         unit = 'year';
-        break;
-      default:
-        fetchStartDate = subDays(new Date(), 7);
-        unit = 'day';
-    }
+      }
+      break;
+    default:
+      fetchStartDate = subMonths(now, 1); // 기본값: 최근 1개월
   }
   
   return { fetchStartDate, unit };
 };
 
-// 기간에 따른 레이블 생성 함수
+// 레이블 생성 함수 (시간축 레이블)
 const generateTimeLabels = (period: string, unit: string, startDate?: Date, endDate?: Date): string[] => {
   let labels: string[] = [];
   
-  // 커스텀 기간이 설정된 경우 (startDate와 endDate가 있는 경우)
+  // unit 매개변수를 항상 최우선으로 사용
+  console.log(`레이블 생성: period=${period}, unit=${unit}`);
+  
+  // 커스텀 기간인 경우
   if (period === 'custom' && startDate && endDate) {
+    // 단위에 따라 레이블 생성
     switch (unit) {
-      case 'year':
-        // 시작 연도부터 종료 연도까지 레이블 생성
-        const startYear = startDate.getFullYear();
-        const endYear = endDate.getFullYear();
-        const yearCount = endYear - startYear + 1;
+      case 'day':
+        // 일 단위 레이블 생성 (최대 90일까지)
+        const dayDiff = Math.floor((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
         
-        labels = Array.from({ length: yearCount }, (_, i) => 
-          `${startYear + i}년`
-        );
+        for (let i = 0; i < Math.min(dayDiff, 90); i++) {
+          const date = new Date(startDate);
+          date.setDate(date.getDate() + i);
+          labels.push(format(date, 'MM.dd', { locale: ko }));
+        }
+        break;
+      
+      case 'week':
+        // 주 단위 레이블 생성 (최대 52주까지)
+        const weekDiff = Math.floor((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7)) + 1;
+        
+        for (let i = 0; i < Math.min(weekDiff, 52); i++) {
+          const date = new Date(startDate);
+          date.setDate(date.getDate() + i * 7);
+          labels.push(`${format(date, 'MM.dd', { locale: ko })} 주`);
+        }
         break;
       
       case 'month':
@@ -184,6 +205,7 @@ const generateTimeLabels = (period: string, unit: string, startDate?: Date, endD
   }
   
   // 기본 기간 옵션에 따른 레이블 생성
+  // 항상 제공된 단위(unit)를 사용
   switch (unit) {
     case 'day':
       const days = period === 'week' ? 7 : 30;
@@ -221,7 +243,13 @@ const generateTimeLabels = (period: string, unit: string, startDate?: Date, endD
       } else {
         // 최근 기간만 표시
         const currentYear = new Date().getFullYear();
-        const startYear = currentYear - (period === 'fiveYears' ? 5 : (period === 'twoYears' ? 2 : 1));
+        const startYear = currentYear - (
+          period === 'tenYears' ? 10 : (
+            period === 'fiveYears' ? 5 : (
+              period === 'twoYears' ? 2 : 1
+            )
+          )
+        );
         const years = currentYear - startYear + 1;
         labels = Array.from({ length: years }, (_, i) => `${startYear + i}년`);
       }
@@ -324,6 +352,8 @@ const getChartOptions = (period: string) => {
 const findDateIndex = (openDate: Date, period: string, unit: string, startDate?: Date, endDate?: Date): number => {
   let index = -1;
   
+  console.log(`인덱스 찾기: date=${format(openDate, 'yyyy-MM-dd')}, unit=${unit}, period=${period}`);
+
   // 커스텀 기간인 경우
   if (period === 'custom' && startDate && endDate) {
     const openYear = openDate.getFullYear();
@@ -350,52 +380,83 @@ const findDateIndex = (openDate: Date, period: string, unit: string, startDate?:
         // 월 차이 계산
         index = (openYear - startYear) * 12 + (openMonth - startMonth);
       }
+    } else if (unit === 'week') {
+      // 주 단위 인덱스 계산 (시작일로부터 7일 간격)
+      const diffTime = openDate.getTime() - startDate.getTime();
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      const weekIndex = Math.floor(diffDays / 7);
+      
+      if (weekIndex >= 0 && openDate <= endDate) {
+        index = weekIndex;
+      }
+    } else if (unit === 'day') {
+      // 일 단위 인덱스 계산
+      const diffTime = openDate.getTime() - startDate.getTime();
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      
+      if (diffDays >= 0 && openDate <= endDate) {
+        index = diffDays;
+      }
     }
     
     return index;
   }
   
   // 기본 기간 옵션에 따른 인덱스 계산
+  const today = new Date();
+  
   switch (unit) {
     case 'day':
+      // 최근 n일 (week: 7일, month: 30일)
       const days = period === 'week' ? 7 : 30;
-      for (let i = 0; i < days; i++) {
-        const compareDate = subDays(new Date(), days - i - 1);
-        if (format(openDate, 'yyyy-MM-dd') === format(compareDate, 'yyyy-MM-dd')) {
-          index = i;
-          break;
-        }
+      const oldestDayDate = subDays(today, days - 1); // n-1일 전 (포함)
+      
+      // 날짜가 범위 내에 있는지 확인
+      if (openDate >= oldestDayDate && openDate <= today) {
+        // 일 수 차이 계산
+        const diffTime = openDate.getTime() - oldestDayDate.getTime();
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        index = diffDays;
       }
       break;
+      
     case 'week':
-      const weeks = 26;
-      for (let i = 0; i < weeks; i++) {
-        const weekStart = subDays(new Date(), (weeks - i) * 7);
-        const weekEnd = subDays(new Date(), (weeks - i - 1) * 7);
-        if (openDate >= weekStart && openDate < weekEnd) {
-          index = i;
-          break;
-        }
+      // 최근 26주 (halfYear)
+      const oldestWeekDate = subDays(today, 26 * 7 - 1); // 26주 전 (포함)
+      
+      if (openDate >= oldestWeekDate && openDate <= today) {
+        // 주 차이 계산
+        const diffTime = openDate.getTime() - oldestWeekDate.getTime();
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        const weekIndex = Math.floor(diffDays / 7);
+        index = weekIndex;
       }
       break;
+      
     case 'month':
+      // 최근 n달 (year: 12달, twoYears: 24달, fiveYears: 60달)
       const months = period === 'year' ? 12 : (period === 'twoYears' ? 24 : 60);
-      for (let i = 0; i < months; i++) {
-        const monthStart = subMonths(new Date(), months - i - 1);
-        const monthEnd = i === months - 1 ? new Date() : subMonths(new Date(), months - i - 2);
-        
-        if (openDate >= startOfYear(monthStart) && 
-            openDate <= endOfYear(monthEnd) && 
-            format(openDate, 'yyyy-MM') === format(monthStart, 'yyyy-MM')) {
-          index = i;
-          break;
-        }
+      const oldestMonthDate = subMonths(today, months - 1); // n-1달 전 (포함)
+      
+      if (openDate >= oldestMonthDate && openDate <= today) {
+        // 월 차이 계산
+        const yearDiff = openDate.getFullYear() - oldestMonthDate.getFullYear();
+        const monthDiff = openDate.getMonth() - oldestMonthDate.getMonth();
+        index = yearDiff * 12 + monthDiff;
       }
       break;
+      
     case 'year':
-      const year = openDate.getFullYear();
-      if (year >= 1990 && year <= new Date().getFullYear()) {
-        index = year - 1990;
+      // 'all' 옵션 (1990년부터 현재까지)
+      const startYear = period === 'all' ? 1990 : today.getFullYear() - (
+        period === 'tenYears' ? 10 : (
+          period === 'fiveYears' ? 5 : (
+            period === 'twoYears' ? 2 : 1
+          )
+        )
+      );
+      if (openDate.getFullYear() >= startYear && openDate.getFullYear() <= today.getFullYear()) {
+        index = openDate.getFullYear() - startYear;
       }
       break;
   }
@@ -429,13 +490,17 @@ function useFetchInstitutionData({
       setError(null);
       
       try {
-        const { fetchStartDate, unit } = calculateStartDate(period, startDate, endDate, analysisUnit);
+        // 분석 단위를 최우선으로 사용하도록 수정
+        const { fetchStartDate } = calculateStartDate(period, startDate, endDate, analysisUnit);
 
         // URL 쿼리 파라미터 구성
         const url = new URL(`/api/institutions/trend`, window.location.origin);
         url.searchParams.append('period', period);
         url.searchParams.append('startDate', fetchStartDate.toISOString());
-        url.searchParams.append('unit', unit);
+        // 분석 단위를 실제로 사용
+        url.searchParams.append('unit', analysisUnit);
+        
+        console.log(`차트 데이터 요청: 기간=${period}, 분석단위=${analysisUnit}`);
         
         if (searchTerm) {
           url.searchParams.append('search', searchTerm);
@@ -449,7 +514,6 @@ function useFetchInstitutionData({
           url.searchParams.append('endDate', endDate.toISOString());
         }
 
-        console.log('데이터 요청 URL:', url.toString());
         const response = await fetch(url.toString());
         
         if (!response.ok) {
@@ -457,15 +521,6 @@ function useFetchInstitutionData({
         }
         
         const data = await response.json();
-        console.log('API 응답:', {
-          total: data.institutions?.length || 0,
-          period,
-          startDate: startDate ? startDate.toISOString() : 'none',
-          endDate: endDate ? endDate.toISOString() : 'none',
-          unit,
-          첫번째데이터: data.institutions?.[0] || 'none',
-          마지막데이터: data.institutions?.length > 0 ? data.institutions[data.institutions.length - 1] : 'none'
-        });
 
         if (data && data.institutions) {
           setInstitutions(data.institutions);
