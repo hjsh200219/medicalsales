@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import React from 'react';
-import DatePickerInput from '@/components/UI/DatePickerInput';
+// import DatePickerInput from '@/components/UI/DatePickerInput';
 
 // 기간 옵션 정의
 export const PERIOD_OPTIONS = [
@@ -41,21 +41,21 @@ interface PeriodFilterProps {
   }) => void;
   onAnalysisUnitChange?: (unit: string) => void;
   onSearchChange?: (search: string) => void;
-  onDateRangeChange?: (start: Date | undefined, end: Date | undefined) => void;
+  _onDateRangeChange?: (start: Date | undefined, end: Date | undefined) => void;
 }
 
 export default function PeriodFilter({ 
   period, 
   onPeriodChange, 
   onFilterChange,
-  onAnalysisUnitChange,
-  onDateRangeChange
+  onAnalysisUnitChange
+  // onDateRangeChange
 }: PeriodFilterProps) {
   // 커스텀 날짜 범위 상태
   const [useCustomRange, setUseCustomRange] = useState(false);
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
-  const [analysisUnit, setAnalysisUnit] = useState(DEFAULT_UNIT);
+  // const [startDate, setStartDate] = useState<Date | null>(null);
+  // const [endDate, setEndDate] = useState<Date | null>(null);
+  const analysisUnit = DEFAULT_UNIT; // useState(DEFAULT_UNIT)에서 변경
   
   // 초기 렌더링 감지용 ref
   const isInitialRender = useRef(true);
@@ -71,12 +71,12 @@ export default function PeriodFilter({
     if (onFilterChange) {
       onFilterChange({
         searchTerm: '',
-        startDate,
-        endDate,
+        startDate: null,
+        endDate: null,
         analysisUnit
       });
     }
-  }, [startDate, endDate, analysisUnit, onFilterChange]);
+  }, [analysisUnit, onFilterChange]);
 
   // 분석 단위 변경 시 콜백 호출
   useEffect(() => {
@@ -86,7 +86,7 @@ export default function PeriodFilter({
   }, [analysisUnit, onAnalysisUnitChange]);
 
   // 커스텀 날짜 범위 적용
-  const applyCustomRange = () => {
+  /* const applyCustomRange = () => {
     if (startDate && endDate) {
       onPeriodChange('custom');
       setUseCustomRange(true);
@@ -104,7 +104,7 @@ export default function PeriodFilter({
         onDateRangeChange(startDate, endDate);
       }
     }
-  };
+  }; */
 
   return (
     <div className="flex flex-col md:flex-row lg:justify-start lg:items-center gap-2 mb-2 ">
@@ -127,11 +127,11 @@ export default function PeriodFilter({
               {option.label}
             </option>
           ))}
-          <option value="custom">직접 선택</option>
+          {/* <option value="custom">직접 선택</option> */}
         </select>
       </div>
 
-      {useCustomRange && (
+      {/* {useCustomRange && (
         <div className="flex justify-between gap-2">
             <div className="w-1/2 ">
               <DatePickerInput
@@ -201,7 +201,7 @@ export default function PeriodFilter({
               </button>
             </div>
           </div>
-      )}
+      )} */}
     </div>
   );
 } 
