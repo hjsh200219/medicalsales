@@ -291,6 +291,13 @@ const getChartOptions = (period: string) => {
         borderWidth: 1,
         padding: 10,
         displayColors: true,
+        titleFont: {
+          size: 20,
+          weight: 'bold' as const
+        },
+        bodyFont: {
+          size: 16
+        },
         filter: function(tooltipItem: TooltipItem<'line'>) {
           // 숨겨진 데이터셋은 툴큅에서 제외
           return !tooltipItem.dataset.hidden;
