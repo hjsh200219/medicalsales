@@ -143,7 +143,7 @@ exports.Prisma.Customer_infoScalarFieldEnum = {
   position: 'position',
   tier: 'tier',
   created_at: 'created_at',
-  modified_at: 'modified_at',
+  updated_at: 'updated_at',
   address_company: 'address_company',
   lat_company: 'lat_company',
   lng_company: 'lng_company',

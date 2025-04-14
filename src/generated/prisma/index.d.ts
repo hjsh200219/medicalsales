@@ -2138,7 +2138,7 @@ export namespace Prisma {
     position: string | null
     tier: string | null
     created_at: Date | null
-    modified_at: Date | null
+    updated_at: Date | null
     address_company: string | null
     lat_company: number | null
     lng_company: number | null
@@ -2159,7 +2159,7 @@ export namespace Prisma {
     position: string | null
     tier: string | null
     created_at: Date | null
-    modified_at: Date | null
+    updated_at: Date | null
     address_company: string | null
     lat_company: number | null
     lng_company: number | null
@@ -2180,7 +2180,7 @@ export namespace Prisma {
     position: number
     tier: number
     created_at: number
-    modified_at: number
+    updated_at: number
     address_company: number
     lat_company: number
     lng_company: number
@@ -2217,7 +2217,7 @@ export namespace Prisma {
     position?: true
     tier?: true
     created_at?: true
-    modified_at?: true
+    updated_at?: true
     address_company?: true
     lat_company?: true
     lng_company?: true
@@ -2238,7 +2238,7 @@ export namespace Prisma {
     position?: true
     tier?: true
     created_at?: true
-    modified_at?: true
+    updated_at?: true
     address_company?: true
     lat_company?: true
     lng_company?: true
@@ -2259,7 +2259,7 @@ export namespace Prisma {
     position?: true
     tier?: true
     created_at?: true
-    modified_at?: true
+    updated_at?: true
     address_company?: true
     lat_company?: true
     lng_company?: true
@@ -2367,7 +2367,7 @@ export namespace Prisma {
     position: string | null
     tier: string | null
     created_at: Date | null
-    modified_at: Date | null
+    updated_at: Date | null
     address_company: string | null
     lat_company: number | null
     lng_company: number | null
@@ -2407,7 +2407,7 @@ export namespace Prisma {
     position?: boolean
     tier?: boolean
     created_at?: boolean
-    modified_at?: boolean
+    updated_at?: boolean
     address_company?: boolean
     lat_company?: boolean
     lng_company?: boolean
@@ -2428,7 +2428,7 @@ export namespace Prisma {
     position?: boolean
     tier?: boolean
     created_at?: boolean
-    modified_at?: boolean
+    updated_at?: boolean
     address_company?: boolean
     lat_company?: boolean
     lng_company?: boolean
@@ -2449,7 +2449,7 @@ export namespace Prisma {
     position?: boolean
     tier?: boolean
     created_at?: boolean
-    modified_at?: boolean
+    updated_at?: boolean
     address_company?: boolean
     lat_company?: boolean
     lng_company?: boolean
@@ -2470,14 +2470,14 @@ export namespace Prisma {
     position?: boolean
     tier?: boolean
     created_at?: boolean
-    modified_at?: boolean
+    updated_at?: boolean
     address_company?: boolean
     lat_company?: boolean
     lng_company?: boolean
     created_by?: boolean
   }
 
-  export type customer_infoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "customer_name" | "email" | "phone" | "mobile" | "address" | "lat" | "lng" | "comment" | "company" | "position" | "tier" | "created_at" | "modified_at" | "address_company" | "lat_company" | "lng_company" | "created_by", ExtArgs["result"]["customer_info"]>
+  export type customer_infoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "customer_name" | "email" | "phone" | "mobile" | "address" | "lat" | "lng" | "comment" | "company" | "position" | "tier" | "created_at" | "updated_at" | "address_company" | "lat_company" | "lng_company" | "created_by", ExtArgs["result"]["customer_info"]>
 
   export type $customer_infoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "customer_info"
@@ -2496,7 +2496,7 @@ export namespace Prisma {
       position: string | null
       tier: string | null
       created_at: Date | null
-      modified_at: Date | null
+      updated_at: Date | null
       address_company: string | null
       lat_company: number | null
       lng_company: number | null
@@ -2937,7 +2937,7 @@ export namespace Prisma {
     readonly position: FieldRef<"customer_info", 'String'>
     readonly tier: FieldRef<"customer_info", 'String'>
     readonly created_at: FieldRef<"customer_info", 'DateTime'>
-    readonly modified_at: FieldRef<"customer_info", 'DateTime'>
+    readonly updated_at: FieldRef<"customer_info", 'DateTime'>
     readonly address_company: FieldRef<"customer_info", 'String'>
     readonly lat_company: FieldRef<"customer_info", 'Float'>
     readonly lng_company: FieldRef<"customer_info", 'Float'>
@@ -4440,7 +4440,7 @@ export namespace Prisma {
     position: 'position',
     tier: 'tier',
     created_at: 'created_at',
-    modified_at: 'modified_at',
+    updated_at: 'updated_at',
     address_company: 'address_company',
     lat_company: 'lat_company',
     lng_company: 'lng_company',
@@ -4656,7 +4656,7 @@ export namespace Prisma {
     position?: StringNullableFilter<"customer_info"> | string | null
     tier?: StringNullableFilter<"customer_info"> | string | null
     created_at?: DateTimeNullableFilter<"customer_info"> | Date | string | null
-    modified_at?: DateTimeNullableFilter<"customer_info"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"customer_info"> | Date | string | null
     address_company?: StringNullableFilter<"customer_info"> | string | null
     lat_company?: FloatNullableFilter<"customer_info"> | number | null
     lng_company?: FloatNullableFilter<"customer_info"> | number | null
@@ -4677,7 +4677,7 @@ export namespace Prisma {
     position?: SortOrderInput | SortOrder
     tier?: SortOrderInput | SortOrder
     created_at?: SortOrderInput | SortOrder
-    modified_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
     address_company?: SortOrderInput | SortOrder
     lat_company?: SortOrderInput | SortOrder
     lng_company?: SortOrderInput | SortOrder
@@ -4701,7 +4701,7 @@ export namespace Prisma {
     position?: StringNullableFilter<"customer_info"> | string | null
     tier?: StringNullableFilter<"customer_info"> | string | null
     created_at?: DateTimeNullableFilter<"customer_info"> | Date | string | null
-    modified_at?: DateTimeNullableFilter<"customer_info"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"customer_info"> | Date | string | null
     address_company?: StringNullableFilter<"customer_info"> | string | null
     lat_company?: FloatNullableFilter<"customer_info"> | number | null
     lng_company?: FloatNullableFilter<"customer_info"> | number | null
@@ -4722,7 +4722,7 @@ export namespace Prisma {
     position?: SortOrderInput | SortOrder
     tier?: SortOrderInput | SortOrder
     created_at?: SortOrderInput | SortOrder
-    modified_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
     address_company?: SortOrderInput | SortOrder
     lat_company?: SortOrderInput | SortOrder
     lng_company?: SortOrderInput | SortOrder
@@ -4751,7 +4751,7 @@ export namespace Prisma {
     position?: StringNullableWithAggregatesFilter<"customer_info"> | string | null
     tier?: StringNullableWithAggregatesFilter<"customer_info"> | string | null
     created_at?: DateTimeNullableWithAggregatesFilter<"customer_info"> | Date | string | null
-    modified_at?: DateTimeNullableWithAggregatesFilter<"customer_info"> | Date | string | null
+    updated_at?: DateTimeNullableWithAggregatesFilter<"customer_info"> | Date | string | null
     address_company?: StringNullableWithAggregatesFilter<"customer_info"> | string | null
     lat_company?: FloatNullableWithAggregatesFilter<"customer_info"> | number | null
     lng_company?: FloatNullableWithAggregatesFilter<"customer_info"> | number | null
@@ -4930,7 +4930,7 @@ export namespace Prisma {
     position?: string | null
     tier?: string | null
     created_at?: Date | string | null
-    modified_at?: Date | string | null
+    updated_at?: Date | string | null
     address_company?: string | null
     lat_company?: number | null
     lng_company?: number | null
@@ -4951,7 +4951,7 @@ export namespace Prisma {
     position?: string | null
     tier?: string | null
     created_at?: Date | string | null
-    modified_at?: Date | string | null
+    updated_at?: Date | string | null
     address_company?: string | null
     lat_company?: number | null
     lng_company?: number | null
@@ -4972,7 +4972,7 @@ export namespace Prisma {
     position?: NullableStringFieldUpdateOperationsInput | string | null
     tier?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    modified_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     address_company?: NullableStringFieldUpdateOperationsInput | string | null
     lat_company?: NullableFloatFieldUpdateOperationsInput | number | null
     lng_company?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -4993,7 +4993,7 @@ export namespace Prisma {
     position?: NullableStringFieldUpdateOperationsInput | string | null
     tier?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    modified_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     address_company?: NullableStringFieldUpdateOperationsInput | string | null
     lat_company?: NullableFloatFieldUpdateOperationsInput | number | null
     lng_company?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -5014,7 +5014,7 @@ export namespace Prisma {
     position?: string | null
     tier?: string | null
     created_at?: Date | string | null
-    modified_at?: Date | string | null
+    updated_at?: Date | string | null
     address_company?: string | null
     lat_company?: number | null
     lng_company?: number | null
@@ -5035,7 +5035,7 @@ export namespace Prisma {
     position?: NullableStringFieldUpdateOperationsInput | string | null
     tier?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    modified_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     address_company?: NullableStringFieldUpdateOperationsInput | string | null
     lat_company?: NullableFloatFieldUpdateOperationsInput | number | null
     lng_company?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -5056,7 +5056,7 @@ export namespace Prisma {
     position?: NullableStringFieldUpdateOperationsInput | string | null
     tier?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    modified_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     address_company?: NullableStringFieldUpdateOperationsInput | string | null
     lat_company?: NullableFloatFieldUpdateOperationsInput | number | null
     lng_company?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -5301,7 +5301,7 @@ export namespace Prisma {
     position?: SortOrder
     tier?: SortOrder
     created_at?: SortOrder
-    modified_at?: SortOrder
+    updated_at?: SortOrder
     address_company?: SortOrder
     lat_company?: SortOrder
     lng_company?: SortOrder
@@ -5329,7 +5329,7 @@ export namespace Prisma {
     position?: SortOrder
     tier?: SortOrder
     created_at?: SortOrder
-    modified_at?: SortOrder
+    updated_at?: SortOrder
     address_company?: SortOrder
     lat_company?: SortOrder
     lng_company?: SortOrder
@@ -5350,7 +5350,7 @@ export namespace Prisma {
     position?: SortOrder
     tier?: SortOrder
     created_at?: SortOrder
-    modified_at?: SortOrder
+    updated_at?: SortOrder
     address_company?: SortOrder
     lat_company?: SortOrder
     lng_company?: SortOrder

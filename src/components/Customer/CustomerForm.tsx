@@ -61,7 +61,31 @@ export default function CustomerForm({
       return; 
     }
 
-    await onSubmit(formData);
+    // 좌표 데이터 정리 - 빈 문자열이거나 유효하지 않은 숫자는 null로 처리
+    const processCoordinate = (value: string | number | null | undefined) => {
+      if (value === '' || value === null || value === undefined) {
+        return '';
+      }
+
+      if (typeof value === 'string') {
+        const num = parseFloat(value);
+        return isNaN(num) ? '' : value;
+      }
+
+      return typeof value === 'number' && !isNaN(value) ? value.toString() : '';
+    };
+
+    // 정리된 데이터로 폼 데이터 업데이트
+    const cleanedData = {
+      ...formData,
+      lat: processCoordinate(formData.lat),
+      lng: processCoordinate(formData.lng),
+      lat_company: processCoordinate(formData.lat_company),
+      lng_company: processCoordinate(formData.lng_company)
+    };
+
+    console.log('제출 데이터:', cleanedData);
+    await onSubmit(cleanedData);
   };
 
   return (

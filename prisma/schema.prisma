@@ -36,7 +36,7 @@ model customer_info {
   position        String?
   tier            String?
   created_at      DateTime? @default(now()) @db.Timestamp(6)
-  modified_at     DateTime? @default(now()) @db.Timestamp(6)
+  updated_at      DateTime? @default(now()) @db.Timestamp(6)
   address_company String?
   lat_company     Float?
   lng_company     Float?

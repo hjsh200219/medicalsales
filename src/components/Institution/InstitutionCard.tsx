@@ -1,6 +1,36 @@
 import React from 'react';
-import { MapPin, Phone, Calendar, Building } from 'lucide-react';
-import { SerializedInstitution } from '@/types/institution';
+import { MapPin, Phone, Calendar, Building, Hospital, Pill, Leaf, Baby, SquareActivity, BriefcaseMedical, Stethoscope, Building2, HeartOff } from 'lucide-react';
+import { SerializedInstitution, INSTITUTION_TYPES } from '@/types/institution';
+
+// 아이콘 매핑 함수
+const getInstitutionIcon = (type: string | null) => {
+  const institutionType = INSTITUTION_TYPES.find(t => t.code === type) || INSTITUTION_TYPES[0];
+  
+  switch (institutionType.icon) {
+    case 'hospital':
+      return <Hospital size={16} />;
+    case 'building':
+      return <Building size={16} />;
+    case 'building-2':
+      return <Building2 size={16} />;
+    case 'stethoscope':
+      return <Stethoscope size={16} />;
+    case 'pill':
+      return <Pill size={16} />;
+    case 'leaf':
+      return <Leaf size={16} />;
+    case 'baby':
+      return <Baby size={16} />;
+    case 'square-activity':
+      return <SquareActivity size={16} />;
+    case 'briefcase-medical':
+      return <BriefcaseMedical size={16} />;
+    case 'heart-off':
+      return <HeartOff size={16} />;
+    default:
+      return <Building size={16} />;
+  }
+};
 
 export const InstitutionCard = ({ institution }: { institution: SerializedInstitution }) => {
   return (
@@ -10,9 +40,9 @@ export const InstitutionCard = ({ institution }: { institution: SerializedInstit
           <h3 className="font-semibold leading-none tracking-tight text-lg truncate">
             {institution.name}
           </h3>
-          <span className="text-sm text-gray-400 flex items-center gap-1 ml-2">
-            <Building size={16} />
-            {institution.type || '정보 없음'}
+          <span className="text-sm text-gray-400 flex items-center gap-1 ml-2 whitespace-nowrap flex-shrink-0 max-w-[100px] overflow-hidden">
+            {getInstitutionIcon(institution.type)}
+            <span className="truncate">{institution.type || '정보 없음'}</span>
           </span>
         </div>
       </div>
@@ -38,7 +68,7 @@ export const InstitutionCard = ({ institution }: { institution: SerializedInstit
                 href={`https://map.naver.com/v5/search/${encodeURIComponent(institution.address)}?c=${institution.lng},${institution.lat},15,0,0,0,dh`}
                 target="_blank"
                 rel="noopener noreferrer" 
-                className="hover:text-gray-100"
+                className="hover:text-gray-100 truncate"
               >
                 {institution.address}
               </a>
