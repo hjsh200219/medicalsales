@@ -1,6 +1,6 @@
 {
   "name": "Assist Sales",
-  "short_name": "MedSales",
+  "short_name": "Assist Sales",
   "description": "Assist Sales application",
   "start_url": "/",
   "display": "standalone",
