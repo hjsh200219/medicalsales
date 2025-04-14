@@ -107,7 +107,7 @@ export default function PeriodFilter({
   };
 
   return (
-    <div className="flex flex-col md:flex-row lg:justify-between lg:items-center gap-2 mb-2 ">
+    <div className="flex flex-col md:flex-row lg:justify-start lg:items-center gap-2 mb-2 ">
       <div className="w-full md:w-1/8">
         <select
           value={useCustomRange ? 'custom' : period}
@@ -132,7 +132,7 @@ export default function PeriodFilter({
       </div>
 
       {useCustomRange && (
-        <div className="flex justify-between lg:w-1/2 gap-2">
+        <div className="flex justify-between gap-2">
             <div className="w-1/2 ">
               <DatePickerInput
                 selected={startDate}
