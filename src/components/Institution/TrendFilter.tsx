@@ -108,7 +108,7 @@ export default function PeriodFilter({
 
   return (
     <div className="flex flex-col md:flex-row lg:justify-start lg:items-center gap-2 mb-2 ">
-      <div className="w-full md:w-1/8">
+      <div className="w-full md:w-1/4">
         <select
           value={useCustomRange ? 'custom' : period}
           onChange={(e) => {
