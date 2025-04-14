@@ -163,8 +163,8 @@ export function SearchFilter({
       {isFilterVisible && (
         <div className="p-4 bg-gray-800 rounded-md">
           <form onSubmit={handleSearch}>
-            <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center w-full lg:gap-2">
-              <div className="grid grid-cols-3 w-full lg:w-1/2 gap-2">
+            <div className="flex flex-col md:flex-row lg:justify-between lg:items-center items-center gap-2">
+              <div className="flex flex-row w-full lg:w-1/2 gap-2">
                 <div className="w-full">
                   <select
                     value={regionFilter}
@@ -210,7 +210,7 @@ export function SearchFilter({
                 </div>
               </div>
               
-              <div className="w-full lg:w-1/2 mt-3 lg:mt-0">
+              <div className="w-full">
                 <SearchInput
                   value={searchQuery}
                   onChange={setSearchQuery}

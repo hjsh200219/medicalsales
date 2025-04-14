@@ -156,10 +156,10 @@ const InfoWindowManager: React.FC<InfoWindowManagerProps> = ({
     if (!window.google?.maps || !map) return;
     
     if (!infoWindowRef.current) {
-      // InfoWindow 생성 시 옵션에 disableAutoPan:true 추가
+      // InfoWindow 생성 시 옵션에 disableAutoPan:false 설정 (InfoWindow가 화면 밖으로 나가지 않도록)
       const infoWindowOptions = {
         ...options,
-        disableAutoPan: true // 항상 true로 설정하여 줌 레벨 유지
+        disableAutoPan: false // false로 변경하여 자동 이동 활성화
       };
       const infoWindow = new google.maps.InfoWindow(infoWindowOptions);
       infoWindowRef.current = applyInfoWindowStyle(infoWindow, style);
@@ -177,15 +177,15 @@ const InfoWindowManager: React.FC<InfoWindowManagerProps> = ({
       if (options.maxWidth !== undefined) {
         infoWindowRef.current.setOptions({ 
           maxWidth: options.maxWidth,
-          disableAutoPan: true // 항상 true로 설정하여 줌 레벨 유지
+          disableAutoPan: false // false로 변경하여 자동 이동 활성화
         });
       }
     }
     
     if (isOpen) {
       if (marker) {
-        // 항상 autoPan을 비활성화하는 옵션 설정
-        const options = { disableAutoPan: true };
+        // autoPan을 활성화하는 옵션 설정
+        const options = { disableAutoPan: false };
         infoWindowRef.current?.open({
           map: map,
           anchor: marker,
@@ -193,8 +193,8 @@ const InfoWindowManager: React.FC<InfoWindowManagerProps> = ({
           ...options
         });
       } else if (options.position) {
-        // 항상 autoPan을 비활성화하는 옵션 설정
-        const openOptions = { disableAutoPan: true };
+        // autoPan을 활성화하는 옵션 설정
+        const openOptions = { disableAutoPan: false };
         // 먼저 position 설정 후 open 호출
         infoWindowRef.current?.setPosition(options.position);
         infoWindowRef.current?.open({

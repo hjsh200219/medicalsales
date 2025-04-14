@@ -132,7 +132,7 @@ export default function PeriodFilter({
       </div>
 
       {useCustomRange && (
-        <div className="flex w-full gap-2">
+        <div className="flex w-full lg:w-1/2 gap-2">
             <div className="w-1/2 ">
               <DatePickerInput
                 selected={startDate}
