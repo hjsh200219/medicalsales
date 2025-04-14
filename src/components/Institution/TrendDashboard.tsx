@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import InstitutionTypeChart from './InstitutionTypeChart';
 import TrendFilter from './TrendFilter';
-import InstitutionTrendChart from './TrendChart';
+import RegionTrendChart from './RegionTrendChart';
 import PharmacyTrendChart from './PharmacyTrendChart';
 
 export default function TrendDashboard() {
@@ -47,9 +47,9 @@ export default function TrendDashboard() {
       />
       
       {/* 차트 컴포넌트들 */}
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-2">
         {/* 지역별 의료기관 개업 추이 차트 */}
-        <InstitutionTrendChart 
+        <RegionTrendChart 
           period={period}
           analysisUnit={analysisUnit}
           searchTerm={searchTerm}

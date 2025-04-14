@@ -359,8 +359,8 @@ export default function PharmacyTrendChart({
 
   return (
     <>
-      <h2 className="text-2xl text-white font-semibold mt-6 mb-2">지역별 약국 개업 추세</h2>
-      <div className="bg-gray-700 rounded-lg shadow-md p-6 h-[600px]">
+      <h2 className="text-lg text-white font-semibold mt-4">지역별 약국 개업 추세</h2>
+      <div className="bg-gray-700 rounded-lg shadow-md px-4 py-2 h-[600px]">
         {loading ? (
           <div className="flex justify-center items-center h-full">
             <p className="text-lg text-gray-200">데이터를 불러오는 중...</p>

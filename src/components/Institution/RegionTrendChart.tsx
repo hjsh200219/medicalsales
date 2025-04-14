@@ -51,7 +51,7 @@ interface ChartData {
   }[];
 }
 
-interface InstitutionTrendChartProps {
+interface RegionTrendChartProps {
   period: string;
   analysisUnit?: string;
   searchTerm?: string;
@@ -77,13 +77,13 @@ const formatAddressData = (addresses: (string | null)[]): string[] => {
   });
 };
 
-export default function InstitutionTrendChart({ 
+export default function RegionTrendChart({ 
   period, 
   analysisUnit = 'month',
   searchTerm = '',
   startDate,
   endDate
-}: InstitutionTrendChartProps) {
+}: RegionTrendChartProps) {
   const [chartData, setChartData] = useState<ChartData>({ labels: [], datasets: [] });
   const [loading, setLoading] = useState(true);
 
@@ -359,8 +359,8 @@ export default function InstitutionTrendChart({
 
   return (
     <>
-    <h2 className="text-2xl text-white font-semibold mb-0">지역별 의료기관 개업 추세</h2>
-    <div className="bg-gray-700 rounded-lg shadow-md p-6 h-[600px]">
+    <h2 className="text-lg text-white font-semibold mb-0 ">지역별 의료기관 개업 추세</h2>
+    <div className="bg-gray-700 rounded-lg shadow-md px-4 py-2 h-[600px]">
       {loading ? (
         <div className="flex justify-center items-center h-full">
           <p className="text-lg text-gray-200">데이터를 불러오는 중...</p>
@@ -458,9 +458,9 @@ export default function InstitutionTrendChart({
       ) : (
         <div className="flex justify-center items-center h-full">
           <p className="text-lg text-gray-600">데이터가 없습니다</p>
-        </div>
+      </div>
       )}
     </div>
     </>
   );
-} 
+}
