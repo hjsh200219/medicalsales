@@ -16,8 +16,8 @@ export default function Layout({ children }: LayoutProps) {
         <div className="container mx-auto px-2 py-2 flex justify-between items-center">
           <Link href="/institutions" className="text-2xl font-bold hover:text-white/90 transition-colors">
             <Image
-              src="/images/ms_logo.png" 
-              alt="Medical Sales" 
+              src="/images/Logo_AssistSales.png" 
+              alt="Assist Sales" 
               width={180}
               height={25}
               className="h-6 w-auto ml-2 md:ml-4"

@@ -1,7 +1,7 @@
 {
-  "name": "Medical Sales",
+  "name": "Assist Sales",
   "short_name": "MedSales",
-  "description": "Medical sales application",
+  "description": "Assist Sales application",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

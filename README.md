@@ -1,4 +1,4 @@
-# Medical Sales PWA
+# Assist Sales PWA
 
 의료 판매 앱을 위한 Progressive Web App(PWA)입니다. Tailwind CSS와 TypeScript로 개발되었으며, Vercel에 serverless로 배포 가능합니다.
 

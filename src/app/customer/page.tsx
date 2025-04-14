@@ -285,7 +285,7 @@ export default function CustomerManagement() {
                 className={`py-1 px-4 rounded-md ${activeTab === 'list' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-600'}`}
                 onClick={() => handleTabChange('list')}
               >
-                목록
+                리스트
               </button>
               <button
                 className={`py-1 px-4 rounded-md ${activeTab === 'map' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-600'}`}

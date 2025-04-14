@@ -7,13 +7,13 @@ const nanumSquare = {
 };
 
 export const metadata: Metadata = {
-  title: "Medical Sales",
-  description: "Medical sales application",
+  title: "Assist Sales",
+  description: "Assist Sales application",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Medical Sales",
+    title: "Assist Sales",
   },
 };
 
@@ -33,7 +33,7 @@ export default function RootLayout({
     <html lang="ko">
       <head>
         <link rel="apple-touch-icon" href="/icons/logo192.png" />
-        <meta name="application-name" content="Medical Sales" />
+        <meta name="application-name" content="Assist Sales" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="MedSales" />

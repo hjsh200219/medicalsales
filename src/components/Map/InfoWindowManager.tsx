@@ -139,9 +139,7 @@ export const applyInfoWindowStyle = (infoWindow: google.maps.InfoWindow, style: 
   return infoWindow;
 };
 
-/**
- * 정보창 관리 컴포넌트
- */
+// 정보창 관리 컴포넌트
 const InfoWindowManager: React.FC<InfoWindowManagerProps> = ({
   map,
   marker,
@@ -235,80 +233,7 @@ export interface CustomerInfo {
   lng_company?: number | string;
 }
 
-/**
- * 커스텀 InfoWindow 콘텐츠 생성 함수
- */
-export const createCustomerInfoContent = (
-  customer: CustomerInfo,
-  isCompanyAddress: boolean,
-) => {
-  const addressType = isCompanyAddress ? '회사' : '자택';
-  const address = isCompanyAddress ? customer.address_company : customer.address;
-  const tierDisplayColor = customer.tier ? getTierColor(customer.tier) : getTierColor('default');
-
-  return `
-    <div style="min-width: 250px; max-width: 280px; padding: 16px; word-break: break-word; background-color: white; border-radius: 6px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-        <div style="max-width: 75%;">
-          <h3 style="font-size: 16px; font-weight: bold; margin: 0; overflow: hidden; text-overflow: ellipsis; color: black;">${customer.customer_name}<span style="color: #9CA3AF; margin-left: 4px;">[${addressType}]</span></h3>
-        </div>
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="background-color: ${tierDisplayColor}; color: white; padding: 4px 6px; border-radius: 4px; font-size: 12px;">${customer.tier || '일반'}</span>
-          <button onclick="this.closest('.gm-style-iw-a').querySelector('.gm-ui-hover-effect').click();" style="border: none; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 2px;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 18L18 6M6 6L18 18" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-        </div>
-      </div>
-      <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
-        <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-        </svg>
-        <a href="tel:${customer.phone || '없음'}" style="text-decoration: none;">${customer.phone || '없음'}</a>
-      </p>
-      <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
-        <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-        </svg>
-        <a href="tel:${customer.mobile || '없음'}" style="text-decoration: none;">${customer.mobile || '없음'}</a>
-      </p>
-      <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
-        <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-        </svg>
-        <a href="mailto:${customer.email || '없음'}" style="text-decoration: none;">${customer.email || '없음'}</a>
-      </p>
-      <p style="color: black; margin: 6px 0;  display: flex; align-items: center;">
-        <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-        ${address || '없음'}
-      </p>
-      ${customer.company ? `
-          <div style="border-top: 1px solid #e5e7eb; margin-top: 10px; padding-top: 10px;">
-            <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
-              <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-              ${customer.company}
-            </p>
-          </div>` : ''}
-      ${customer.position ? `
-          <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
-            <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
-            </svg>
-            ${customer.position}
-          </p>` : ''}
-    </div>
-  `;
-};
-
-/**
- * 개설일자 포맷팅 함수
- */
+// 개설일자 포맷팅 함수
 export const formatOpenDate = (openDate: string | null | undefined): string => {
   if (!openDate) return '정보 없음';
   
@@ -341,9 +266,214 @@ export const formatOpenDate = (openDate: string | null | undefined): string => {
   }
 };
 
+// 정보창 공통 컴포넌트 - InfoWindowContainer
+export const InfoWindowContainer = (content: string): string => {
+  return `
+    <div style="
+      min-width: 250px; 
+      max-width: 280px; 
+      padding: 16px; 
+      word-break: break-word; 
+      background-color: white; 
+      border-radius: 6px;
+    ">
+      ${content}
+    </div>
+  `;
+};
+
+// 정보창 헤더 컴포넌트
+export const InfoWindowHeader = (
+  title: string, 
+  tagText: string, 
+  tagColor: string,
+  subtitle: string = ''
+): string => {
+  return `
+    <div style="
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      margin-bottom: 10px;
+    ">
+      <div style="max-width: 80%;">
+        <h3 style="
+          font-size: 16px; 
+          font-weight: bold; 
+          margin: 0; 
+          overflow: hidden; 
+          text-overflow: ellipsis; 
+          color: black;
+        ">
+          ${title}
+          ${subtitle ? `<span style="color: #9CA3AF; margin-left: 4px;">[${subtitle}]</span>` : ''}
+        </h3>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="
+          background-color: ${tagColor}; 
+          color: white; 
+          padding: 4px 6px; 
+          border-radius: 4px; 
+          font-size: 12px;
+        ">
+          ${tagText}
+        </span>
+        <button 
+          onclick="this.closest('.gm-style-iw-a').querySelector('.gm-ui-hover-effect').click();" 
+          style="
+            border: none; 
+            background: transparent; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 2px;
+          "
+        >
+          <svg 
+            width="16" 
+            height="16" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path 
+              d="M6 18L18 6M6 6L18 18" 
+              stroke="#6B7280" 
+              stroke-width="2" 
+              stroke-linecap="round" 
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  `;
+};
+
+// 정보창 아이템 컴포넌트
+export const InfoWindowItem = (
+  iconPath: string, 
+  content: string, 
+  href: string = '',
+  hasLink: boolean = false
+): string => {
+  const linkStart = hasLink && href ? `<a href="${href}" style="text-decoration: none;">` : '';
+  const linkEnd = hasLink && href ? '</a>' : '';
+
+  return `
+    <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" 
+        fill="none" 
+        viewBox="0 0 24 24" 
+        stroke="currentColor"
+      >
+        <path 
+          stroke-linecap="round" 
+          stroke-linejoin="round" 
+          stroke-width="2" 
+          d="${iconPath}" 
+        />
+      </svg>
+      ${linkStart}${content || '없음'}${linkEnd}
+    </p>
+  `;
+};
+
 /**
- * 의료기관 정보창 내용 생성 함수
+ * 정보창 구분선 컴포넌트
  */
+export const InfoWindowDivider = (): string => {
+  return `<div style="border-top: 1px solid #e5e7eb; margin-top: 10px; padding-top: 10px;"></div>`;
+};
+
+
+// 커스텀 InfoWindow 콘텐츠 생성 함수 - 리팩터링 버전
+export const createCustomerInfoContent = (
+  customer: CustomerInfo,
+  isCompanyAddress: boolean,
+) => {
+  const addressType = isCompanyAddress ? '회사' : '자택';
+  const address = isCompanyAddress ? customer.address_company : customer.address;
+  const tierDisplayColor = customer.tier ? getTierColor(customer.tier) : getTierColor('default');
+
+  // 헤더 영역
+  const header = InfoWindowHeader(
+    customer.customer_name, 
+    customer.tier || '일반', 
+    tierDisplayColor,
+    addressType
+  );
+
+  // 연락처 정보
+  const phoneItem = InfoWindowItem(
+    "M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z",
+    customer.phone || '없음',
+    `tel:${customer.phone || ''}`,
+    !!customer.phone
+  );
+
+  const mobileItem = InfoWindowItem(
+    "M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z",
+    customer.mobile || '없음',
+    `tel:${customer.mobile || ''}`,
+    !!customer.mobile
+  );
+
+  const emailItem = InfoWindowItem(
+    "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
+    customer.email || '없음',
+    `mailto:${customer.email || ''}`,
+    !!customer.email
+  );
+
+  const addressItem = InfoWindowItem(
+    "M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z",
+    address || '없음'
+  );
+
+  // 회사 정보
+  let companyContent = '';
+  if (customer.company) {
+    const companyItem = InfoWindowItem(
+      "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4",
+      customer.company
+    );
+
+    let positionItem = '';
+    if (customer.position) {
+      positionItem = InfoWindowItem(
+        "M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2",
+        customer.position
+      );
+    }
+
+    companyContent = `
+      ${InfoWindowDivider()}
+      ${companyItem}
+      ${positionItem}
+    `;
+  }
+
+  // 전체 내용 조합
+  const content = `
+    ${header}
+    <div style="margin: 12px 0;">
+      ${phoneItem}
+      ${mobileItem}
+      ${emailItem}
+      ${addressItem}
+    </div>
+    ${companyContent}
+  `;
+
+  return InfoWindowContainer(content);
+};
+
+// 의료기관 정보창 내용 생성 함수 - 리팩터링 버전
 export const createInstitutionInfoContent = (institution: SerializedInstitution) => {
   const { name, address, phone, type, open_date } = institution;
   const code = 'code' in institution ? institution['code' as keyof typeof institution] : undefined;
@@ -355,49 +485,46 @@ export const createInstitutionInfoContent = (institution: SerializedInstitution)
   
   const formattedOpenDate = formatOpenDate(open_date);
   
-  return `
-    <div style="min-width: 250px; max-width: 280px; padding: 16px; word-break: break-word; background-color: white; border-radius: 6px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-        <div style="max-width: 90%;">
-          <h3 style="font-size: 16px; font-weight: bold; margin: 0; overflow: hidden; text-overflow: ellipsis; color: black;">${name || '이름 없음'}</h3>
-        </div>
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="background-color: ${typeColor}; color: white; padding: 4px 6px; border-radius: 4px; font-size: 12px;">${typeName}</span>
-          <button onclick="this.closest('.gm-style-iw-a').querySelector('.gm-ui-hover-effect').click();" style="border: none; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 2px;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 18L18 6M6 6L18 18" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-        </div>
-      </div>
-      <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
-        <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-        </svg>
-        <a href="tel:${phone || '없음'}" style="text-decoration: none;">${phone || '없음'}</a>
-      </p>
-      <p style="color: black; margin: 6px 0;  display: flex; align-items: center;">
-        <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-        ${address || '주소 정보 없음'}
-      </p>
-      <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
-        <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-        </svg>
-        ${formattedOpenDate}
-      </p>
-      ${code ? `
-      <p style="color: black; margin: 6px 0; display: flex; align-items: center;">
-        <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; color: #6B7280; margin-right: 4px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
-        </svg>
-        ${code}
-      </p>` : ''}
-    </div>
+  // 헤더 영역
+  const header = InfoWindowHeader(name || '이름 없음', typeName, typeColor);
+
+  // 정보 항목
+  const phoneItem = InfoWindowItem(
+    "M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z",
+    phone || '없음',
+    `tel:${phone || ''}`,
+    !!phone
+  );
+
+  const addressItem = InfoWindowItem(
+    "M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z",
+    address || '주소 정보 없음'
+  );
+
+  const openDateItem = InfoWindowItem(
+    "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
+    formattedOpenDate
+  );
+
+  // 코드 정보 (있는 경우에만)
+  let codeItem = '';
+  if (code) {
+    codeItem = InfoWindowItem(
+      "M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2",
+      String(code)
+    );
+  }
+
+  // 전체 내용 조합
+  const content = `
+    ${header}
+    ${phoneItem}
+    ${addressItem}
+    ${openDateItem}
+    ${codeItem}
   `;
+
+  return InfoWindowContainer(content);
 };
 
 export default InfoWindowManager; 
