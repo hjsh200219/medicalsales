@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ApiResult } from "./types";
+import { ApiResult } from "@/app/settings/types";
 
 interface ApiDataDisplayProps {
   title: string;

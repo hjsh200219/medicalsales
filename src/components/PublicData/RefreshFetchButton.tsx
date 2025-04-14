@@ -3,7 +3,6 @@
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { ApiResult } from '@/app/settings/types';
-import { ApiDataDisplay } from '@/app/settings/ApiDataDisplay';
 
 interface FetchAction {
   (): Promise<{
@@ -16,11 +15,9 @@ interface FetchAction {
 
 interface RefreshFetchButtonProps {
   fetchAction: FetchAction;
-  lastupdate: string;
-  lastupdateTimestamp: number;
 }
 
-export function RefreshFetchButton({ fetchAction, lastupdate, lastupdateTimestamp }: RefreshFetchButtonProps) {
+export function RefreshFetchButton({ fetchAction }: RefreshFetchButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [data, setData] = useState<{
@@ -91,12 +88,28 @@ export function RefreshFetchButton({ fetchAction, lastupdate, lastupdateTimestam
         </div>
       )}
       
-      {data.pharmacyData && !data.pharmacyData.error && (
-        <ApiDataDisplay title="약국 정보" data={data.pharmacyData} lastupdate={lastupdate} lastupdateTimestamp={lastupdateTimestamp} />
+      {data.pharmacyData && !data.pharmacyData.error && data.pharmacyData.response && (
+        <div className="bg-gray-700 p-4 rounded-md mb-6 mt-4">
+          <h3 className="text-xl text-white font-semibold mb-3">약국 정보</h3>
+          <div className="bg-gray-800 p-3 rounded-md mb-4">
+            <h4 className="text-white font-medium mb-2">데이터 요약</h4>
+            <p className="text-gray-300">총 데이터 수: <span className="font-semibold">
+              {data.pharmacyData.response.body?.totalCount?.toLocaleString() || 0}
+            </span></p>
+          </div>
+        </div>
       )}
       
-      {data.hospitalData && !data.hospitalData.error && (
-        <ApiDataDisplay title="병원 정보" data={data.hospitalData} lastupdate={lastupdate} lastupdateTimestamp={lastupdateTimestamp} />
+      {data.hospitalData && !data.hospitalData.error && data.hospitalData.response && (
+        <div className="bg-gray-700 p-4 rounded-md mb-6 mt-4">
+          <h3 className="text-xl text-white font-semibold mb-3">병원 정보</h3>
+          <div className="bg-gray-800 p-3 rounded-md mb-4">
+            <h4 className="text-white font-medium mb-2">데이터 요약</h4>
+            <p className="text-gray-300">총 데이터 수: <span className="font-semibold">
+              {data.hospitalData.response.body?.totalCount?.toLocaleString() || 0}
+            </span></p>
+          </div>
+        </div>
       )}
     </div>
   );

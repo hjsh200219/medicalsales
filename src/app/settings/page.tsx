@@ -1,7 +1,7 @@
 import PageHeader from '@/components/UI/PageHeader';
 import Layout from '@/components/Layout';
 import { Suspense } from 'react';
-import { RefreshFetchButton } from '@/app/settings/RefreshFetchButton';
+import { RefreshFetchButton } from '@/components/PublicData/RefreshFetchButton';
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { ApiResult, InstitutionItem } from './types';
@@ -353,8 +353,7 @@ export default async function Settings() {
   // 최신 업데이트 날짜 가져오기
   const latestInstitution = await getLatestOpenDate();
   let lastupdate = '데이터 없음';
-  let lastupdateTimestamp = 0;
-  
+
   // 날짜 형식 포맷팅
   if (latestInstitution?.open_date) {
     const dateObj = new Date(latestInstitution.open_date);
@@ -362,7 +361,6 @@ export default async function Settings() {
     if (!isNaN(dateObj.getTime())) {
       // Date 객체가 유효한 경우
       lastupdate = dateObj.toLocaleDateString('ko-KR');
-      lastupdateTimestamp = dateObj.getTime();
     } else {
       // YYYYMMDD 문자열 형식인 경우
       lastupdate = latestInstitution.open_date.toString();
@@ -370,19 +368,18 @@ export default async function Settings() {
       const formattedDate = formatYYYYMMDD(lastupdate);
       if (formattedDate) {
         lastupdate = formattedDate.toLocaleDateString('ko-KR');
-        lastupdateTimestamp = formattedDate.getTime();
       }
     }
   }
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex justify-between items-center mb-4">
+    <div className="container mx-auto px-4 py-4">
+      <div className="flex justify-between items-center mb-4">
           <PageHeader title="설정" />
-        </div>
+      </div>
         
-        <div className="bg-gray-800 rounded-lg shadow-md p-6">          
+      <div className="bg-gray-800 rounded-lg shadow-md p-6">
           {/* 최근 업데이트 정보 */}
           <div className="bg-blue-900/30 p-4 rounded-md mb-6">
             <p className="text-gray-300">최종 업데이트 날짜: {lastupdate}</p>
@@ -393,7 +390,7 @@ export default async function Settings() {
           
           {/* API 데이터 가져오기 버튼 */}
           <div className="mb-6">
-            <RefreshFetchButton fetchAction={fetchMedicalData} lastupdate={lastupdate} lastupdateTimestamp={lastupdateTimestamp} />
+            <RefreshFetchButton fetchAction={fetchMedicalData} />
           </div>
           
           {/* API 데이터 표시 영역 */}
@@ -401,7 +398,7 @@ export default async function Settings() {
             <ApiDataContainer />
           </Suspense>
         </div>
-      </div>
+    </div>
     </Layout>
   );
-}
+} 
