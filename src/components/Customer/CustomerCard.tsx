@@ -1,6 +1,6 @@
 import React from 'react';
 import { Customer } from '@/types/customer';
-import { Mail, Building, Edit, Trash2, Home } from 'lucide-react';
+import { Mail, Building, Edit, Trash2, Smartphone } from 'lucide-react';
 
 type CustomerCardProps = {
   customer: Customer;
@@ -51,26 +51,23 @@ export default function CustomerCard({
         
         {/* 연락처 정보 */}
         <div className="mb-3">
-          <div className="flex items-center text-gray-400">
-            <Home size={16} className="mr-1" />
+          <div className="flex items-center text-gray-400 mb-1/2">
+            <Smartphone size={16} className="mr-1 " />
             {customer.mobile ? (
-              <a href={`tel:${customer.mobile}`} className="text-gray-300 hover:underline">
+              <a href={`tel:${customer.mobile}`} className="text-gray-300 hover:text-gray-100">
                 {customer.mobile}
               </a>
             ) : (
               <span>-</span>
             )}
-          </div>
-          <div className="flex items-center text-white">
-            <span className="ml-5">
-              {customer.phone ? (
-              <a href={`tel:${customer.phone}`} className="text-gray-300 hover:underline">
+            <span className="mx-1">|</span>
+            {customer.phone ? (
+              <a href={`tel:${customer.phone}`} className="text-gray-300 hover:text-gray-100">
                 {customer.phone}
               </a>
             ) : (
               <span>-</span>
             )}
-            </span>
           </div>
           <div className="flex items-start text-white">
           <span className="ml-5">
@@ -79,7 +76,7 @@ export default function CustomerCard({
                   href={`https://map.naver.com/v5/search/${encodeURIComponent(customer.address)}`}
                   target="_blank"
                   rel="noopener noreferrer" 
-                  className="text-gray-300 hover:underline"
+                  className="text-gray-300 hover:text-gray-100"
                 >
                   {customer.address}
                 </a>
@@ -90,12 +87,9 @@ export default function CustomerCard({
         
         {/* 회사 및 직책 */}
         <div className="mb-0">
-          <div className="flex items-center text-gray-400">
+          <div className="flex items-center text-gray-400 mb-1/2">
             <Building size={16} className="mr-1" />
-            <span className="font-bold">{customer.company || '-'}</span>
-          </div>
-          <div className="flex items-center text-gray-400">
-            <span className="ml-5">{customer.position || '-'}</span>
+            <span className="font-bold">{customer.company || '-'}<span className="font-medium text-sm"> | {customer.position || '-'}</span></span>
           </div>
           <div className="flex items-center text-gray-400">
             <span className="ml-5">{customer.address_company ? (
@@ -103,7 +97,7 @@ export default function CustomerCard({
                       href={`https://map.naver.com/v5/search/${encodeURIComponent(customer.address_company)}`}
                       target="_blank"
                       rel="noopener noreferrer" 
-                      className="hover:underline"
+                      className="text-gray-300 hover:text-gray-100"
                     >
                       {customer.address_company}
                     </a>

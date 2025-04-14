@@ -1,17 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const nanumSquare = {
+  variable: "--font-nanum-square",
+};
 
 export const metadata: Metadata = {
   title: "Medical Sales",
@@ -46,9 +39,14 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="MedSales" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#3b82f6" />
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@2.0/nanumsquare.css"
+        />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${nanumSquare.variable} antialiased`}
       >
         <Providers>{children}</Providers>
       </body>

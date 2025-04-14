@@ -24,7 +24,7 @@ export const CardHeader = ({
 }: React.HTMLAttributes<HTMLDivElement>) => {
   return (
     <div
-      className={`flex flex-col space-y-1.5 p-6 ${className}`}
+      className={`flex flex-col space-y-1 px-6 pt-6 pb-4 ${className}`}
       {...props}
     >
       {children}

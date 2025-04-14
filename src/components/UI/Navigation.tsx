@@ -58,7 +58,7 @@ export default function Navigation() {
       return (
         <button 
           onClick={() => signIn()}
-          className="px-4 py-1 bg-blue-700 text-white font-medium rounded-md  hover:bg-blue-800 transition-colors"
+          className="px-4 py-1 bg-blue-700 text-white font-medium rounded-md hover:bg-blue-800 transition-colors"
         >
           Login
         </button>
