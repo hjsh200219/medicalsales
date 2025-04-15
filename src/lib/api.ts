@@ -185,6 +185,7 @@ export async function fetchMedicalData() {
   try {
     const startTime = Date.now();
     
+    // 약국 및 병원 데이터는 전체 작업의 각각 50%를 차지함
     const pharmacyData = await fetchPharmacyInfo();
     const hospitalData = await fetchHospitalInfo();
     

@@ -88,7 +88,7 @@ export function ApiDataDisplay({ title, data, lastupdate, lastupdateTimestamp }:
     <div className="flex flex-col w-full md:w-1/2 gap-2">
       <h3 className="text-xl text-white font-semibold mb-0 mt-4 ml-1">{title}</h3>
       {/* 데이터 요약 섹션 */}
-      <div className="bg-gray-700 p-3 rounded-md mb-4">
+      <div className="bg-gray-700 p-4 rounded-md mb-4">
         <p className="text-gray-300 font-bold">전체 데이터: <span className="font-medium">{totalCount.toLocaleString()}</span></p>
         <p className="text-gray-300 font-bold">신규 데이터: <span className="font-medium">{summary.filteredItems.toLocaleString()}</span></p>
         
@@ -127,7 +127,7 @@ export function ApiDataDisplay({ title, data, lastupdate, lastupdateTimestamp }:
       
       {/* 최신 데이터 표시 (최종 업데이트 이후) */}
       {filteredItems.length > 0 ? (
-        <div className="bg-gray-600 p-3 rounded-md overflow-auto">
+        <div className="bg-gray-600 p-4 rounded-md overflow-auto">
           <div className="flex justify-between items-center">
             <h4 className="text-white font-medium">
               신규 데이터 ({filteredItems.length}개)
@@ -147,7 +147,7 @@ export function ApiDataDisplay({ title, data, lastupdate, lastupdateTimestamp }:
           )}
         </div>
       ) : (
-        <div className="bg-gray-800 p-3 rounded-md">
+        <div className="bg-gray-800 p-4 rounded-md">
           <h4 className="text-white font-medium mb-2">신규 데이터</h4>
           <p className="text-gray-300">{lastupdate} 이후에 업데이트된 데이터가 없습니다.</p>
         </div>
