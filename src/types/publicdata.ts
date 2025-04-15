@@ -40,10 +40,11 @@ export interface ApiResult {
 } 
 
 export const dbmapping: Record<string, string> = {
+  yadmNm: "name",
   addr: "address",
   estbDd: "open_date",
   telno: "phone",
-  XPos: "lat",
-  YPos: "lng",
+  XPos: "lng",
+  YPos: "lat",
   clCdNm: "type"
 }
